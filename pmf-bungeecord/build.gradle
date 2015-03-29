@@ -1,0 +1,15 @@
+version = getParent().getVersion()
+
+repositories {
+    mavenCentral()
+
+    maven {
+        url 'http://oss.sonatype.org/content/groups/public/'
+    }
+}
+
+dependencies {
+    compile project(':pmf-core')
+    compile group: 'net.md-5', name: 'bungeecord-api', version: '1.8-SNAPSHOT'
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
