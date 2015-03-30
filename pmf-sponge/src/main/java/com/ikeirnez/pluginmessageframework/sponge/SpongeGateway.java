@@ -10,6 +10,7 @@ import org.spongepowered.api.net.ChannelListener;
 import org.spongepowered.api.net.PlayerConnection;
 
 import java.util.Collection;
+import java.util.Optional;
 
 /**
  * Created by Keir on 27/03/2015.
@@ -28,9 +29,11 @@ public class SpongeGateway extends Gateway<Player> implements ChannelListener {
     }
 
     @Override
-    public ConnectionWrapper getGateway() {
+    public Optional<ConnectionWrapper<Player>> getGateway() {
         Collection<Player> players = server.getOnlinePlayers();
-        return players.size() > 0 ? new SpongeConnection(players.iterator().next(), plugin) : null;
+        return players.size() > 0 ?
+                Optional.<ConnectionWrapper<Player>>of(new SpongeConnection(players.iterator().next(), plugin)) :
+                Optional.<ConnectionWrapper<Player>>empty();
     }
 
     @Override

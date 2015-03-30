@@ -7,6 +7,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
 
 import java.util.Collection;
+import java.util.Optional;
 
 /**
  * Created by Keir on 29/03/2015.
@@ -23,8 +24,10 @@ public class BungeeCordGateway extends Gateway<ProxiedPlayer> {
     }
 
     @Override
-    public ConnectionWrapper<ProxiedPlayer> getGateway() {
+    public Optional<ConnectionWrapper<ProxiedPlayer>> getGateway() {
         Collection<ProxiedPlayer> players = plugin.getProxy().getPlayers();
-        return players.size() > 0 ? new BungeeCordConnection(players.iterator().next()) : null;
+        return players.size() > 0 ?
+                        Optional.<ConnectionWrapper<ProxiedPlayer>>of(new BungeeCordConnection(players.iterator().next())) :
+                        Optional.<ConnectionWrapper<ProxiedPlayer>>empty();
     }
 }

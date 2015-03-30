@@ -10,6 +10,7 @@ import org.bukkit.plugin.messaging.Messenger;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
 import java.util.Collection;
+import java.util.Optional;
 
 /**
  * Created by Keir on 27/03/2015.
@@ -28,9 +29,11 @@ public class BukkitGateway extends Gateway<Player> implements PluginMessageListe
     }
 
     @Override
-    public ConnectionWrapper getGateway() {
+    public Optional<ConnectionWrapper<Player>> getGateway() {
         Collection<? extends Player> players = Bukkit.getOnlinePlayers();
-        return players.size() > 0 ? new BukkitConnection(players.iterator().next(), plugin) : null;
+        return players.size() > 0 ?
+                Optional.<ConnectionWrapper<Player>>of(new BukkitConnection(players.iterator().next(), plugin)) :
+                Optional.<ConnectionWrapper<Player>>empty();
     }
 
     @Override

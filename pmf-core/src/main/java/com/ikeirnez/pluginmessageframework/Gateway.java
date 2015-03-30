@@ -1,5 +1,7 @@
 package com.ikeirnez.pluginmessageframework;
 
+import java.util.Optional;
+
 /**
  * Created by Keir on 27/03/2015.
  */
@@ -11,10 +13,10 @@ public abstract class Gateway<T> {
         this.pluginMessageFramework = pluginMessageFramework;
     }
 
-    public abstract ConnectionWrapper<T> getGateway();
+    public abstract Optional<ConnectionWrapper<T>> getGateway();
 
     protected final void receive(ConnectionWrapper connectionWrapper, byte[] bytes) {
-
+        // todo
     }
 
 }
