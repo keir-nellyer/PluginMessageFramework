@@ -1,7 +1,7 @@
 package com.ikeirnez.pluginmessageframework.bungeecord;
 
 import com.ikeirnez.pluginmessageframework.ConnectionWrapper;
-import com.ikeirnez.pluginmessageframework.Gateway;
+import com.ikeirnez.pluginmessageframework.AbstractGateway;
 import com.ikeirnez.pluginmessageframework.PluginMessageFramework;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
@@ -12,7 +12,7 @@ import java.util.Optional;
 /**
  * Created by Keir on 29/03/2015.
  */
-public class BungeeCordGateway extends Gateway<ProxiedPlayer> {
+public class BungeeCordGateway extends AbstractGateway<ProxiedPlayer> {
 
     private final Plugin plugin;
 
@@ -24,7 +24,7 @@ public class BungeeCordGateway extends Gateway<ProxiedPlayer> {
     }
 
     @Override
-    public Optional<ConnectionWrapper<ProxiedPlayer>> getGateway() {
+    public Optional<ConnectionWrapper<ProxiedPlayer>> getConnection() {
         Collection<ProxiedPlayer> players = plugin.getProxy().getPlayers();
         return players.size() > 0 ?
                         Optional.<ConnectionWrapper<ProxiedPlayer>>of(new BungeeCordConnection(players.iterator().next())) :

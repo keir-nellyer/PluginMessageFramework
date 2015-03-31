@@ -1,7 +1,8 @@
 package com.ikeirnez.pluginmessageframework;
 
 /**
- * Created by Keir on 27/03/2015.
+ * Wrapper class for connections.
+ * Allows compatibility with many implementations through a simple wrapper class.
  */
 public abstract class ConnectionWrapper<T> {
 

@@ -7,6 +7,10 @@ repositories {
         name 'spigot-repo'
         url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
     }
+
+    maven { // required for some BungeeCord components depended on by Spigot
+        url 'https://oss.sonatype.org/content/repositories/snapshots/'
+    }
 }
 
 dependencies {

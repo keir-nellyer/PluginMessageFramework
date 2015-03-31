@@ -1,6 +1,6 @@
 package com.ikeirnez.pluginmessageframework.bukkit;
 
-import com.ikeirnez.pluginmessageframework.Gateway;
+import com.ikeirnez.pluginmessageframework.AbstractGateway;
 import com.ikeirnez.pluginmessageframework.ConnectionWrapper;
 import com.ikeirnez.pluginmessageframework.PluginMessageFramework;
 import org.bukkit.Bukkit;
@@ -15,7 +15,7 @@ import java.util.Optional;
 /**
  * Created by Keir on 27/03/2015.
  */
-public class BukkitGateway extends Gateway<Player> implements PluginMessageListener {
+public class BukkitGateway extends AbstractGateway<Player> implements PluginMessageListener {
 
     private final Plugin plugin;
 
@@ -29,7 +29,7 @@ public class BukkitGateway extends Gateway<Player> implements PluginMessageListe
     }
 
     @Override
-    public Optional<ConnectionWrapper<Player>> getGateway() {
+    public Optional<ConnectionWrapper<Player>> getConnection() {
         Collection<? extends Player> players = Bukkit.getOnlinePlayers();
         return players.size() > 0 ?
                 Optional.<ConnectionWrapper<Player>>of(new BukkitConnection(players.iterator().next(), plugin)) :
@@ -39,7 +39,7 @@ public class BukkitGateway extends Gateway<Player> implements PluginMessageListe
     @Override
     public void onPluginMessageReceived(String channel, Player player, byte[] message) {
         if (channel.equals(pluginMessageFramework.getChannel())) {
-            receive(new BukkitConnection(player, plugin), message);
+            receivePacket(new BukkitConnection(player, plugin), message);
         }
     }
 }

@@ -1,7 +1,18 @@
 package com.ikeirnez.pluginmessageframework;
 
+import java.io.*;
+
 /**
- * Created by Keir on 27/03/2015.
+ * Base class for creating packets.
  */
-public class Packet {
+public abstract class Packet implements Serializable {
+
+    public final byte[] writeBytes() throws IOException {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
+        objectOutputStream.writeUTF(PluginMessageFramework.PACKET_HEADER);
+        objectOutputStream.writeObject(this);
+        return byteArrayOutputStream.toByteArray();
+    }
+
 }

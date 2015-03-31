@@ -1,6 +1,6 @@
 package com.ikeirnez.pluginmessageframework.sponge;
 
-import com.ikeirnez.pluginmessageframework.Gateway;
+import com.ikeirnez.pluginmessageframework.AbstractGateway;
 import com.ikeirnez.pluginmessageframework.ConnectionWrapper;
 import com.ikeirnez.pluginmessageframework.PluginMessageFramework;
 import org.spongepowered.api.Server;
@@ -15,7 +15,7 @@ import java.util.Optional;
 /**
  * Created by Keir on 27/03/2015.
  */
-public class SpongeGateway extends Gateway<Player> implements ChannelListener {
+public class SpongeGateway extends AbstractGateway<Player> implements ChannelListener {
 
     private final Object plugin;
     private final Server server;
@@ -29,7 +29,7 @@ public class SpongeGateway extends Gateway<Player> implements ChannelListener {
     }
 
     @Override
-    public Optional<ConnectionWrapper<Player>> getGateway() {
+    public Optional<ConnectionWrapper<Player>> getConnection() {
         Collection<Player> players = server.getOnlinePlayers();
         return players.size() > 0 ?
                 Optional.<ConnectionWrapper<Player>>of(new SpongeConnection(players.iterator().next(), plugin)) :
@@ -39,7 +39,7 @@ public class SpongeGateway extends Gateway<Player> implements ChannelListener {
     @Override
     public void handlePayload(PlayerConnection client, String channel, ChannelBuf data) {
         if (channel.equals(pluginMessageFramework.getChannel())) {
-            receive(new SpongeConnection(client.getPlayer(), plugin), data.array());
+            receivePacket(new SpongeConnection(client.getPlayer(), plugin), data.array());
         }
     }
 }
