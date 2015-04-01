@@ -19,9 +19,13 @@ public class BukkitGateway extends AbstractGateway<Player> {
 
     private final Plugin plugin;
 
-    public BukkitGateway(PluginMessageFramework pluginMessageFramework, Plugin plugin) {
-        super(pluginMessageFramework);
+    public BukkitGateway(Plugin plugin) {
         this.plugin = plugin;
+    }
+
+    @Override
+    protected void init(PluginMessageFramework pluginMessageFramework) {
+        super.init(pluginMessageFramework);
 
         Messenger messenger = plugin.getServer().getMessenger();
         messenger.registerOutgoingPluginChannel(plugin, pluginMessageFramework.getChannel());
@@ -29,7 +33,7 @@ public class BukkitGateway extends AbstractGateway<Player> {
             @Override
             public void onPluginMessageReceived(String channel, Player player, byte[] message) {
                 if (channel.equals(BukkitGateway.this.pluginMessageFramework.getChannel())) {
-                    receivePacket(new BukkitConnection(player, BukkitGateway.this.plugin), message);
+                    receivePacket(new BukkitConnection(player, plugin), message);
                 }
             }
         });

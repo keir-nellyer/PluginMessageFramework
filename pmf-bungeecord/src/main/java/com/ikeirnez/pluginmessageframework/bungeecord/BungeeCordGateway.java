@@ -21,9 +21,13 @@ public class BungeeCordGateway extends AbstractGateway<ProxiedPlayer> {
 
     private final Plugin plugin;
 
-    public BungeeCordGateway(PluginMessageFramework pluginMessageFramework, Plugin plugin) {
-        super(pluginMessageFramework);
+    public BungeeCordGateway(Plugin plugin) {
         this.plugin = plugin;
+    }
+
+    @Override
+    protected void init(PluginMessageFramework pluginMessageFramework) {
+        super.init(pluginMessageFramework);
 
         plugin.getProxy().registerChannel(pluginMessageFramework.getChannel());
         plugin.getProxy().getPluginManager().registerListener(plugin, new Listener() {

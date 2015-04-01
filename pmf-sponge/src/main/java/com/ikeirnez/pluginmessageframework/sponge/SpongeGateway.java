@@ -20,16 +20,20 @@ public class SpongeGateway extends AbstractGateway<Player> {
     private final Object plugin;
     private final Server server;
 
-    public SpongeGateway(PluginMessageFramework pluginMessageFramework, Object plugin, Server server) {
-        super(pluginMessageFramework);
+    public SpongeGateway(Object plugin, Server server) {
         this.plugin = plugin;
         this.server = server;
+    }
+
+    @Override
+    protected void init(PluginMessageFramework pluginMessageFramework) {
+        super.init(pluginMessageFramework);
 
         server.registerChannel(plugin, new ChannelListener() {
             @Override
             public void handlePayload(PlayerConnection client, String channel, ChannelBuf data) {
                 if (channel.equals(SpongeGateway.this.pluginMessageFramework.getChannel())) {
-                    receivePacket(new SpongeConnection(client.getPlayer(), SpongeGateway.this.plugin), data.array());
+                    receivePacket(new SpongeConnection(client.getPlayer(), plugin), data.array());
                 }
             }
         }, pluginMessageFramework.getChannel());

@@ -1,5 +1,3 @@
-version = getParent().getVersion()
-
 repositories {
     mavenCentral()
 

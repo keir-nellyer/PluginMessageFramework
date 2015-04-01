@@ -9,9 +9,13 @@ import java.util.Optional;
  */
 public abstract class AbstractGateway<T> {
 
-    protected final PluginMessageFramework pluginMessageFramework;
+    protected PluginMessageFramework pluginMessageFramework = null;
 
-    public AbstractGateway(PluginMessageFramework pluginMessageFramework) {
+    protected void init(PluginMessageFramework pluginMessageFramework) {
+        if (this.pluginMessageFramework != null) {
+            throw new UnsupportedOperationException("Framework has already been set.");
+        }
+
         this.pluginMessageFramework = pluginMessageFramework;
     }
 

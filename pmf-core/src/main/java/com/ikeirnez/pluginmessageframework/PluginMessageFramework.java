@@ -14,7 +14,7 @@ import java.util.*;
 /**
  * Abstract manager of packets, handles the sending of packets and dispatching of received packets.
  */
-public abstract class PluginMessageFramework {
+public class PluginMessageFramework {
 
     public static final String PACKET_HEADER = "PluginMessageFramework";
 
@@ -32,8 +32,8 @@ public abstract class PluginMessageFramework {
 
         this.gateway = gateway;
         this.channel = channel;
-
         this.type = (Class<?>) ((ParameterizedType) gateway.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+        this.gateway.init(this);
     }
 
     public String getChannel() {
