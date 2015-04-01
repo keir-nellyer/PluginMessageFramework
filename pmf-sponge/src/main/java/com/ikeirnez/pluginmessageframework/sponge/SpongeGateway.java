@@ -15,7 +15,7 @@ import java.util.Optional;
 /**
  * Created by Keir on 27/03/2015.
  */
-public class SpongeGateway extends AbstractGateway<Player> implements ChannelListener {
+public class SpongeGateway extends AbstractGateway<Player> {
 
     private final Object plugin;
     private final Server server;
@@ -25,7 +25,14 @@ public class SpongeGateway extends AbstractGateway<Player> implements ChannelLis
         this.plugin = plugin;
         this.server = server;
 
-        server.registerChannel(plugin, this, pluginMessageFramework.getChannel());
+        server.registerChannel(plugin, new ChannelListener() {
+            @Override
+            public void handlePayload(PlayerConnection client, String channel, ChannelBuf data) {
+                if (channel.equals(SpongeGateway.this.pluginMessageFramework.getChannel())) {
+                    receivePacket(new SpongeConnection(client.getPlayer(), SpongeGateway.this.plugin), data.array());
+                }
+            }
+        }, pluginMessageFramework.getChannel());
     }
 
     @Override
@@ -34,12 +41,5 @@ public class SpongeGateway extends AbstractGateway<Player> implements ChannelLis
         return players.size() > 0 ?
                 Optional.<ConnectionWrapper<Player>>of(new SpongeConnection(players.iterator().next(), plugin)) :
                 Optional.<ConnectionWrapper<Player>>empty();
-    }
-
-    @Override
-    public void handlePayload(PlayerConnection client, String channel, ChannelBuf data) {
-        if (channel.equals(pluginMessageFramework.getChannel())) {
-            receivePacket(new SpongeConnection(client.getPlayer(), plugin), data.array());
-        }
     }
 }

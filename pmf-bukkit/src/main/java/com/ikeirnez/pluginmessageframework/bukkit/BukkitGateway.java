@@ -15,7 +15,7 @@ import java.util.Optional;
 /**
  * Created by Keir on 27/03/2015.
  */
-public class BukkitGateway extends AbstractGateway<Player> implements PluginMessageListener {
+public class BukkitGateway extends AbstractGateway<Player> {
 
     private final Plugin plugin;
 
@@ -24,8 +24,15 @@ public class BukkitGateway extends AbstractGateway<Player> implements PluginMess
         this.plugin = plugin;
 
         Messenger messenger = plugin.getServer().getMessenger();
-        messenger.registerIncomingPluginChannel(plugin, pluginMessageFramework.getChannel(), this);
         messenger.registerOutgoingPluginChannel(plugin, pluginMessageFramework.getChannel());
+        messenger.registerIncomingPluginChannel(plugin, pluginMessageFramework.getChannel(), new PluginMessageListener() {
+            @Override
+            public void onPluginMessageReceived(String channel, Player player, byte[] message) {
+                if (channel.equals(BukkitGateway.this.pluginMessageFramework.getChannel())) {
+                    receivePacket(new BukkitConnection(player, BukkitGateway.this.plugin), message);
+                }
+            }
+        });
     }
 
     @Override
@@ -34,12 +41,5 @@ public class BukkitGateway extends AbstractGateway<Player> implements PluginMess
         return players.size() > 0 ?
                 Optional.<ConnectionWrapper<Player>>of(new BukkitConnection(players.iterator().next(), plugin)) :
                 Optional.<ConnectionWrapper<Player>>empty();
-    }
-
-    @Override
-    public void onPluginMessageReceived(String channel, Player player, byte[] message) {
-        if (channel.equals(pluginMessageFramework.getChannel())) {
-            receivePacket(new BukkitConnection(player, plugin), message);
-        }
     }
 }
