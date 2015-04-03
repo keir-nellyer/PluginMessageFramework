@@ -1,21 +1,23 @@
 package com.ikeirnez.pluginmessageframework;
 
 /**
- * Wrapper class for connections.
- * Allows compatibility with many implementations through a simple wrapper class.
+ * Represents a connection to the "other side".
+ * Allows for compatibility through many different implementations via a wrapper-like class..
  */
-public abstract class ConnectionWrapper<T> {
+public interface ConnectionWrapper<T> {
 
-    private T gateway;
+    /**
+     * Sends a custom payload (aka plugin message) on the specified channel (internal use).
+     *
+     * @param channel the channel to send the custom payload through
+     * @param data the data to send
+     */
+    void sendCustomPayload(String channel, byte[] data);
 
-    public ConnectionWrapper(T gateway) {
-        this.gateway = gateway;
-    }
-
-    protected abstract void send(String channel, byte[] data);
-
-    public T getGateway() {
-        return gateway;
-    }
-
+    /**
+     * Gets the connection in the form of the underlying implementation.
+     *
+     * @return the connection
+     */
+    T getConnection();
 }

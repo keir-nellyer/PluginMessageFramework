@@ -1,13 +1,13 @@
 package com.ikeirnez.pluginmessageframework.sponge;
 
-import com.ikeirnez.pluginmessageframework.AbstractGateway;
 import com.ikeirnez.pluginmessageframework.ConnectionWrapper;
-import com.ikeirnez.pluginmessageframework.PluginMessageFramework;
+import com.ikeirnez.pluginmessageframework.impl.ServerGatewaySupport;
 import org.spongepowered.api.Server;
 import org.spongepowered.api.entity.player.Player;
 import org.spongepowered.api.net.ChannelBuf;
 import org.spongepowered.api.net.ChannelListener;
 import org.spongepowered.api.net.PlayerConnection;
+import org.spongepowered.api.util.annotation.NonnullByDefault;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -15,35 +15,31 @@ import java.util.Optional;
 /**
  * Created by Keir on 27/03/2015.
  */
-public class SpongeGateway extends AbstractGateway<Player> {
+public class DefaultSpongeGateway extends ServerGatewaySupport<Player> {
 
     private final Object plugin;
     private final Server server;
 
-    public SpongeGateway(Object plugin, Server server) {
+    public DefaultSpongeGateway(String channel, final Object plugin, Server server) {
+        super(channel);
         this.plugin = plugin;
         this.server = server;
-    }
-
-    @Override
-    protected void init(PluginMessageFramework pluginMessageFramework) {
-        super.init(pluginMessageFramework);
 
         server.registerChannel(plugin, new ChannelListener() {
             @Override
-            public void handlePayload(PlayerConnection client, String channel, ChannelBuf data) {
-                if (channel.equals(SpongeGateway.this.pluginMessageFramework.getChannel())) {
-                    receivePacket(new SpongeConnection(client.getPlayer(), plugin), data.array());
+            public void handlePayload(@NonnullByDefault PlayerConnection client, @NonnullByDefault String channel, @NonnullByDefault ChannelBuf data) {
+                if (channel.equals(getChannel())) {
+                    receivePacket(new SpongeConnectionWrapper(client.getPlayer(), plugin), data.array());
                 }
             }
-        }, pluginMessageFramework.getChannel());
+        }, getChannel());
     }
 
     @Override
     public Optional<ConnectionWrapper<Player>> getConnection() {
         Collection<Player> players = server.getOnlinePlayers();
         return players.size() > 0 ?
-                Optional.<ConnectionWrapper<Player>>of(new SpongeConnection(players.iterator().next(), plugin)) :
+                Optional.<ConnectionWrapper<Player>>of(new SpongeConnectionWrapper(players.iterator().next(), plugin)) :
                 Optional.<ConnectionWrapper<Player>>empty();
     }
 }
