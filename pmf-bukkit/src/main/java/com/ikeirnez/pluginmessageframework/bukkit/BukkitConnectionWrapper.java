@@ -9,7 +9,7 @@ import org.bukkit.plugin.Plugin;
  */
 public class BukkitConnectionWrapper extends BaseConnectionWrapper<Player> {
 
-    private Plugin plugin;
+    private final Plugin plugin;
 
     public BukkitConnectionWrapper(Player gateway, Plugin plugin) {
         super(gateway);

@@ -7,7 +7,6 @@ import org.spongepowered.api.entity.player.Player;
 import org.spongepowered.api.net.ChannelBuf;
 import org.spongepowered.api.net.ChannelListener;
 import org.spongepowered.api.net.PlayerConnection;
-import org.spongepowered.api.util.annotation.NonnullByDefault;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -27,7 +26,7 @@ public class DefaultSpongeGateway extends ServerGatewaySupport<Player> {
 
         server.registerChannel(plugin, new ChannelListener() {
             @Override
-            public void handlePayload(@NonnullByDefault PlayerConnection client, @NonnullByDefault String channel, @NonnullByDefault ChannelBuf data) {
+            public void handlePayload(PlayerConnection client, String channel, ChannelBuf data) {
                 if (channel.equals(getChannel())) {
                     receivePacket(new SpongeConnectionWrapper(client.getPlayer(), plugin), data.array());
                 }

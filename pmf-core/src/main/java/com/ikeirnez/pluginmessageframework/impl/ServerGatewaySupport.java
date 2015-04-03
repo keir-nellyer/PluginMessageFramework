@@ -15,7 +15,7 @@ import java.util.Optional;
  */
 public abstract class ServerGatewaySupport<T> extends GatewaySupport<T> implements ServerGateway<T> {
 
-    private List<Packet> packetQueue = new ArrayList<>();
+    private final List<Packet> packetQueue = new ArrayList<>();
 
     public ServerGatewaySupport(String channel) {
         super(channel);
@@ -29,9 +29,8 @@ public abstract class ServerGatewaySupport<T> extends GatewaySupport<T> implemen
         Iterator<Packet> iterator = packetQueue.iterator();
         while (iterator.hasNext()) {
             Packet packet = iterator.next();
-            if (!sendPacket(packet)) {
-                iterator.remove();
-            }
+            sendPacket(connection, packet);
+            iterator.remove();
         }
     }
 

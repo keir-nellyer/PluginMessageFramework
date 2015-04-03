@@ -7,7 +7,7 @@ import com.ikeirnez.pluginmessageframework.connection.ConnectionWrapper;
  */
 public abstract class BaseConnectionWrapper<T> implements ConnectionWrapper<T> {
 
-    private T gateway;
+    private final T gateway;
 
     public BaseConnectionWrapper(T gateway) {
         this.gateway = gateway;

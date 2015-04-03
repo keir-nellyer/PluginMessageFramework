@@ -8,7 +8,7 @@ import org.spongepowered.api.entity.player.Player;
  */
 public class SpongeConnectionWrapper extends BaseConnectionWrapper<Player> {
 
-    private Object plugin;
+    private final Object plugin;
 
     public SpongeConnectionWrapper(Player gateway, Object plugin) {
         super(gateway);
