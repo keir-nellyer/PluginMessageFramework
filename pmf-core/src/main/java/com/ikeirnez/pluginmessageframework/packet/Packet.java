@@ -1,4 +1,4 @@
-package com.ikeirnez.pluginmessageframework;
+package com.ikeirnez.pluginmessageframework.packet;
 
 import com.ikeirnez.pluginmessageframework.impl.GatewaySupport;
 

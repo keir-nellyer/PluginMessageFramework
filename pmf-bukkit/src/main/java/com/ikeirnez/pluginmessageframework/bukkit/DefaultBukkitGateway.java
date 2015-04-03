@@ -1,6 +1,6 @@
 package com.ikeirnez.pluginmessageframework.bukkit;
 
-import com.ikeirnez.pluginmessageframework.ConnectionWrapper;
+import com.ikeirnez.pluginmessageframework.connection.ConnectionWrapper;
 import com.ikeirnez.pluginmessageframework.impl.ServerGatewaySupport;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

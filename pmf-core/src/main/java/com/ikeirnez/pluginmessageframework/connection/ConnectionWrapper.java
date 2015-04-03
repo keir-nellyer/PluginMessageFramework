@@ -1,4 +1,4 @@
-package com.ikeirnez.pluginmessageframework;
+package com.ikeirnez.pluginmessageframework.connection;
 
 /**
  * Represents a connection to the "other side".

@@ -1,9 +1,9 @@
 package com.ikeirnez.pluginmessageframework.impl;
 
-import com.ikeirnez.pluginmessageframework.Packet;
-import com.ikeirnez.pluginmessageframework.ConnectionWrapper;
-import com.ikeirnez.pluginmessageframework.PacketHandler;
-import com.ikeirnez.pluginmessageframework.Gateway;
+import com.ikeirnez.pluginmessageframework.packet.Packet;
+import com.ikeirnez.pluginmessageframework.connection.ConnectionWrapper;
+import com.ikeirnez.pluginmessageframework.packet.PacketHandler;
+import com.ikeirnez.pluginmessageframework.gateway.Gateway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

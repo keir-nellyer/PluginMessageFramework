@@ -1,7 +1,7 @@
 package com.ikeirnez.pluginmessageframework.bungeecord;
 
-import com.ikeirnez.pluginmessageframework.ProxyConnectionWrapper;
-import com.ikeirnez.pluginmessageframework.ProxySide;
+import com.ikeirnez.pluginmessageframework.connection.ProxyConnectionWrapper;
+import com.ikeirnez.pluginmessageframework.connection.ProxySide;
 import com.ikeirnez.pluginmessageframework.impl.ProxyGatewaySupport;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.config.ServerInfo;

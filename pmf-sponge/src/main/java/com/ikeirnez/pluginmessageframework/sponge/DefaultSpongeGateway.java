@@ -1,6 +1,6 @@
 package com.ikeirnez.pluginmessageframework.sponge;
 
-import com.ikeirnez.pluginmessageframework.ConnectionWrapper;
+import com.ikeirnez.pluginmessageframework.connection.ConnectionWrapper;
 import com.ikeirnez.pluginmessageframework.impl.ServerGatewaySupport;
 import org.spongepowered.api.Server;
 import org.spongepowered.api.entity.player.Player;

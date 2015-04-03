@@ -1,6 +1,10 @@
 package com.ikeirnez.pluginmessageframework.impl;
 
-import com.ikeirnez.pluginmessageframework.*;
+import com.ikeirnez.pluginmessageframework.connection.ConnectionWrapper;
+import com.ikeirnez.pluginmessageframework.connection.ProxyConnectionWrapper;
+import com.ikeirnez.pluginmessageframework.connection.ProxySide;
+import com.ikeirnez.pluginmessageframework.gateway.ProxyGateway;
+import com.ikeirnez.pluginmessageframework.packet.Packet;
 
 import java.io.IOException;
 import java.util.HashMap;

@@ -1,4 +1,7 @@
-package com.ikeirnez.pluginmessageframework;
+package com.ikeirnez.pluginmessageframework.gateway;
+
+import com.ikeirnez.pluginmessageframework.packet.Packet;
+import com.ikeirnez.pluginmessageframework.connection.ProxySide;
 
 import java.io.IOException;
 

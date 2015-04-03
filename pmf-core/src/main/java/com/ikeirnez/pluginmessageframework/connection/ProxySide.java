@@ -1,4 +1,6 @@
-package com.ikeirnez.pluginmessageframework;
+package com.ikeirnez.pluginmessageframework.connection;
+
+import com.ikeirnez.pluginmessageframework.gateway.ProxyGateway;
 
 /**
  * An enum containing all possible sides a {@link ProxyGateway} can be run on.

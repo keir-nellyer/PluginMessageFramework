@@ -1,4 +1,7 @@
-package com.ikeirnez.pluginmessageframework;
+package com.ikeirnez.pluginmessageframework.connection;
+
+import com.ikeirnez.pluginmessageframework.gateway.ProxyGateway;
+import com.ikeirnez.pluginmessageframework.gateway.ServerGateway;
 
 /**
  * An extension of {@link ConnectionWrapper} for use on {@link ProxyGateway} implementations.

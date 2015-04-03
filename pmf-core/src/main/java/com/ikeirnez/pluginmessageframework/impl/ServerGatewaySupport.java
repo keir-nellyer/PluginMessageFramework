@@ -1,8 +1,8 @@
 package com.ikeirnez.pluginmessageframework.impl;
 
-import com.ikeirnez.pluginmessageframework.ConnectionWrapper;
-import com.ikeirnez.pluginmessageframework.Packet;
-import com.ikeirnez.pluginmessageframework.ServerGateway;
+import com.ikeirnez.pluginmessageframework.connection.ConnectionWrapper;
+import com.ikeirnez.pluginmessageframework.packet.Packet;
+import com.ikeirnez.pluginmessageframework.gateway.ServerGateway;
 
 import java.io.IOException;
 import java.util.ArrayList;

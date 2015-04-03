@@ -1,6 +1,6 @@
 package com.ikeirnez.pluginmessageframework.impl;
 
-import com.ikeirnez.pluginmessageframework.ConnectionWrapper;
+import com.ikeirnez.pluginmessageframework.connection.ConnectionWrapper;
 
 /**
  * Implementation of {@link ConnectionWrapper}.
