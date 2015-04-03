@@ -66,7 +66,7 @@ public abstract class GatewaySupport<T> implements Gateway<T> {
         return packetParam != null &&
                 clazz.isAssignableFrom(packetParam) &&
                 (connectionParam == null || type.isAssignableFrom(connectionParam)
-                        || BaseConnectionWrapper.class.isAssignableFrom(connectionParam));
+                        || ConnectionWrapper.class.isAssignableFrom(connectionParam));
     }
 
     @Override
@@ -93,7 +93,7 @@ public abstract class GatewaySupport<T> implements Gateway<T> {
         }
     }
 
-    private void dispatchPacketToListeners(BaseConnectionWrapper connectionWrapper, Packet packet) throws InvocationTargetException, IllegalAccessException {
+    private void dispatchPacketToListeners(ConnectionWrapper connectionWrapper, Packet packet) throws InvocationTargetException, IllegalAccessException {
         for (Object listener : listeners.get(packet.getClass())) {
             for (Method method : listener.getClass().getMethods()) {
                 if (isParametersApplicable(packet.getClass(), method)) {
@@ -113,7 +113,7 @@ public abstract class GatewaySupport<T> implements Gateway<T> {
         }
     }
 
-    protected final void receivePacket(BaseConnectionWrapper connectionWrapper, byte[] bytes) {
+    protected final void receivePacket(ConnectionWrapper connectionWrapper, byte[] bytes) {
         try {
             ObjectInputStream objectInputStream = new ObjectInputStream(new ByteArrayInputStream(bytes));
 
