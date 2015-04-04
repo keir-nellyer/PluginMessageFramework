@@ -2,6 +2,7 @@ package com.ikeirnez.pluginmessageframework.bukkit;
 
 import com.ikeirnez.pluginmessageframework.connection.ConnectionWrapper;
 import com.ikeirnez.pluginmessageframework.impl.ServerGatewaySupport;
+import com.ikeirnez.pluginmessageframework.packet.Packet;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,9 +19,9 @@ import java.util.Optional;
 /**
  * Created by Keir on 27/03/2015.
  */
-public class DefaultBukkitGateway extends ServerGatewaySupport<Player> {
+public class DefaultBukkitGateway extends ServerGatewaySupport<Player> implements BukkitGateway, Listener, PluginMessageListener {
 
-    private final Plugin plugin;
+    protected final Plugin plugin;
 
     public DefaultBukkitGateway(String channel, final Plugin plugin) {
         super(channel);
@@ -28,27 +29,13 @@ public class DefaultBukkitGateway extends ServerGatewaySupport<Player> {
 
         Messenger messenger = plugin.getServer().getMessenger();
         messenger.registerOutgoingPluginChannel(plugin, getChannel());
-        messenger.registerIncomingPluginChannel(plugin, getChannel(), new PluginMessageListener() {
-            @Override
-            public void onPluginMessageReceived(String channel, Player player, byte[] message) {
-                if (channel.equals(getChannel())) {
-                    receivePacket(new BukkitConnectionWrapper(player, plugin), message);
-                }
-            }
-        });
+        messenger.registerIncomingPluginChannel(plugin, getChannel(), this);
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
+    }
 
-        plugin.getServer().getPluginManager().registerEvents(new Listener() {
-            @EventHandler
-            public void onPlayerJoin(PlayerJoinEvent e) {
-                if (queuedPackets()) {
-                    try {
-                        connectionAvailable(new BukkitConnectionWrapper(e.getPlayer(), plugin));
-                    } catch (IOException e1) {
-                        logger.error("Error whilst sending queued packets.", e1);
-                    }
-                }
-            }
-        }, plugin);
+    @Override
+    public void sendPacket(Player player, Packet packet) throws IOException {
+        sendPacket(new BukkitConnectionWrapper(player, plugin), packet);
     }
 
     @Override
@@ -58,4 +45,28 @@ public class DefaultBukkitGateway extends ServerGatewaySupport<Player> {
                 Optional.<ConnectionWrapper<Player>>of(new BukkitConnectionWrapper(players.iterator().next(), plugin)) :
                 Optional.<ConnectionWrapper<Player>>empty();
     }
+
+    @Override
+    public void onPluginMessageReceived(String channel, Player player, byte[] message) {
+        if (channel.equals(getChannel())) {
+            receivePacket(new BukkitConnectionWrapper(player, plugin), message);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerJoin(final PlayerJoinEvent e) {
+        Bukkit.getScheduler().runTaskLater(plugin, new Runnable() { // delay to work around plugin messages not sending when players first join
+            @Override
+            public void run() {
+                if (queuedPackets()) {
+                    try {
+                        connectionAvailable(new BukkitConnectionWrapper(e.getPlayer(), plugin));
+                    } catch (IOException e1) {
+                        logger.error("Error whilst sending queued packets.", e1);
+                    }
+                }
+            }
+        }, 10L);
+    }
+
 }

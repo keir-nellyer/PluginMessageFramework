@@ -24,7 +24,7 @@ public abstract class GatewaySupport<T> implements Gateway<T> {
     public static final String PACKET_HEADER = "PluginMessageFramework";
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
-    private final Class<?> type;
+    protected Class<?> type;
     private final String channel;
 
     private final Map<Class<? extends Packet>, List<Object>> listeners = new HashMap<>();
@@ -36,7 +36,11 @@ public abstract class GatewaySupport<T> implements Gateway<T> {
         }
 
         this.channel = channel;
-        this.type = (Class<?>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+        this.type = getGenericTypeClass(getClass(), 0);
+    }
+
+    protected static Class<?> getGenericTypeClass(Class<?> clazz, int index) {
+        return (Class<?>) ((ParameterizedType) clazz.getGenericSuperclass()).getActualTypeArguments()[index];
     }
 
     @Override
@@ -49,39 +53,45 @@ public abstract class GatewaySupport<T> implements Gateway<T> {
         connectionWrapper.sendCustomPayload(channel, packet.writeBytes());
     }
 
-    private boolean isParametersApplicable(Class<? extends Packet> clazz, Method method) {
-        if (!method.isAnnotationPresent(PacketHandler.class)) return false;
+    protected Object handleListenerParameter(Class<?> clazz, Packet packet, ConnectionWrapper<T> connectionWrapper) { // todo do this better? gets overridden
+        System.out.println("Type: " + type.getName());
+        System.out.println("Clazz: " + clazz.getName());
 
-        Class<?>[] parameters =  method.getParameterTypes();
-        Class<?> packetParam = null;
-        Class<?> connectionParam = null;
-
-        if (parameters.length == 1) {
-            packetParam = parameters[0];
-        } else if (parameters.length == 2) {
-            connectionParam = parameters[0];
-            packetParam = parameters[1];
+        if (Packet.class.isAssignableFrom(clazz)) {
+            return packet;
+        } else if (ConnectionWrapper.class.isAssignableFrom(clazz)) {
+            return connectionWrapper;
+        } else if (type.isAssignableFrom(clazz)) {
+            return type.cast(connectionWrapper.getConnection());
         }
 
-        return packetParam != null &&
-                clazz.isAssignableFrom(packetParam) &&
-                (connectionParam == null || type.isAssignableFrom(connectionParam)
-                        || ConnectionWrapper.class.isAssignableFrom(connectionParam));
+        return null;
     }
 
     @Override
     public void registerListener(Object listener) {
         for (Method method : listener.getClass().getMethods()) {
-            if (isParametersApplicable(Packet.class, method)) {
+            if (method.isAnnotationPresent(PacketHandler.class)) { // todo check parameters too
                 Class<?>[] parameterTypes = method.getParameterTypes();
-                Class<? extends Packet> packetClazz = (Class<? extends Packet>) (parameterTypes.length == 1 ? parameterTypes[0] : parameterTypes[1]);
-                List<Object> list = listeners.get(packetClazz);
-                if (list == null) {
-                    list = new ArrayList<>();
-                    listeners.put(packetClazz, list);
+                Class<? extends Packet> packetClazz = null;
+
+                for (Class<?> parameterType : parameterTypes) { // find packet class
+                    if (Packet.class.isAssignableFrom(parameterType)) {
+                        packetClazz = (Class<? extends Packet>) parameterType;
+                        break;
+                    }
                 }
 
-                list.add(listener);
+                if (packetClazz != null) {
+                    List<Object> list = listeners.get(packetClazz);
+                    if (list == null) {
+                        list = new ArrayList<>();
+                        listeners.put(packetClazz, list);
+                    }
+
+                    list.add(listener);
+                    break;
+                }
             }
         }
     }
@@ -93,27 +103,35 @@ public abstract class GatewaySupport<T> implements Gateway<T> {
         }
     }
 
-    private void dispatchPacketToListeners(ConnectionWrapper connectionWrapper, Packet packet) throws InvocationTargetException, IllegalAccessException {
-        for (Object listener : listeners.get(packet.getClass())) {
-            for (Method method : listener.getClass().getMethods()) {
-                if (isParametersApplicable(packet.getClass(), method)) {
-                    Class<?>[] parameterTypes = method.getParameterTypes();
-                    Object[] parameters = new Object[parameterTypes.length];
+    private void dispatchPacketToListeners(ConnectionWrapper<T> connectionWrapper, Packet packet) throws InvocationTargetException, IllegalAccessException {
+        Class<? extends Packet> packetClass = packet.getClass();
 
-                    if (parameters.length == 1) {
-                        parameters[0] = packet;
-                    } else {
-                        parameters[0] = type.isAssignableFrom(parameterTypes[0]) ? connectionWrapper.getConnection() : connectionWrapper;
-                        parameters[1] = packet;
+        if (listeners.containsKey(packetClass)) {
+            for (Object listener : listeners.get(packetClass)) {
+                methodLoop: for (Method method : listener.getClass().getMethods()) {
+                    if (method.isAnnotationPresent(PacketHandler.class)) {
+                        Class<?>[] parameterTypes = method.getParameterTypes();
+                        Object[] parameters = new Object[parameterTypes.length];
+
+                        for (int i = 0; i < parameters.length; i++) {
+                            Class<?> parameterType = parameterTypes[i];
+                            Object parameter = handleListenerParameter(parameterType, packet, connectionWrapper);
+
+                            if (parameter != null) {
+                                parameters[i] = parameter;
+                            } else {
+                                continue methodLoop;
+                            }
+                        }
+
+                        method.invoke(listener, parameters);
                     }
-
-                    method.invoke(packet, parameters);
                 }
             }
         }
     }
 
-    protected final void receivePacket(ConnectionWrapper connectionWrapper, byte[] bytes) {
+    public final void receivePacket(ConnectionWrapper<T> connectionWrapper, byte[] bytes) {
         try {
             ObjectInputStream objectInputStream = new ObjectInputStream(new ByteArrayInputStream(bytes));
 

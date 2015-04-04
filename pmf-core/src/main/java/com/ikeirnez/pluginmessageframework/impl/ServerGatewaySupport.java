@@ -42,7 +42,7 @@ public abstract class ServerGatewaySupport<T> extends GatewaySupport<T> implemen
     @Override
     public boolean sendPacket(Packet packet, boolean queue) throws IOException {
         Optional<ConnectionWrapper<T>> optional = getConnection();
-        if (optional.isPresent()) {
+        if (!optional.isPresent()) {
             if (queue) {
                 packetQueue.add(packet);
             }

@@ -1,13 +1,13 @@
 package com.ikeirnez.pluginmessageframework.bungeecord;
 
-import com.ikeirnez.pluginmessageframework.connection.ProxyConnectionWrapper;
+import com.ikeirnez.pluginmessageframework.connection.QueueableConnectionWrapper;
 import com.ikeirnez.pluginmessageframework.impl.BaseConnectionWrapper;
 import net.md_5.bungee.api.config.ServerInfo;
 
 /**
  * Created by Keir on 03/04/2015.
  */
-public class BungeeServerConnectionWrapper extends BaseConnectionWrapper<ServerInfo> implements ProxyConnectionWrapper<ServerInfo> {
+public class BungeeServerConnectionWrapper extends BaseConnectionWrapper<ServerInfo> implements QueueableConnectionWrapper<ServerInfo> {
 
     public BungeeServerConnectionWrapper(ServerInfo gateway) {
         super(gateway);
