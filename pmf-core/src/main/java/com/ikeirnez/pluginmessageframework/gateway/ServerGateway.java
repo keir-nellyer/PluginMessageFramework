@@ -5,7 +5,6 @@ import com.ikeirnez.pluginmessageframework.packet.Packet;
 import com.ikeirnez.pluginmessageframework.impl.GatewaySupport;
 
 import java.io.IOException;
-import java.util.Optional;
 
 /**
  * Created by Keir on 03/04/2015.
@@ -33,7 +32,7 @@ public interface ServerGateway<T> extends Gateway<T> {
     /**
      * Gets a connection which can be used to send a packet.
      *
-     * @return the connection
+     * @return the connection (may be null)
      */
-    Optional<ConnectionWrapper<T>> getConnection();
+    ConnectionWrapper<T> getConnection();
 }

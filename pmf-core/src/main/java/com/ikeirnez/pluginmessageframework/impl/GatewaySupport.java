@@ -28,7 +28,6 @@ public abstract class GatewaySupport<T> implements Gateway<T> {
     private final String channel;
 
     private final Map<Class<? extends Packet>, List<Object>> listeners = new HashMap<>();
-    private final List<Packet> sendQueue = new ArrayList<>();
 
     public GatewaySupport(String channel) {
         if (channel == null || channel.isEmpty()) {
@@ -69,6 +68,7 @@ public abstract class GatewaySupport<T> implements Gateway<T> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void registerListener(Object listener) {
         for (Method method : listener.getClass().getMethods()) {
             if (method.isAnnotationPresent(PacketHandler.class)) { // todo check parameters too

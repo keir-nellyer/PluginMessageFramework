@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Created by Keir on 03/04/2015.
@@ -41,8 +40,8 @@ public abstract class ServerGatewaySupport<T> extends GatewaySupport<T> implemen
 
     @Override
     public boolean sendPacket(Packet packet, boolean queue) throws IOException {
-        Optional<ConnectionWrapper<T>> optional = getConnection();
-        if (!optional.isPresent()) {
+        ConnectionWrapper<T> connection = getConnection();
+        if (connection == null) {
             if (queue) {
                 packetQueue.add(packet);
             }
@@ -50,7 +49,7 @@ public abstract class ServerGatewaySupport<T> extends GatewaySupport<T> implemen
             return false;
         }
 
-        sendPacket(optional.get(), packet);
+        sendPacket(connection, packet);
         return true;
     }
 

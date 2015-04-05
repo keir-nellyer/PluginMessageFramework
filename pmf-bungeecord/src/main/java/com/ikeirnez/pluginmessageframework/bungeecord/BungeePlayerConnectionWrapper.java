@@ -10,7 +10,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
  */
 public class BungeePlayerConnectionWrapper extends BaseConnectionWrapper<ProxiedPlayer> implements DoubleSidedConnectionWrapper<ProxiedPlayer> {
 
-    private ProxySide proxySide;
+    private final ProxySide proxySide;
 
     public BungeePlayerConnectionWrapper(ProxiedPlayer gateway, ProxySide proxySide) {
         super(gateway);

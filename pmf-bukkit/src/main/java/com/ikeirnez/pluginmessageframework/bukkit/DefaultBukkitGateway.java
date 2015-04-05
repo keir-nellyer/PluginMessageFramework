@@ -14,7 +14,6 @@ import org.bukkit.plugin.messaging.PluginMessageListener;
 
 import java.io.IOException;
 import java.util.Collection;
-import java.util.Optional;
 
 /**
  * Created by Keir on 27/03/2015.
@@ -39,11 +38,9 @@ public class DefaultBukkitGateway extends ServerGatewaySupport<Player> implement
     }
 
     @Override
-    public Optional<ConnectionWrapper<Player>> getConnection() {
+    public ConnectionWrapper<Player> getConnection() {
         Collection<? extends Player> players = Bukkit.getOnlinePlayers();
-        return players.size() > 0 ?
-                Optional.<ConnectionWrapper<Player>>of(new BukkitConnectionWrapper(players.iterator().next(), plugin)) :
-                Optional.<ConnectionWrapper<Player>>empty();
+        return players.size() > 0 ? new BukkitConnectionWrapper(players.iterator().next(), plugin) : null;
     }
 
     @Override
