@@ -1,6 +1,4 @@
 repositories {
-    mavenCentral()
-
     maven {
         name 'spigot-repo'
         url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'

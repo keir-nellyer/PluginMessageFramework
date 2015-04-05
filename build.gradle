@@ -10,6 +10,11 @@ subprojects {
     targetCompatibility = 1.7
     sourceCompatibility = 1.7
 
+    repositories {
+        mavenCentral()
+        mavenLocal()
+    }
+
     publishing {
         publications {
             mavenJava(MavenPublication) {
