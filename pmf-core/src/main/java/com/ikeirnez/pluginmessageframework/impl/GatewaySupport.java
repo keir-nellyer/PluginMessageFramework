@@ -53,9 +53,6 @@ public abstract class GatewaySupport<T> implements Gateway<T> {
     }
 
     protected Object handleListenerParameter(Class<?> clazz, Packet packet, ConnectionWrapper<T> connectionWrapper) { // todo do this better? gets overridden
-        System.out.println("Type: " + type.getName());
-        System.out.println("Clazz: " + clazz.getName());
-
         if (Packet.class.isAssignableFrom(clazz)) {
             return packet;
         } else if (ConnectionWrapper.class.isAssignableFrom(clazz)) {
