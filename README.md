@@ -14,7 +14,7 @@ It aims to provide a seamless plugin message api across multiple implementations
 
 * [Bukkit](pmf-bukkit/README.md)
 * Sponge (example coming soon)
-* [BungeeCord](pmf-bungee/README.md)
+* [BungeeCord](pmf-bungeecord/README.md)
 
 ### Creating Packets
 
