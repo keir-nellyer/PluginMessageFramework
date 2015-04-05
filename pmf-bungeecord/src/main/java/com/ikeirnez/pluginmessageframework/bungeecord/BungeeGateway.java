@@ -21,7 +21,7 @@ public interface BungeeGateway extends ProxyGateway<ServerInfo, ProxiedPlayer> {
      * @param packet the packet to be sent
      * @throws IOException thrown if there is an error sending the packet (usually in the serializing stage)
      */
-    void sendPacket(ProxiedPlayer proxiedPlayer, ProxySide proxySide, Packet packet) throws IOException;
+    void sendPacket(ProxiedPlayer proxiedPlayer, Packet packet) throws IOException;
 
     /**
      * Sends a {@link Packet} to a server with queueing enabled.

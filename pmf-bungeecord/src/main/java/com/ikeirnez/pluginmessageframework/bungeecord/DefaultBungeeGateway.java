@@ -32,8 +32,8 @@ public class DefaultBungeeGateway extends ProxyGatewaySupport<ServerInfo, Proxie
     }
 
     @Override
-    public void sendPacket(ProxiedPlayer proxiedPlayer, ProxySide proxySide, Packet packet) throws IOException {
-        sendPacket(new BungeePlayerConnectionWrapper(proxiedPlayer, proxySide), packet);
+    public void sendPacket(ProxiedPlayer proxiedPlayer, Packet packet) throws IOException {
+        sendPacket(new BungeePlayerConnectionWrapper(proxiedPlayer, getProxySide()), packet);
     }
 
     @Override
