@@ -3,12 +3,14 @@ package com.ikeirnez.pluginmessageframework.sponge;
 import com.ikeirnez.pluginmessageframework.connection.ConnectionWrapper;
 import com.ikeirnez.pluginmessageframework.impl.ServerGatewaySupport;
 import com.ikeirnez.pluginmessageframework.packet.Packet;
-import org.spongepowered.api.Server;
+import org.spongepowered.api.Game;
 import org.spongepowered.api.entity.player.Player;
+import org.spongepowered.api.event.entity.player.PlayerJoinEvent;
 import org.spongepowered.api.net.ChannelBuf;
 import org.spongepowered.api.net.ChannelListener;
 import org.spongepowered.api.net.PlayerConnection;
 import org.spongepowered.api.util.annotation.NonnullByDefault;
+import org.spongepowered.api.util.event.Subscribe;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -19,14 +21,15 @@ import java.util.Collection;
 public class DefaultSpongeGateway extends ServerGatewaySupport<Player> implements SpongeGateway, ChannelListener {
 
     private final Object plugin;
-    private final Server server;
+    private final Game game;
 
-    public DefaultSpongeGateway(String channel, final Object plugin, Server server) {
+    public DefaultSpongeGateway(String channel, final Object plugin, Game game) {
         super(channel);
         this.plugin = plugin;
-        this.server = server;
+        this.game = game;
 
-        server.registerChannel(plugin, this, getChannel());
+        game.getServer().registerChannel(plugin, this, getChannel());
+        game.getEventManager().register(plugin, this);
     }
 
     @Override
@@ -36,7 +39,7 @@ public class DefaultSpongeGateway extends ServerGatewaySupport<Player> implement
 
     @Override
     public ConnectionWrapper<Player> getConnection() {
-        Collection<Player> players = server.getOnlinePlayers();
+        Collection<Player> players = game.getServer().getOnlinePlayers();
         return players.size() > 0 ? new SpongeConnectionWrapper(players.iterator().next(), plugin) : null;
     }
 
@@ -45,6 +48,18 @@ public class DefaultSpongeGateway extends ServerGatewaySupport<Player> implement
     public void handlePayload(PlayerConnection client, String channel, ChannelBuf data) {
         if (channel.equals(getChannel())) {
             receivePacket(new SpongeConnectionWrapper(client.getPlayer(), plugin), data.array());
+        }
+    }
+
+    @Subscribe
+    public void onPlayerJoin(PlayerJoinEvent e) {
+        if (queuedPackets()) {
+            try {
+                // todo does this need delayed like in DefaultBukkitGateway?
+                connectionAvailable(new SpongeConnectionWrapper(e.getPlayer(), plugin));
+            } catch (IOException e1) {
+                logger.error("Error whilst sending queued packets.", e1);
+            }
         }
     }
 
