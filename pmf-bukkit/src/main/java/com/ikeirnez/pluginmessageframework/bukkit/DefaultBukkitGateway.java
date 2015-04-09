@@ -46,7 +46,7 @@ public class DefaultBukkitGateway extends ServerGatewaySupport<Player> implement
     @Override
     public void onPluginMessageReceived(String channel, Player player, byte[] message) {
         if (channel.equals(getChannel())) {
-            receivePacket(new BukkitConnectionWrapper(player, plugin), message);
+            receiveData(new BukkitConnectionWrapper(player, plugin), message);
         }
     }
 

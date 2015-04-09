@@ -1,10 +1,12 @@
 package com.ikeirnez.pluginmessageframework.connection;
 
+import com.ikeirnez.pluginmessageframework.PrimaryArgumentProvider;
+
 /**
  * Represents a connection to the "other side".
  * Allows for compatibility through many different implementations via a wrapper-like class..
  */
-public interface ConnectionWrapper<T> {
+public interface ConnectionWrapper<T> extends PrimaryArgumentProvider<T> {
 
     /**
      * Sends a custom payload (aka plugin message) on the specified channel (internal use).

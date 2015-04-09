@@ -18,4 +18,8 @@ public abstract class BaseConnectionWrapper<T> implements ConnectionWrapper<T> {
         return gateway;
     }
 
+    @Override
+    public T getValue() {
+        return getConnection();
+    }
 }

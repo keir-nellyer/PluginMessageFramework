@@ -1,9 +1,11 @@
 package com.ikeirnez.pluginmessageframework.impl;
 
+import com.ikeirnez.pluginmessageframework.PrimaryArgumentProvider;
 import com.ikeirnez.pluginmessageframework.packet.Packet;
 import com.ikeirnez.pluginmessageframework.connection.ConnectionWrapper;
 import com.ikeirnez.pluginmessageframework.packet.PacketHandler;
 import com.ikeirnez.pluginmessageframework.gateway.Gateway;
+import com.ikeirnez.pluginmessageframework.packet.SimplePacket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,12 +55,24 @@ public abstract class GatewaySupport<T> implements Gateway<T> {
     }
 
     protected Object handleListenerParameter(Class<?> clazz, Packet packet, ConnectionWrapper<T> connectionWrapper) { // todo do this better? gets overridden
+        if (packet instanceof PrimaryArgumentProvider) {
+            Object object = ((PrimaryArgumentProvider) packet).getValue();
+
+            if (clazz.isAssignableFrom(object.getClass())) {
+                return object;
+            }
+        }
+
         if (Packet.class.isAssignableFrom(clazz)) {
             return packet;
-        } else if (ConnectionWrapper.class.isAssignableFrom(clazz)) {
+        }
+
+        if (ConnectionWrapper.class.isAssignableFrom(clazz)) {
             return connectionWrapper;
-        } else if (type.isAssignableFrom(clazz)) {
-            return type.cast(connectionWrapper.getConnection());
+        }
+
+        if (type.isAssignableFrom(clazz)) {
+            return type.cast(connectionWrapper.getValue());
         }
 
         return null;
@@ -70,7 +84,7 @@ public abstract class GatewaySupport<T> implements Gateway<T> {
         for (Method method : listener.getClass().getMethods()) {
             if (method.isAnnotationPresent(PacketHandler.class)) { // todo check parameters too
                 Class<?>[] parameterTypes = method.getParameterTypes();
-                Class<? extends Packet> packetClazz = null;
+                Class<? extends Packet> packetClazz = SimplePacket.class;
 
                 for (Class<?> parameterType : parameterTypes) { // find packet class
                     if (Packet.class.isAssignableFrom(parameterType)) {
@@ -79,16 +93,14 @@ public abstract class GatewaySupport<T> implements Gateway<T> {
                     }
                 }
 
-                if (packetClazz != null) {
-                    List<Object> list = listeners.get(packetClazz);
-                    if (list == null) {
-                        list = new ArrayList<>();
-                        listeners.put(packetClazz, list);
-                    }
-
-                    list.add(listener);
-                    break;
+                List<Object> list = listeners.get(packetClazz);
+                if (list == null) {
+                    list = new ArrayList<>();
+                    listeners.put(packetClazz, list);
                 }
+
+                list.add(listener);
+                break;
             }
         }
     }
@@ -138,7 +150,14 @@ public abstract class GatewaySupport<T> implements Gateway<T> {
                 if (Packet.class.isAssignableFrom(object.getClass())) {
                     try {
                         dispatchPacketToListeners(connectionWrapper, (Packet) object);
-                    } catch (InvocationTargetException | IllegalAccessException e) {
+                    } catch (InvocationTargetException e) {
+                        Throwable throwable = e.getCause();
+                        if (throwable == null) {
+                            throwable = e;
+                        }
+
+                        sneakyThrow(throwable);
+                    } catch (IllegalAccessException e) {
                         logger.error("Error occurred whilst dispatching packet to listeners.", e);
                     }
                 } else {
@@ -150,6 +169,15 @@ public abstract class GatewaySupport<T> implements Gateway<T> {
         } catch (ClassNotFoundException e) {
             logger.debug("Unable to find packet class whilst de-serializing.", e);
         }
+    }
+
+    public static void sneakyThrow(Throwable ex) {
+        GatewaySupport.<RuntimeException>sneakyThrowInner(ex);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T extends Throwable> T sneakyThrowInner(Throwable ex) throws T {
+        throw (T) ex;
     }
 
 }

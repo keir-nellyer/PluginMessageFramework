@@ -62,7 +62,7 @@ public class DefaultBungeeGateway extends ProxyGatewaySupport<ServerInfo, Proxie
             }
 
             if (proxiedPlayer != null) {
-                receivePacket(new BungeePlayerConnectionWrapper(proxiedPlayer, getProxySide()), e.getData());
+                receiveData(new BungeePlayerConnectionWrapper(proxiedPlayer, getProxySide()), e.getData());
             }
         }
     }
