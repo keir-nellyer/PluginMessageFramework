@@ -1,6 +1,5 @@
 package com.ikeirnez.pluginmessageframework.bungeecord;
 
-import com.ikeirnez.pluginmessageframework.connection.ProxySide;
 import com.ikeirnez.pluginmessageframework.gateway.ProxyGateway;
 import com.ikeirnez.pluginmessageframework.packet.Packet;
 import net.md_5.bungee.api.config.ServerInfo;
@@ -17,7 +16,6 @@ public interface BungeeGateway extends ProxyGateway<ServerInfo, ProxiedPlayer> {
      * Sends a packet using the defined player as the gateway.
      *
      * @param proxiedPlayer the player to use as a gateway
-     * @param proxySide the proxy side this packet should be sent through
      * @param packet the packet to be sent
      * @throws IOException thrown if there is an error sending the packet (usually in the serializing stage)
      */

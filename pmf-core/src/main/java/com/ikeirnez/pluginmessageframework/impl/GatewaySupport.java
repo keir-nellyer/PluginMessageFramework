@@ -172,6 +172,7 @@ public abstract class GatewaySupport<T> implements Gateway<T> {
     }
 
     public static void sneakyThrow(Throwable ex) {
+        //noinspection ThrowableResultOfMethodCallIgnored
         GatewaySupport.<RuntimeException>sneakyThrowInner(ex);
     }
 

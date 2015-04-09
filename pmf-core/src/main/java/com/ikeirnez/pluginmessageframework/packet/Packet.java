@@ -11,6 +11,8 @@ import java.io.*;
  */
 public abstract class Packet implements Serializable {
 
+    private static final long serialVersionUID = 8235895603790260813L;
+
     /**
      * Serializes the instance and then converts it to {@link Byte} array.
      *
