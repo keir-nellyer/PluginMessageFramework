@@ -5,7 +5,7 @@ import com.ikeirnez.pluginmessageframework.packet.Packet;
 import com.ikeirnez.pluginmessageframework.connection.ConnectionWrapper;
 import com.ikeirnez.pluginmessageframework.packet.PacketHandler;
 import com.ikeirnez.pluginmessageframework.gateway.Gateway;
-import com.ikeirnez.pluginmessageframework.packet.SimplePacket;
+import com.ikeirnez.pluginmessageframework.packet.PrimaryValuePacket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -84,7 +84,7 @@ public abstract class GatewaySupport<T> implements Gateway<T> {
         for (Method method : listener.getClass().getMethods()) {
             if (method.isAnnotationPresent(PacketHandler.class)) { // todo check parameters too
                 Class<?>[] parameterTypes = method.getParameterTypes();
-                Class<? extends Packet> packetClazz = SimplePacket.class;
+                Class<? extends Packet> packetClazz = PrimaryValuePacket.class;
 
                 for (Class<?> parameterType : parameterTypes) { // find packet class
                     if (Packet.class.isAssignableFrom(parameterType)) {

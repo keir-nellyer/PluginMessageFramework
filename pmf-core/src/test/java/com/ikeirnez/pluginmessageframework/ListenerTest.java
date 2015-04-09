@@ -3,7 +3,7 @@ package com.ikeirnez.pluginmessageframework;
 import com.ikeirnez.pluginmessageframework.connection.ConnectionWrapper;
 import com.ikeirnez.pluginmessageframework.impl.GatewaySupport;
 import com.ikeirnez.pluginmessageframework.packet.PacketHandler;
-import com.ikeirnez.pluginmessageframework.packet.SimplePacket;
+import com.ikeirnez.pluginmessageframework.packet.PrimaryValuePacket;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -40,16 +40,16 @@ public class ListenerTest {
 
     @Test
     public void testListener() throws IOException {
-        gatewaySupport.receiveData(connectionWrapper, new SimplePacket<>(TestEnum.SECOND_VALUE).writeBytes());
+        gatewaySupport.receiveData(connectionWrapper, new PrimaryValuePacket<>(TestEnum.SECOND_VALUE).writeBytes());
         assertThat("Listener with wrapper failed to invoke.", listenerOneWithWrapper, is(true));
         assertThat("Listener without wrapper failed to invoke.", listenerTwoWithoutWrapper, is(true));
     }
 
     @PacketHandler
-    public void onEnumPacketWithWrapper(ConnectionWrapper<Object> connectionWrapper, SimplePacket<TestEnum> simplePacket) {
+    public void onEnumPacketWithWrapper(ConnectionWrapper<Object> connectionWrapper, PrimaryValuePacket<TestEnum> primaryValuePacket) {
         listenerOneWithWrapper = true;
         assertThat("ConnectionWrapper in listener does not match sender ConnectionWrapper.", this.connectionWrapper, is(connectionWrapper));
-        assertThat("Enum value does not match sent value.", simplePacket.getValue(), is(TestEnum.SECOND_VALUE));
+        assertThat("Enum value does not match sent value.", primaryValuePacket.getValue(), is(TestEnum.SECOND_VALUE));
     }
 
     @PacketHandler
