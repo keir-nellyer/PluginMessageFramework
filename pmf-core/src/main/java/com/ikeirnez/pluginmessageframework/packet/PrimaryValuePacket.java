@@ -10,13 +10,23 @@ public class PrimaryValuePacket<T> extends Packet implements PrimaryArgumentProv
 
     private static final long serialVersionUID = 2725432363474347054L;
 
-    private T object;
+    private T primaryValue;
 
-    public PrimaryValuePacket(T object) {
-        this.object = object;
+    /**
+     * Instantiates a new instance.
+     *
+     * @param primaryValue the primary value held by this packet.
+     */
+    public PrimaryValuePacket(T primaryValue) {
+        this.primaryValue = primaryValue;
     }
 
+    /**
+     * Gets the primary value held by this packet.
+     *
+     * @return the primary value
+     */
     public T getValue() {
-        return object;
+        return primaryValue;
     }
 }

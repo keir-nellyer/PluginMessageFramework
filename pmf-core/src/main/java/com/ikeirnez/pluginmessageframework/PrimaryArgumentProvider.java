@@ -5,6 +5,11 @@ package com.ikeirnez.pluginmessageframework;
  */
 public interface PrimaryArgumentProvider<T> {
 
+    /**
+     * Gets the primary value held by this instance.
+     *
+     * @return the primary value
+     */
     T getValue();
 
 }
