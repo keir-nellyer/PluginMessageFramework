@@ -5,12 +5,12 @@ import com.ikeirnez.pluginmessageframework.impl.ServerGatewaySupport;
 import com.ikeirnez.pluginmessageframework.packet.Packet;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.entity.player.Player;
+import org.spongepowered.api.event.Subscribe;
 import org.spongepowered.api.event.entity.player.PlayerJoinEvent;
 import org.spongepowered.api.net.ChannelBuf;
 import org.spongepowered.api.net.ChannelListener;
 import org.spongepowered.api.net.PlayerConnection;
 import org.spongepowered.api.util.annotation.NonnullByDefault;
-import org.spongepowered.api.util.event.Subscribe;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -47,7 +47,7 @@ public class DefaultSpongeGateway extends ServerGatewaySupport<Player> implement
     @NonnullByDefault
     public void handlePayload(PlayerConnection client, String channel, ChannelBuf data) {
         if (channel.equals(getChannel())) {
-            receivePacket(new SpongeConnectionWrapper(client.getPlayer(), plugin), data.array());
+            receiveData(new SpongeConnectionWrapper(client.getPlayer(), plugin), data.array());
         }
     }
 

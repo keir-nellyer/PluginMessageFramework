@@ -128,14 +128,14 @@ public abstract class GatewaySupport<T> implements Gateway<T> {
         }
     }
 
-    public final void receivePacket(ConnectionWrapper<T> connectionWrapper, byte[] bytes) {
+    public final void receiveData(ConnectionWrapper<T> connectionWrapper, byte[] bytes) {
         try {
             ObjectInputStream objectInputStream = new ObjectInputStream(new ByteArrayInputStream(bytes));
 
             if (objectInputStream.readUTF().equals(PACKET_HEADER)) {
                 Object object = objectInputStream.readObject();
 
-                if (Packet.class.isAssignableFrom(object.getClass())){
+                if (Packet.class.isAssignableFrom(object.getClass())) {
                     try {
                         dispatchPacketToListeners(connectionWrapper, (Packet) object);
                     } catch (InvocationTargetException | IllegalAccessException e) {
