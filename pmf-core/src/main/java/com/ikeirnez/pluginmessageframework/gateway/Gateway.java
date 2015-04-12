@@ -1,6 +1,7 @@
 package com.ikeirnez.pluginmessageframework.gateway;
 
 import com.ikeirnez.pluginmessageframework.connection.ConnectionWrapper;
+import com.ikeirnez.pluginmessageframework.gateway.payload.PayloadHandler;
 import com.ikeirnez.pluginmessageframework.packet.Packet;
 import com.ikeirnez.pluginmessageframework.packet.PacketHandler;
 
@@ -48,4 +49,10 @@ public interface Gateway<T> {
      * @param listener the listener to be unregistered
      */
     void unregisterListener(Object listener);
+
+    void receivePacket(ConnectionWrapper<T> connectionWrapper, Packet packet);
+
+    PayloadHandler getPayloadHandler();
+
+    void setPayloadHandler(PayloadHandler payloadHandler);
 }

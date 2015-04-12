@@ -32,7 +32,7 @@ public abstract class ProxyGatewaySupport<U, T> extends GatewaySupport<T> implem
 
     @Override
     public boolean sendPacketServer(QueueableConnectionWrapper<U> connectionWrapper, Packet packet, boolean queue) throws IOException {
-        return connectionWrapper.sendCustomPayload(getChannel(), packet.writeBytes(), queue);
+        return connectionWrapper.sendCustomPayload(getChannel(), getPayloadHandler().writeOutgoingPacket(packet), queue);
     }
 
 }

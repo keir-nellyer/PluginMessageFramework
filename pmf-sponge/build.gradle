@@ -1,6 +1,4 @@
 repositories {
-    mavenCentral()
-
     maven {
         name 'sponge-repo'
         url 'http://repo.spongepowered.org/maven'

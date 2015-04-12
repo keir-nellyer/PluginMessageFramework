@@ -1,6 +1,9 @@
 package com.ikeirnez.pluginmessageframework.impl;
 
 import com.ikeirnez.pluginmessageframework.PrimaryArgumentProvider;
+import com.ikeirnez.pluginmessageframework.SneakyThrow;
+import com.ikeirnez.pluginmessageframework.gateway.payload.FullPayloadHandler;
+import com.ikeirnez.pluginmessageframework.gateway.payload.PayloadHandler;
 import com.ikeirnez.pluginmessageframework.packet.Packet;
 import com.ikeirnez.pluginmessageframework.connection.ConnectionWrapper;
 import com.ikeirnez.pluginmessageframework.packet.PacketHandler;
@@ -9,9 +12,7 @@ import com.ikeirnez.pluginmessageframework.packet.PrimaryValuePacket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -23,11 +24,10 @@ import java.util.*;
  */
 public abstract class GatewaySupport<T> implements Gateway<T> {
 
-    public static final String PACKET_HEADER = "PluginMessageFramework";
-
     protected final Logger logger = LoggerFactory.getLogger(getClass());
     protected Class<?> type;
     private final String channel;
+    private PayloadHandler payloadHandler = null;
 
     private final Map<Class<? extends Packet>, List<Object>> listeners = new HashMap<>();
 
@@ -50,8 +50,22 @@ public abstract class GatewaySupport<T> implements Gateway<T> {
     }
 
     @Override
-    public void sendPacket(ConnectionWrapper connectionWrapper, Packet packet) throws IOException {
-        connectionWrapper.sendCustomPayload(channel, packet.writeBytes());
+    public final PayloadHandler getPayloadHandler() {
+        if (payloadHandler == null) {
+            payloadHandler = new FullPayloadHandler();
+        }
+
+        return payloadHandler;
+    }
+
+    @Override
+    public void setPayloadHandler(PayloadHandler payloadHandler) {
+        this.payloadHandler = payloadHandler;
+    }
+
+    @Override
+    public void sendPacket(ConnectionWrapper<T> connectionWrapper, Packet packet) throws IOException {
+        connectionWrapper.sendCustomPayload(getChannel(), getPayloadHandler().writeOutgoingPacket(packet));
     }
 
     protected Object handleListenerParameter(Class<?> clazz, Packet packet, ConnectionWrapper<T> connectionWrapper) { // todo do this better? gets overridden
@@ -78,6 +92,11 @@ public abstract class GatewaySupport<T> implements Gateway<T> {
         return null;
     }
 
+    public void incomingPayload(ConnectionWrapper<T> connectionWrapper, byte[] data) throws IOException {
+        Packet packet = getPayloadHandler().readIncomingPacket(data);
+        receivePacket(connectionWrapper, packet);
+    }
+
     @Override
     @SuppressWarnings("unchecked")
     public void registerListener(Object listener) {
@@ -100,7 +119,6 @@ public abstract class GatewaySupport<T> implements Gateway<T> {
                 }
 
                 list.add(listener);
-                break;
             }
         }
     }
@@ -112,7 +130,8 @@ public abstract class GatewaySupport<T> implements Gateway<T> {
         }
     }
 
-    private void dispatchPacketToListeners(ConnectionWrapper<T> connectionWrapper, Packet packet) throws InvocationTargetException, IllegalAccessException {
+    @Override
+    public void receivePacket(ConnectionWrapper<T> connectionWrapper, Packet packet) {
         Class<? extends Packet> packetClass = packet.getClass();
 
         if (listeners.containsKey(packetClass)) {
@@ -129,56 +148,27 @@ public abstract class GatewaySupport<T> implements Gateway<T> {
                             if (parameter != null) {
                                 parameters[i] = parameter;
                             } else {
+                                System.out.println("Param " + parameterType + " is null");
                                 continue methodLoop;
                             }
                         }
 
-                        method.invoke(listener, parameters);
-                    }
-                }
-            }
-        }
-    }
+                        try {
+                            method.invoke(listener, parameters);
+                        } catch (IllegalAccessException e) {
+                            logger.error("Error occurred whilst dispatching packet to listeners.", e);
+                        } catch (InvocationTargetException e) {
+                            Throwable throwable = e.getCause();
+                            if (throwable == null) {
+                                throwable = e;
+                            }
 
-    public final void receiveData(ConnectionWrapper<T> connectionWrapper, byte[] bytes) {
-        try {
-            ObjectInputStream objectInputStream = new ObjectInputStream(new ByteArrayInputStream(bytes));
-
-            if (objectInputStream.readUTF().equals(PACKET_HEADER)) {
-                Object object = objectInputStream.readObject();
-
-                if (Packet.class.isAssignableFrom(object.getClass())) {
-                    try {
-                        dispatchPacketToListeners(connectionWrapper, (Packet) object);
-                    } catch (InvocationTargetException e) {
-                        Throwable throwable = e.getCause();
-                        if (throwable == null) {
-                            throwable = e;
+                            SneakyThrow.sneakyThrow(throwable);
                         }
-
-                        sneakyThrow(throwable);
-                    } catch (IllegalAccessException e) {
-                        logger.error("Error occurred whilst dispatching packet to listeners.", e);
                     }
-                } else {
-                    throw new IllegalArgumentException("Class does not extend Packet.");
                 }
             }
-        } catch (IOException e) {
-            logger.error("Exception whilst reading custom payload.", e);
-        } catch (ClassNotFoundException e) {
-            logger.debug("Unable to find packet class whilst de-serializing.", e);
         }
-    }
-
-    public static void sneakyThrow(Throwable ex) {
-        //noinspection ThrowableResultOfMethodCallIgnored
-        GatewaySupport.<RuntimeException>sneakyThrowInner(ex);
-    }
-
-    @SuppressWarnings("unchecked")
-    private static <T extends Throwable> T sneakyThrowInner(Throwable ex) throws T {
-        throw (T) ex;
     }
 
 }

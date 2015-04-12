@@ -40,7 +40,7 @@ public class ListenerTest {
 
     @Test
     public void testListener() throws IOException {
-        gatewaySupport.receiveData(connectionWrapper, new PrimaryValuePacket<>(TestEnum.SECOND_VALUE).writeBytes());
+        gatewaySupport.incomingPayload(connectionWrapper, gatewaySupport.getPayloadHandler().writeOutgoingPacket(new PrimaryValuePacket<>(TestEnum.SECOND_VALUE)));
         assertThat("Listener with wrapper failed to invoke.", listenerOneWithWrapper, is(true));
         assertThat("Listener without wrapper failed to invoke.", listenerTwoWithoutWrapper, is(true));
     }

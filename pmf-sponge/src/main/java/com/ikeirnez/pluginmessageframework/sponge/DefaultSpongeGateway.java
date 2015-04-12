@@ -47,7 +47,11 @@ public class DefaultSpongeGateway extends ServerGatewaySupport<Player> implement
     @NonnullByDefault
     public void handlePayload(PlayerConnection client, String channel, ChannelBuf data) {
         if (channel.equals(getChannel())) {
-            receiveData(new SpongeConnectionWrapper(client.getPlayer(), plugin), data.array());
+            try {
+                incomingPayload(new SpongeConnectionWrapper(client.getPlayer(), plugin), data.array());
+            } catch (IOException e) {
+                logger.error("Error handling incoming payload.", e);
+            }
         }
     }
 
