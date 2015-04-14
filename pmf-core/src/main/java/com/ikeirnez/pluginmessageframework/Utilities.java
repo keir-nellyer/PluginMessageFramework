@@ -5,12 +5,17 @@ import com.ikeirnez.pluginmessageframework.packet.Packet;
 import java.lang.reflect.Field;
 
 /**
- * A small utility class to sneakily throw exceptions without having them checked.
+ * Utilities for internal use.
  */
 public class Utilities {
 
     private Utilities() {}
 
+    /**
+     * Sets a packet as being received.
+     *
+     * @param packet the packet to set as being received
+     */
     public static void setReceived(Packet packet) {
         try {
             Field field = Packet.class.getDeclaredField("received");
