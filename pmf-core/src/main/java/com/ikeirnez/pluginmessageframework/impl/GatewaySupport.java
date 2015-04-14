@@ -73,11 +73,11 @@ public abstract class GatewaySupport<T> implements Gateway<T> {
      */
     @SuppressWarnings("unchecked")
     public byte[] writePacket(Packet packet) throws IOException {
-        if (!payloadHandler.isPacketApplicable(packet)) {
+        if (!getPayloadHandler().isPacketApplicable(packet)) {
             throw new IllegalArgumentException("Assigned PayloadHandler cannot handle this type of Packet.");
         }
 
-        return payloadHandler.writeOutgoingPacket(packet);
+        return getPayloadHandler().writeOutgoingPacket(packet);
     }
 
     @Override
