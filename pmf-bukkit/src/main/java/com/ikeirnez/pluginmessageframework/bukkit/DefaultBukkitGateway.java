@@ -2,7 +2,7 @@ package com.ikeirnez.pluginmessageframework.bukkit;
 
 import com.ikeirnez.pluginmessageframework.connection.ConnectionWrapper;
 import com.ikeirnez.pluginmessageframework.impl.ServerGatewaySupport;
-import com.ikeirnez.pluginmessageframework.packet.Packet;
+import com.ikeirnez.pluginmessageframework.packet.StandardPacket;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -33,8 +33,8 @@ public class DefaultBukkitGateway extends ServerGatewaySupport<Player> implement
     }
 
     @Override
-    public void sendPacket(Player player, Packet packet) throws IOException {
-        sendPacket(new BukkitConnectionWrapper(player, plugin), packet);
+    public void sendPacket(Player player, StandardPacket standardPacket) throws IOException {
+        sendPacket(new BukkitConnectionWrapper(player, plugin), standardPacket);
     }
 
     @Override

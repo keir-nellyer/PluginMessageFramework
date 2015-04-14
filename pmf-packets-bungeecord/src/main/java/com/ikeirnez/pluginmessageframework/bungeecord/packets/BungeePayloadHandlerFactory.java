@@ -2,10 +2,10 @@ package com.ikeirnez.pluginmessageframework.bungeecord.packets;
 
 import com.ikeirnez.pluginmessageframework.gateway.payload.basic.BasicPayloadHandler;
 import com.ikeirnez.pluginmessageframework.gateway.payload.PayloadHandler;
-import com.ikeirnez.pluginmessageframework.packet.Packet;
+import com.ikeirnez.pluginmessageframework.packet.RawPacket;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple factory class for getting a {@link PayloadHandler} capable of handling BungeeCord packets.
@@ -13,10 +13,16 @@ import java.util.Map;
 public class BungeePayloadHandlerFactory {
 
     @SuppressWarnings("serial")
-    private static final Map<String, Class<? extends Packet>> mapping = new HashMap<String, Class<? extends Packet>>(){{
-        put(PacketIp.TAG, PacketIp.class);
-        put(PacketForwardToServer.TAG, PacketForwardToServer.class);
-        put(PacketForwardToPlayer.TAG, PacketForwardToPlayer.class);
+    private static final List<Class<? extends RawPacket>> packets = new ArrayList<Class<? extends RawPacket>>(){{
+        add(PacketForwardToPlayer.class);
+        add(PacketForwardToServer.class);
+        add(PacketGetServer.class);
+        add(PacketGetServers.class);
+        add(PacketIP.class);
+        add(PacketPlayerCount.class);
+        add(PacketPlayerList.class);
+        add(PacketUUID.class);
+        add(PacketServerIP.class);
     }};
 
     /**
@@ -26,7 +32,7 @@ public class BungeePayloadHandlerFactory {
      */
     public static PayloadHandler getPayloadHandler() {
         BasicPayloadHandler basicPayloadHandler = new BasicPayloadHandler();
-        basicPayloadHandler.registerAllSubChannels(mapping);
+        basicPayloadHandler.registerAllIncomingPackets(packets);
         return basicPayloadHandler;
     }
 

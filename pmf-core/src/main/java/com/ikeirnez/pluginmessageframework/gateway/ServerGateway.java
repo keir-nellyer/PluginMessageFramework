@@ -7,7 +7,7 @@ import com.ikeirnez.pluginmessageframework.impl.GatewaySupport;
 import java.io.IOException;
 
 /**
- * Created by Keir on 03/04/2015.
+ * Represents a connection on a server implement to a proxy/player.
  */
 public interface ServerGateway<T> extends Gateway<T> {
     /**

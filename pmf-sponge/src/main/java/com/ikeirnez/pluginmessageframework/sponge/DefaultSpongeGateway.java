@@ -2,7 +2,7 @@ package com.ikeirnez.pluginmessageframework.sponge;
 
 import com.ikeirnez.pluginmessageframework.connection.ConnectionWrapper;
 import com.ikeirnez.pluginmessageframework.impl.ServerGatewaySupport;
-import com.ikeirnez.pluginmessageframework.packet.Packet;
+import com.ikeirnez.pluginmessageframework.packet.StandardPacket;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.entity.player.Player;
 import org.spongepowered.api.event.Subscribe;
@@ -33,8 +33,8 @@ public class DefaultSpongeGateway extends ServerGatewaySupport<Player> implement
     }
 
     @Override
-    public void sendPacket(Player player, Packet packet) throws IOException {
-        sendPacket(new SpongeConnectionWrapper(player, plugin), packet);
+    public void sendPacket(Player player, StandardPacket standardPacket) throws IOException {
+        sendPacket(new SpongeConnectionWrapper(player, plugin), standardPacket);
     }
 
     @Override

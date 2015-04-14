@@ -10,6 +10,9 @@ import java.lang.annotation.Target;
  * There should only be 1 constructor marked with this annotation per class (framework limitation).
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.CONSTRUCTOR)
+@Target(value = {ElementType.CONSTRUCTOR, ElementType.METHOD})
 public @interface IncomingHandler {
+
+    String value();
+
 }

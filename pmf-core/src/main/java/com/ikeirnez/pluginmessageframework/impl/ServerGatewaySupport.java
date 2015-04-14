@@ -14,21 +14,21 @@ import java.util.List;
  */
 public abstract class ServerGatewaySupport<T> extends GatewaySupport<T> implements ServerGateway<T> {
 
-    private final List<Packet> packetQueue = new ArrayList<>();
+    private final List<Packet> standardPacketQueue = new ArrayList<>();
 
     public ServerGatewaySupport(String channel) {
         super(channel);
     }
 
     protected boolean queuedPackets() {
-        return packetQueue.size() > 0;
+        return standardPacketQueue.size() > 0;
     }
 
     protected void connectionAvailable(ConnectionWrapper<T> connection) throws IOException {
-        Iterator<Packet> iterator = packetQueue.iterator();
+        Iterator<Packet> iterator = standardPacketQueue.iterator();
         while (iterator.hasNext()) {
-            Packet packet = iterator.next();
-            sendPacket(connection, packet);
+            Packet standardPacket = iterator.next();
+            sendPacket(connection, standardPacket);
             iterator.remove();
         }
     }
@@ -43,7 +43,7 @@ public abstract class ServerGatewaySupport<T> extends GatewaySupport<T> implemen
         ConnectionWrapper<T> connection = getConnection();
         if (connection == null) {
             if (queue) {
-                packetQueue.add(packet);
+                standardPacketQueue.add(packet);
             }
 
             return false;

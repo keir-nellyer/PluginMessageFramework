@@ -1,14 +1,28 @@
 package com.ikeirnez.pluginmessageframework.packet;
 
-import java.io.*;
-
 /**
- * Base class for creating packets.
- * Extending classes must make sure that all fields are serializable and any fields which <b>should not</b> be serialized
- * are marked as <b>transient</b>
+ * Base class for all packets.
  */
-public abstract class Packet implements Serializable {
+public abstract class Packet {
 
-    private static final long serialVersionUID = 8235895603790260813L;
+    private boolean received = false;
+
+    /**
+     * Gets the received status.
+     *
+     * @return true if the packet has been received from an external source, false otherwise
+     */
+    public boolean hasBeenReceived() {
+        return received;
+    }
+
+    /**
+     * Used to throw an exception if an attempt is made to access data which hasn't been populated yet.
+     */
+    protected void throwExceptionIfAttemptingReadBeforeReceived() { // todo this is a horrible method name
+        if (!hasBeenReceived()) {
+            throw new UnsupportedOperationException("This packet has not been received and therefore the data being accessed hasn't yet been populated.");
+        }
+    }
 
 }

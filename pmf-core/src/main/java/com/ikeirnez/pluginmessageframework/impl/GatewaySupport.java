@@ -1,10 +1,11 @@
 package com.ikeirnez.pluginmessageframework.impl;
 
 import com.ikeirnez.pluginmessageframework.PrimaryArgumentProvider;
-import com.ikeirnez.pluginmessageframework.SneakyThrow;
-import com.ikeirnez.pluginmessageframework.gateway.payload.FullPayloadHandler;
+import com.ikeirnez.pluginmessageframework.Utilities;
+import com.ikeirnez.pluginmessageframework.gateway.payload.StandardPayloadHandler;
 import com.ikeirnez.pluginmessageframework.gateway.payload.PayloadHandler;
 import com.ikeirnez.pluginmessageframework.packet.Packet;
+import com.ikeirnez.pluginmessageframework.packet.StandardPacket;
 import com.ikeirnez.pluginmessageframework.connection.ConnectionWrapper;
 import com.ikeirnez.pluginmessageframework.packet.PacketHandler;
 import com.ikeirnez.pluginmessageframework.gateway.Gateway;
@@ -52,7 +53,7 @@ public abstract class GatewaySupport<T> implements Gateway<T> {
     @Override
     public final PayloadHandler getPayloadHandler() {
         if (payloadHandler == null) {
-            payloadHandler = new FullPayloadHandler();
+            payloadHandler = new StandardPayloadHandler();
         }
 
         return payloadHandler;
@@ -63,9 +64,25 @@ public abstract class GatewaySupport<T> implements Gateway<T> {
         this.payloadHandler = payloadHandler;
     }
 
+    /**
+     * Helper method, checks if packet is applicable (if not an exception is thrown) and then returns the packet in a byte[] form.
+     *
+     * @param packet the packet to write bytes for
+     * @return the byte[] representation of the packet
+     * @throws IOException thrown if there is an exception whilst writing the packet
+     */
+    @SuppressWarnings("unchecked")
+    public byte[] writePacket(Packet packet) throws IOException {
+        if (!payloadHandler.isPacketApplicable(packet)) {
+            throw new IllegalArgumentException("Assigned PayloadHandler cannot handle this type of Packet.");
+        }
+
+        return payloadHandler.writeOutgoingPacket(packet);
+    }
+
     @Override
     public void sendPacket(ConnectionWrapper<T> connectionWrapper, Packet packet) throws IOException {
-        connectionWrapper.sendCustomPayload(getChannel(), getPayloadHandler().writeOutgoingPacket(packet));
+        connectionWrapper.sendCustomPayload(getChannel(), writePacket(packet));
     }
 
     protected Object handleListenerParameter(Class<?> clazz, Packet packet, ConnectionWrapper<T> connectionWrapper) { // todo do this better? gets overridden
@@ -77,7 +94,7 @@ public abstract class GatewaySupport<T> implements Gateway<T> {
             }
         }
 
-        if (Packet.class.isAssignableFrom(clazz)) {
+        if (StandardPacket.class.isAssignableFrom(clazz)) {
             return packet;
         }
 
@@ -103,11 +120,11 @@ public abstract class GatewaySupport<T> implements Gateway<T> {
         for (Method method : listener.getClass().getMethods()) {
             if (method.isAnnotationPresent(PacketHandler.class)) { // todo check parameters too
                 Class<?>[] parameterTypes = method.getParameterTypes();
-                Class<? extends Packet> packetClazz = PrimaryValuePacket.class;
+                Class<? extends StandardPacket> packetClazz = PrimaryValuePacket.class;
 
                 for (Class<?> parameterType : parameterTypes) { // find packet class
-                    if (Packet.class.isAssignableFrom(parameterType)) {
-                        packetClazz = (Class<? extends Packet>) parameterType;
+                    if (StandardPacket.class.isAssignableFrom(parameterType)) {
+                        packetClazz = (Class<? extends StandardPacket>) parameterType;
                         break;
                     }
                 }
@@ -163,7 +180,7 @@ public abstract class GatewaySupport<T> implements Gateway<T> {
                                 throwable = e;
                             }
 
-                            SneakyThrow.sneakyThrow(throwable);
+                            Utilities.sneakyThrow(throwable);
                         }
                     }
                 }

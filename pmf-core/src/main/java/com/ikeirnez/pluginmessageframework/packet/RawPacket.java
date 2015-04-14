@@ -8,9 +8,7 @@ import java.io.IOException;
  */
 public abstract class RawPacket extends Packet {
 
-    private static final long serialVersionUID = -5263728666023041777L;
-
-    private transient String subChannel;
+    private String subChannel;
 
     /**
      * Instantiates a new instance.

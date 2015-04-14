@@ -2,6 +2,7 @@ package com.ikeirnez.pluginmessageframework.gateway;
 
 import com.ikeirnez.pluginmessageframework.connection.QueueableConnectionWrapper;
 import com.ikeirnez.pluginmessageframework.packet.Packet;
+import com.ikeirnez.pluginmessageframework.packet.StandardPacket;
 import com.ikeirnez.pluginmessageframework.connection.ProxySide;
 
 import java.io.IOException;
@@ -22,13 +23,13 @@ public interface ProxyGateway<U, T> extends Gateway<T> {
     ProxySide getProxySide();
 
     /**
-     * Sends a {@link Packet} to a server with queueing enabled.
+     * Sends a {@link StandardPacket} to a server with queueing enabled.
      * @see #sendPacketServer(QueueableConnectionWrapper, Packet, boolean)
      */
     boolean sendPacketServer(QueueableConnectionWrapper<U> serverConnection, Packet packet) throws IOException;
 
     /**
-     * Sends a {@link Packet} to a specified server.
+     * Sends a {@link StandardPacket} to a specified server.
      *
      * @param serverConnection the server connection
      * @param packet the packet to send to the server

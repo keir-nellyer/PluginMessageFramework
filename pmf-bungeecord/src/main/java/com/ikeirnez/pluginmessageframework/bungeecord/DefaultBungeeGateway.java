@@ -4,6 +4,7 @@ import com.ikeirnez.pluginmessageframework.connection.ConnectionWrapper;
 import com.ikeirnez.pluginmessageframework.connection.ProxySide;
 import com.ikeirnez.pluginmessageframework.impl.ProxyGatewaySupport;
 import com.ikeirnez.pluginmessageframework.packet.Packet;
+import com.ikeirnez.pluginmessageframework.packet.StandardPacket;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.Connection;
@@ -32,18 +33,18 @@ public class DefaultBungeeGateway extends ProxyGatewaySupport<ServerInfo, Proxie
     }
 
     @Override
-    public void sendPacket(ProxiedPlayer proxiedPlayer, Packet packet) throws IOException {
-        sendPacket(new BungeePlayerConnectionWrapper(proxiedPlayer, getProxySide()), packet);
+    public void sendPacket(ProxiedPlayer proxiedPlayer, StandardPacket standardPacket) throws IOException {
+        sendPacket(new BungeePlayerConnectionWrapper(proxiedPlayer, getProxySide()), standardPacket);
     }
 
     @Override
-    public boolean sendPacketServer(ServerInfo server, Packet packet) throws IOException {
-        return sendPacketServer(new BungeeServerConnectionWrapper(server), packet);
+    public boolean sendPacketServer(ServerInfo server, StandardPacket standardPacket) throws IOException {
+        return sendPacketServer(new BungeeServerConnectionWrapper(server), standardPacket);
     }
 
     @Override
-    public boolean sendPacketServer(ServerInfo server, Packet packet, boolean queue) throws IOException {
-        return sendPacketServer(new BungeeServerConnectionWrapper(server), packet, queue);
+    public boolean sendPacketServer(ServerInfo server, StandardPacket standardPacket, boolean queue) throws IOException {
+        return sendPacketServer(new BungeeServerConnectionWrapper(server), standardPacket, queue);
     }
 
     @EventHandler
