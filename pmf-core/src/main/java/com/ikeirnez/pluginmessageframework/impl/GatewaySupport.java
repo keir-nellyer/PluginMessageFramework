@@ -88,7 +88,8 @@ public abstract class GatewaySupport<T> implements Gateway<T> {
         connectionWrapper.sendCustomPayload(getChannel(), writePacket(packet));
     }
 
-    protected Object handleListenerParameter(Class<?> clazz, Packet packet, ConnectionWrapper<T> connectionWrapper) { // todo do this better? gets overridden
+    protected Object handleListenerParameter(Class<?> clazz, Packet packet, ConnectionWrapper<T> connectionWrapper) {
+        // todo do this better? gets overridden
         if (packet instanceof PrimaryArgumentProvider) {
             Object object = ((PrimaryArgumentProvider) packet).getValue();
 
