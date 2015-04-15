@@ -3,8 +3,8 @@ package com.ikeirnez.pluginmessageframework.gateway;
 import com.ikeirnez.pluginmessageframework.connection.ConnectionWrapper;
 import com.ikeirnez.pluginmessageframework.gateway.payload.PayloadHandler;
 import com.ikeirnez.pluginmessageframework.packet.Packet;
-import com.ikeirnez.pluginmessageframework.packet.StandardPacket;
 import com.ikeirnez.pluginmessageframework.packet.PacketHandler;
+import com.ikeirnez.pluginmessageframework.packet.StandardPacket;
 
 import java.io.IOException;
 
@@ -31,9 +31,9 @@ public interface Gateway<T> {
     void sendPacket(ConnectionWrapper<T> connectionWrapper, Packet packet) throws IOException;
 
     /**
-     * Registers a listener to receive incoming packets.
+     * <p>Registers a listener to receive incoming packets.</p>
      *
-     * Listener methods must be
+     * <p>Listener methods must be</p>
      * <ul>
      *     <li>annotated with a {@link PacketHandler}</li>
      *     <li><b>OPTIONAL</b> parameter - {@link ConnectionWrapper}&lt;T&gt; <b>OR</b> simple &lt;T&gt;</li>

@@ -12,7 +12,8 @@ import java.util.UUID;
  */
 public class PacketUUID extends RawPacket {
 
-    public static final String TAG = "UUID", TAG_OTHER = "UUIDOther";
+    public static final String TAG = "UUID";
+    public static final String TAG_OTHER = "UUIDOther";
 
     @IncomingHandler(TAG)
     private static PacketUUID createInstance(String uuid) { // work-around multiple constructors with same args

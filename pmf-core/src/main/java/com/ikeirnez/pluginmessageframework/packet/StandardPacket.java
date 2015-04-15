@@ -1,6 +1,6 @@
 package com.ikeirnez.pluginmessageframework.packet;
 
-import java.io.*;
+import java.io.Serializable;
 
 /**
  * Base class for creating packets.

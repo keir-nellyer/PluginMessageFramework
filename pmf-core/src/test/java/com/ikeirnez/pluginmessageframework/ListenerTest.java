@@ -9,9 +9,9 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
 
 /**
  * Created by Keir on 09/04/2015.
@@ -31,7 +31,8 @@ public class ListenerTest {
 
     private GatewaySupport<Object> gatewaySupport = new GatewaySupport<Object>("SomeChannel") {};
     @SuppressWarnings("unchecked") private ConnectionWrapper<Object> connectionWrapper = mock(ConnectionWrapper.class);
-    private boolean listenerOneWithWrapper = false, listenerTwoWithoutWrapper = false;
+    private boolean listenerOneWithWrapper = false;
+    private boolean listenerTwoWithoutWrapper = false;
 
     @Before
     public void initialize() {

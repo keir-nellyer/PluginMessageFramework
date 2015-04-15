@@ -23,7 +23,8 @@ public class PacketForwardToServer extends RawPacket {
         return packetForwardToServer;
     }
 
-    private String server, channel;
+    private String server;
+    private String channel;
     private byte[] bytes;
 
     /**

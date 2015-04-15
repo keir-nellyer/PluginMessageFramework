@@ -2,14 +2,14 @@ package com.ikeirnez.pluginmessageframework.impl;
 
 import com.ikeirnez.pluginmessageframework.PrimaryArgumentProvider;
 import com.ikeirnez.pluginmessageframework.Utilities;
-import com.ikeirnez.pluginmessageframework.gateway.payload.StandardPayloadHandler;
-import com.ikeirnez.pluginmessageframework.gateway.payload.PayloadHandler;
-import com.ikeirnez.pluginmessageframework.packet.Packet;
-import com.ikeirnez.pluginmessageframework.packet.StandardPacket;
 import com.ikeirnez.pluginmessageframework.connection.ConnectionWrapper;
-import com.ikeirnez.pluginmessageframework.packet.PacketHandler;
 import com.ikeirnez.pluginmessageframework.gateway.Gateway;
+import com.ikeirnez.pluginmessageframework.gateway.payload.PayloadHandler;
+import com.ikeirnez.pluginmessageframework.gateway.payload.StandardPayloadHandler;
+import com.ikeirnez.pluginmessageframework.packet.Packet;
+import com.ikeirnez.pluginmessageframework.packet.PacketHandler;
 import com.ikeirnez.pluginmessageframework.packet.PrimaryValuePacket;
+import com.ikeirnez.pluginmessageframework.packet.StandardPacket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +17,10 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Class which should be extended by implementations.

@@ -6,7 +6,11 @@ import com.ikeirnez.pluginmessageframework.packet.StandardPacket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 /**
  * The default {@link PayloadHandler}, intended for when the packet will be interpreted by this framework on the other side.

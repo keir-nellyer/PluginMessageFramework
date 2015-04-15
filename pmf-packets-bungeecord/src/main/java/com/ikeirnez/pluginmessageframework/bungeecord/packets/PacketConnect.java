@@ -10,9 +10,11 @@ import java.io.IOException;
  */
 public class PacketConnect extends RawPacket {
 
-    public static final String TAG = "Connect", TAG_OTHER = "ConnectOther";
+    public static final String TAG = "Connect";
+    public static final String TAG_OTHER = "ConnectOther";
 
-    private final String player, server;
+    private final String player;
+    private final String server;
 
     /**
      * Creates a new instance using the sender of the packet as the player to be connected to another server.

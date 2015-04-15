@@ -55,13 +55,13 @@ public class DefaultBukkitGateway extends ServerGatewaySupport<Player> implement
     }
 
     @EventHandler
-    public void onPlayerJoin(final PlayerJoinEvent e) {
+    public void onPlayerJoin(final PlayerJoinEvent event) {
         Bukkit.getScheduler().runTaskLater(plugin, new Runnable() { // delay to work around plugin messages not sending when players first join
             @Override
             public void run() {
                 if (queuedPackets()) {
                     try {
-                        connectionAvailable(new BukkitConnectionWrapper(e.getPlayer(), plugin));
+                        connectionAvailable(new BukkitConnectionWrapper(event.getPlayer(), plugin));
                     } catch (IOException e1) {
                         logger.error("Error whilst sending queued packets.", e1);
                     }

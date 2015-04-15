@@ -12,7 +12,8 @@ public class PacketMessage extends RawPacket {
 
     public static final String TAG = "Message";
 
-    private final String player, message;
+    private final String player;
+    private final String message;
 
     /**
      * Creates a new instance.

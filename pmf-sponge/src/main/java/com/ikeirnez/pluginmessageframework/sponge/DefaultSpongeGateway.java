@@ -56,11 +56,11 @@ public class DefaultSpongeGateway extends ServerGatewaySupport<Player> implement
     }
 
     @Subscribe
-    public void onPlayerJoin(PlayerJoinEvent e) {
+    public void onPlayerJoin(PlayerJoinEvent event) {
         if (queuedPackets()) {
             try {
                 // todo does this need delayed like in DefaultBukkitGateway?
-                connectionAvailable(new SpongeConnectionWrapper(e.getPlayer(), plugin));
+                connectionAvailable(new SpongeConnectionWrapper(event.getPlayer(), plugin));
             } catch (IOException e1) {
                 logger.error("Error whilst sending queued packets.", e1);
             }

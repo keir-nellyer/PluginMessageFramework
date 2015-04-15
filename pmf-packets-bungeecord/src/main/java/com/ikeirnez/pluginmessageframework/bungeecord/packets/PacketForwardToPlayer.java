@@ -13,7 +13,8 @@ public class PacketForwardToPlayer extends RawPacket {
 
     public static final String TAG = "ForwardToPlayer";
 
-    private String player, channel;
+    private String player;
+    private String channel;
     private byte[] bytes;
 
     /**

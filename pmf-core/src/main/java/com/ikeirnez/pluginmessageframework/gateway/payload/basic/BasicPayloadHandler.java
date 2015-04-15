@@ -7,9 +7,22 @@ import com.ikeirnez.pluginmessageframework.packet.RawPacket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
-import java.lang.reflect.*;
-import java.util.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Executable;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Basic payload handler, sends Packets in a simple form (intended for when the other side isn't using this framework to read the packet)
@@ -41,16 +54,18 @@ public class BasicPayloadHandler implements PayloadHandler<RawPacket> {
         boolean foundExecutable = false;
 
         @SuppressWarnings("serial")
-        List<Executable> list = new ArrayList<Executable>(){{
-            addAll(Arrays.asList(clazz.getDeclaredConstructors()));
-            addAll(Arrays.asList(clazz.getDeclaredMethods()));
-        }};
+        List<Executable> list = new ArrayList<Executable>() {
+            {
+                addAll(Arrays.asList(clazz.getDeclaredConstructors()));
+                addAll(Arrays.asList(clazz.getDeclaredMethods()));
+            }
+        };
 
         for (Executable executable : list) {
-            if (executable.isAnnotationPresent(IncomingHandler.class) &&
-                    (!(executable instanceof Method) ||
-                            (Modifier.isStatic(executable.getModifiers()) &&
-                                    clazz.isAssignableFrom(((Method) executable).getReturnType())))) {
+            if (executable.isAnnotationPresent(IncomingHandler.class)
+                    && (!(executable instanceof Method)
+                    || (Modifier.isStatic(executable.getModifiers())
+                    && clazz.isAssignableFrom(((Method) executable).getReturnType())))) {
                 IncomingHandler incomingHandler = executable.getAnnotation(IncomingHandler.class);
                 String subChannel = incomingHandler.value();
 
@@ -100,8 +115,8 @@ public class BasicPayloadHandler implements PayloadHandler<RawPacket> {
                 }
 
                 executable.setAccessible(true);
-                RawPacket rawPacket = (RawPacket) (executable instanceof Constructor ?
-                        ((Constructor) executable).newInstance(parameters) :
+                RawPacket rawPacket = (RawPacket) (executable instanceof Constructor
+                        ? ((Constructor) executable).newInstance(parameters) :
                         ((Method) executable).invoke(null, parameters));
                 Utilities.setReceived(rawPacket);
 

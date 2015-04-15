@@ -48,12 +48,12 @@ public class DefaultBungeeGateway extends ProxyGatewaySupport<ServerInfo, Proxie
     }
 
     @EventHandler
-    public void onPluginMessage(PluginMessageEvent e) {
-        if (e.getTag().equals(getChannel())) {
-            e.setCancelled(true);
+    public void onPluginMessage(PluginMessageEvent event) {
+        if (event.getTag().equals(getChannel())) {
+            event.setCancelled(true);
 
-            Connection sender = e.getSender();
-            Connection receiver = e.getReceiver();
+            Connection sender = event.getSender();
+            Connection receiver = event.getReceiver();
             ProxiedPlayer proxiedPlayer = null;
 
             if (getProxySide() == ProxySide.CLIENT && sender instanceof ProxiedPlayer) {
@@ -64,9 +64,9 @@ public class DefaultBungeeGateway extends ProxyGatewaySupport<ServerInfo, Proxie
 
             if (proxiedPlayer != null) {
                 try {
-                    incomingPayload(new BungeePlayerConnectionWrapper(proxiedPlayer, getProxySide()), e.getData());
+                    incomingPayload(new BungeePlayerConnectionWrapper(proxiedPlayer, getProxySide()), event.getData());
                 } catch (IOException e1) {
-                    logger.error("Error handling incoming payload.", e);
+                    logger.error("Error handling incoming payload.", event);
                 }
             }
         }

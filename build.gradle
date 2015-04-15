@@ -3,6 +3,7 @@ defaultTasks 'clean', 'build', 'test', 'publishToMavenLocal'
 subprojects {
     apply plugin: 'java'
     apply plugin: 'idea'
+    apply plugin: 'checkstyle'
     apply plugin: 'maven-publish'
 
     getProject().group = 'com.ikeirnez.pluginmessageframework'
@@ -12,6 +13,18 @@ subprojects {
         mavenCentral()
         mavenLocal()
     }
+
+    checkstyle {
+        toolVersion = 6.5
+        configFile = new File(rootDir, "checkstyle.xml")
+        configProperties = [
+                'basedir': project.projectDir,
+                'suppressions': project.file('checkstyle-suppressions.xml'),
+                'severity': 'warning'
+        ]
+    }
+
+    tasks.jar.dependsOn "check"
 
     compileJava {
         targetCompatibility = JavaVersion.VERSION_1_7
