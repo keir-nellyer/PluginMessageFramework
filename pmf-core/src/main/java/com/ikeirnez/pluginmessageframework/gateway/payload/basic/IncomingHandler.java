@@ -13,6 +13,11 @@ import java.lang.annotation.Target;
 @Target(value = {ElementType.CONSTRUCTOR, ElementType.METHOD})
 public @interface IncomingHandler {
 
+    /**
+     * The sub-channel this method/constructor is capable of handling.
+     *
+     * @return the sub-channel
+     */
     String value();
 
 }
