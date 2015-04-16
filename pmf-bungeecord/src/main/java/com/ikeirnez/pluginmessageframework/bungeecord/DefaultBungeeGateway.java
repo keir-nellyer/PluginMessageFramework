@@ -76,7 +76,8 @@ public class DefaultBungeeGateway extends ProxyGatewaySupport<ServerInfo, Proxie
     protected Object handleListenerParameter(Class<?> clazz, Packet packet, ConnectionWrapper<ProxiedPlayer> connectionWrapper) {
         if (ServerInfo.class.isAssignableFrom(clazz)) { // hack :(
             return connectionWrapper.getConnection().getServer().getInfo();
-        } else if (ConnectionWrapper.class.isAssignableFrom(clazz) && ServerInfo.class.isAssignableFrom(getGenericTypeClass(clazz, 0))) { // another hack :(
+        } else if (ConnectionWrapper.class.isAssignableFrom(clazz)
+                && ServerInfo.class.isAssignableFrom(getGenericTypeClass(clazz, 0))) { // another hack :(
             return new BungeeServerConnectionWrapper(connectionWrapper.getConnection().getServer().getInfo());
         } else {
             return super.handleListenerParameter(clazz, packet, connectionWrapper);

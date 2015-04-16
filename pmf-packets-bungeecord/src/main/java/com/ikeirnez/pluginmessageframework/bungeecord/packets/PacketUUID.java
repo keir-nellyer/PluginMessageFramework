@@ -42,7 +42,7 @@ public class PacketUUID extends RawPacket {
     }
 
     @IncomingHandler(TAG_OTHER)
-    public PacketUUID(String player, String uuid) {
+    private PacketUUID(String player, String uuid) {
         super(TAG);
         this.player = player;
         this.uuid = UUID.fromString(uuid);
