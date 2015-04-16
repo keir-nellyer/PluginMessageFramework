@@ -79,7 +79,7 @@ public abstract class GatewaySupport<T> implements Gateway<T> {
         sendCustomPayload(connection, getChannel(), writePacket(packet));
     }
 
-    public abstract void sendCustomPayload(T connection, String channel, byte[] bytes) throws IOException;
+    public abstract void sendCustomPayload(T connection, String channel, byte[] bytes);
 
     protected Object handleListenerParameter(Class<?> clazz, Packet packet, T connection) {
         // todo do this better? gets overridden

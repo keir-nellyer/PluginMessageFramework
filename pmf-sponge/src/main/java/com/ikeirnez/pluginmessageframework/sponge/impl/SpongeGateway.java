@@ -31,7 +31,7 @@ public class SpongeGateway extends ServerGatewaySupport<Player> implements Chann
     }
 
     @Override
-    public void sendCustomPayload(Player connection, String channel, byte[] bytes) throws IOException {
+    public void sendCustomPayload(Player connection, String channel, byte[] bytes) {
         connection.getConnection().sendCustomPayload(plugin, channel, bytes);
     }
 

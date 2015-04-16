@@ -34,6 +34,6 @@ public abstract class ProxyGatewaySupport<T, U> extends GatewaySupport<T> implem
     }
 
     // return, true if packet sent instantly, false if queued
-    public abstract boolean sendCustomPayloadServer(U serverConnection, String channel, byte[] bytes, boolean queue) throws IOException;
+    public abstract boolean sendCustomPayloadServer(U serverConnection, String channel, byte[] bytes, boolean queue);
 
 }

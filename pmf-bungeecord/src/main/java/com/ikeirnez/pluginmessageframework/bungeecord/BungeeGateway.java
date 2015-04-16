@@ -32,12 +32,12 @@ public class BungeeGateway extends ProxyGatewaySupport<ProxiedPlayer, ServerInfo
     }
 
     @Override
-    public void sendCustomPayload(ProxiedPlayer connection, String channel, byte[] bytes) throws IOException {
+    public void sendCustomPayload(ProxiedPlayer connection, String channel, byte[] bytes) {
         connection.sendData(channel, bytes);
     }
 
     @Override
-    public boolean sendCustomPayloadServer(ServerInfo serverConnection, String channel, byte[] bytes, boolean queue) throws IOException {
+    public boolean sendCustomPayloadServer(ServerInfo serverConnection, String channel, byte[] bytes, boolean queue) {
         return serverConnection.sendData(channel, bytes, queue);
     }
 

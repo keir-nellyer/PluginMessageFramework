@@ -37,7 +37,7 @@ public class Utilities {
     }
 
     @SuppressWarnings("unchecked")
-    private static <T extends Throwable> T sneakyThrowInner(Throwable ex) throws T {
+    private static <T extends Throwable> void sneakyThrowInner(Throwable ex) throws T {
         throw (T) ex;
     }
 

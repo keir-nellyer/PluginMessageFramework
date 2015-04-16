@@ -31,7 +31,7 @@ public class BukkitGateway extends ServerGatewaySupport<Player> implements Liste
     }
 
     @Override
-    public void sendCustomPayload(Player connection, String channel, byte[] bytes) throws IOException {
+    public void sendCustomPayload(Player connection, String channel, byte[] bytes) {
         connection.sendPluginMessage(plugin, channel, bytes);
     }
 

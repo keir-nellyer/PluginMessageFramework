@@ -44,12 +44,22 @@ public class BasicPayloadHandler implements PayloadHandler<RawPacket> {
         return RawPacket.class.isAssignableFrom(packetClass);
     }
 
+    /**
+     * Registers a collection of {@link RawPacket} classes so it can be handled by the framework.
+     *
+     * @param collection the collection of packet classes to register
+     */
     public void registerAllIncomingPackets(Collection<Class<? extends RawPacket>> collection) {
         for (Class<? extends RawPacket> clazz : collection) {
             registerIncomingPacket(clazz);
         }
     }
 
+    /**
+     * Registers a {@link RawPacket} class so that it can be handled by the framework.
+     *
+     * @param clazz the packet class
+     */
     public void registerIncomingPacket(final Class<? extends RawPacket> clazz) {
         boolean foundExecutable = false;
 
@@ -101,11 +111,11 @@ public class BasicPayloadHandler implements PayloadHandler<RawPacket> {
 
                     if (String.class.isAssignableFrom(parameterType)) {
                         parameters[i] = dataInputStream.readUTF();
-                    } else if (Short.class.isAssignableFrom(parameterType) || short.class.isAssignableFrom(parameterType)) {
+                    } else if (checkMultipleAssignable(parameterType, Short.class, short.class)) {
                         parameters[i] = dataInputStream.readShort();
-                    } else if (Integer.class.isAssignableFrom(parameterType) || int.class.isAssignableFrom(parameterType)) { // todo util method
+                    } else if (checkMultipleAssignable(parameterType, Integer.class, int.class)) {
                         parameters[i] = dataInputStream.readInt();
-                    } else if (Byte[].class.isAssignableFrom(parameterType) || byte[].class.isAssignableFrom(parameterType)) { // todo util method
+                    } else if (checkMultipleAssignable(parameterType, Byte[].class, byte[].class)) {
                         byte[] bytes = new byte[dataInputStream.readShort()];
                         dataInputStream.readFully(bytes);
                         parameters[i] = bytes;
@@ -136,11 +146,32 @@ public class BasicPayloadHandler implements PayloadHandler<RawPacket> {
         return null;
     }
 
+    private boolean checkMultipleAssignable(Class<?> type, Class<?>... checkTypes) {
+        if (checkTypes.length == 0) {
+            throw new IllegalArgumentException("Must have at least one type to check against.");
+        }
+
+        for (Class<?> clazz : checkTypes) {
+            if (clazz.isAssignableFrom(type)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     @Override
     public byte[] writeOutgoingPacket(RawPacket packet) throws IOException {
         return writeBytes(packet);
     }
 
+    /**
+     * Converts a {@link RawPacket} into byte[] form.
+     *
+     * @param packet the packet to convert
+     * @return the packet in byte[] form
+     * @throws IOException thrown if there is an error whilst writing the packet
+     */
     public static byte[] writeBytes(RawPacket packet) throws IOException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
