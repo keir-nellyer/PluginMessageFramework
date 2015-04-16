@@ -1,9 +1,7 @@
 package com.ikeirnez.pluginmessageframework.gateway;
 
 import com.ikeirnez.pluginmessageframework.connection.ProxySide;
-import com.ikeirnez.pluginmessageframework.connection.QueueableConnectionWrapper;
 import com.ikeirnez.pluginmessageframework.packet.Packet;
-import com.ikeirnez.pluginmessageframework.packet.StandardPacket;
 
 import java.io.IOException;
 
@@ -23,19 +21,17 @@ public interface ProxyGateway<T, U> extends Gateway<T> {
     ProxySide getProxySide();
 
     /**
-     * Sends a {@link StandardPacket} to a server with queueing enabled.
+     * Sends a {@link Packet} to a server with queueing enabled.
      *
      * @param serverConnection the server connection
      * @param packet the packet to send to the server
      * @return true if the packet was sent immediately, false if the packet was unable to be sent immediately (and was queued if queueing is enabled)
      * @throws IOException thrown if there was an issue sending the packet (will likely be in the serialization stage)
      */
-    boolean sendPacketServer(QueueableConnectionWrapper<U> serverConnection, Packet packet) throws IOException;
-
     boolean sendPacketServer(U serverConnection, Packet packet) throws IOException;
 
     /**
-     * Sends a {@link StandardPacket} to a specified server.
+     * Sends a {@link Packet} to a specified server.
      *
      * @param serverConnection the server connection
      * @param packet the packet to send to the server
@@ -43,7 +39,6 @@ public interface ProxyGateway<T, U> extends Gateway<T> {
      * @return true if the packet was sent immediately, false if the packet was unable to be sent immediately (and was queued if queueing is enabled)
      * @throws IOException thrown if there was an issue sending the packet (will likely be in the serialization stage)
      */
-    boolean sendPacketServer(QueueableConnectionWrapper<U> serverConnection, Packet packet, boolean queue) throws IOException;
-
     boolean sendPacketServer(U serverConnection, Packet packet, boolean queue) throws IOException;
+
 }

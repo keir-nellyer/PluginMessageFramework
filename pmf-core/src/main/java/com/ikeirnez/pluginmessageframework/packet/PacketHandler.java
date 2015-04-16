@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * An annotation to mark methods as being capable of handling incoming {@link StandardPacket} instances.
+ * An annotation to mark methods as being capable of handling incoming {@link Packet} instances.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

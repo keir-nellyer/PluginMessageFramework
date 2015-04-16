@@ -1,10 +1,8 @@
 package com.ikeirnez.pluginmessageframework.gateway;
 
-import com.ikeirnez.pluginmessageframework.connection.ConnectionWrapper;
 import com.ikeirnez.pluginmessageframework.gateway.payload.PayloadHandler;
 import com.ikeirnez.pluginmessageframework.packet.Packet;
 import com.ikeirnez.pluginmessageframework.packet.PacketHandler;
-import com.ikeirnez.pluginmessageframework.packet.StandardPacket;
 
 import java.io.IOException;
 
@@ -22,15 +20,6 @@ public interface Gateway<T> {
     String getChannel();
 
     /**
-     * Sends a packet via the defined {@link ConnectionWrapper}.
-     *
-     * @param connectionWrapper the connection to send the packet through
-     * @param packet the packet to be sent
-     * @throws IOException thrown if there is an error sending the packet (usually in the serializing stage)
-     */
-    void sendPacket(ConnectionWrapper<T> connectionWrapper, Packet packet) throws IOException;
-
-    /**
      * Sends a packet via the defined connection.
      *
      * @param connection the connection to send the packet via
@@ -45,8 +34,8 @@ public interface Gateway<T> {
      * <p>Listener methods must be</p>
      * <ul>
      *     <li>annotated with a {@link PacketHandler}</li>
-     *     <li><b>OPTIONAL</b> parameter - {@link ConnectionWrapper}&lt;T&gt; <b>OR</b> simple &lt;T&gt;</li>
-     *     <li>parameter - object extending {@link StandardPacket}</li>
+     *     <li><b>OPTIONAL</b> parameter - &lt;T&gt;</li>
+     *     <li>parameter - object extending {@link Packet}</li>
      * </ul>
      *
      * @param listener the listener to be registered
@@ -64,10 +53,10 @@ public interface Gateway<T> {
      * Dispatches a {@link Packet} to listeners.
      * Mainly for internal use.
      *
-     * @param connectionWrapper the connection the packet was received from
+     * @param connection the connection the packet was received from
      * @param packet the packet received
      */
-    void receivePacket(ConnectionWrapper<T> connectionWrapper, Packet packet);
+    void receivePacket(T connection, Packet packet);
 
     /**
      * Gets the payload handler in use by this gateway.

@@ -1,7 +1,6 @@
 package com.ikeirnez.pluginmessageframework.impl;
 
 import com.ikeirnez.pluginmessageframework.connection.ProxySide;
-import com.ikeirnez.pluginmessageframework.connection.QueueableConnectionWrapper;
 import com.ikeirnez.pluginmessageframework.gateway.ProxyGateway;
 import com.ikeirnez.pluginmessageframework.packet.Packet;
 
@@ -25,13 +24,16 @@ public abstract class ProxyGatewaySupport<T, U> extends GatewaySupport<T> implem
     }
 
     @Override
-    public boolean sendPacketServer(QueueableConnectionWrapper<U> connectionWrapper, Packet packet) throws IOException {
-        return sendPacketServer(connectionWrapper, packet, true);
+    public boolean sendPacketServer(U serverConnection, Packet packet) throws IOException {
+        return sendPacketServer(serverConnection, packet, true);
     }
 
     @Override
-    public boolean sendPacketServer(QueueableConnectionWrapper<U> connectionWrapper, Packet packet, boolean queue) throws IOException {
-        return connectionWrapper.sendCustomPayload(getChannel(), writePacket(packet), queue);
+    public boolean sendPacketServer(U serverConnection, Packet packet, boolean queue) throws IOException {
+        return sendCustomPayloadServer(serverConnection, getChannel(), writePacket(packet), queue);
     }
+
+    // return, true if packet sent instantly, false if queued
+    public abstract boolean sendCustomPayloadServer(U serverConnection, String channel, byte[] bytes, boolean queue) throws IOException;
 
 }

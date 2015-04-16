@@ -1,6 +1,5 @@
 package com.ikeirnez.pluginmessageframework.impl;
 
-import com.ikeirnez.pluginmessageframework.connection.ConnectionWrapper;
 import com.ikeirnez.pluginmessageframework.gateway.ServerGateway;
 import com.ikeirnez.pluginmessageframework.packet.Packet;
 
@@ -24,7 +23,7 @@ public abstract class ServerGatewaySupport<T> extends GatewaySupport<T> implemen
         return standardPacketQueue.size() > 0;
     }
 
-    protected void connectionAvailable(ConnectionWrapper<T> connection) throws IOException {
+    protected void sendQueuedPackets(T connection) throws IOException {
         Iterator<Packet> iterator = standardPacketQueue.iterator();
         while (iterator.hasNext()) {
             Packet standardPacket = iterator.next();
@@ -40,7 +39,7 @@ public abstract class ServerGatewaySupport<T> extends GatewaySupport<T> implemen
 
     @Override
     public boolean sendPacket(Packet packet, boolean queue) throws IOException {
-        ConnectionWrapper<T> connection = getConnection();
+        T connection = getConnection();
         if (connection == null) {
             if (queue) {
                 standardPacketQueue.add(packet);

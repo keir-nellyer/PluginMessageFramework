@@ -2,9 +2,7 @@ package com.ikeirnez.pluginmessageframework;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
 
-import com.ikeirnez.pluginmessageframework.connection.ConnectionWrapper;
 import com.ikeirnez.pluginmessageframework.impl.GatewaySupport;
 import com.ikeirnez.pluginmessageframework.packet.PacketHandler;
 import com.ikeirnez.pluginmessageframework.packet.PrimaryValuePacket;
@@ -29,8 +27,8 @@ public class ListenerTest {
         }
     }
 
-    private GatewaySupport<Object> gatewaySupport = new DummyGateway();
-    @SuppressWarnings("unchecked") private ConnectionWrapper<Object> connectionWrapper = mock(ConnectionWrapper.class);
+    private GatewaySupport<String> gatewaySupport = new DummyGateway();
+    private String fakeSender = "ThisIsAFakeSender"; // we'll just use a string as being the sender (stupid I know)
 
     private boolean listenerOneWithWrapper = false;
     private boolean listenerTwoWithoutWrapper = false;
@@ -42,15 +40,15 @@ public class ListenerTest {
 
     @Test
     public void testListener() throws IOException {
-        gatewaySupport.incomingPayload(connectionWrapper, gatewaySupport.writePacket(new PrimaryValuePacket<>(TestEnum.SECOND_VALUE)));
+        gatewaySupport.incomingPayload(fakeSender, gatewaySupport.writePacket(new PrimaryValuePacket<>(TestEnum.SECOND_VALUE)));
         assertThat("Listener with wrapper failed to invoke.", listenerOneWithWrapper, is(true));
         assertThat("Listener without wrapper failed to invoke.", listenerTwoWithoutWrapper, is(true));
     }
 
     @PacketHandler
-    public void onEnumPacketWithWrapper(ConnectionWrapper<Object> connectionWrapper, PrimaryValuePacket<TestEnum> primaryValuePacket) {
+    public void onEnumPacketWithWrapper(String fakeSender, PrimaryValuePacket<TestEnum> primaryValuePacket) {
         listenerOneWithWrapper = true;
-        assertThat("ConnectionWrapper in listener does not match sender ConnectionWrapper.", this.connectionWrapper, is(connectionWrapper));
+        assertThat("Sender in listener doesn't match.", this.fakeSender, is(fakeSender));
         assertThat("Enum value does not match sent value.", primaryValuePacket.getValue(), is(TestEnum.SECOND_VALUE));
     }
 

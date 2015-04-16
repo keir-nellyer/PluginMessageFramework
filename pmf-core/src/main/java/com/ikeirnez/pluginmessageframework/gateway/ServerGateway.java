@@ -1,6 +1,5 @@
 package com.ikeirnez.pluginmessageframework.gateway;
 
-import com.ikeirnez.pluginmessageframework.connection.ConnectionWrapper;
 import com.ikeirnez.pluginmessageframework.impl.GatewaySupport;
 import com.ikeirnez.pluginmessageframework.packet.Packet;
 
@@ -34,5 +33,5 @@ public interface ServerGateway<T> extends Gateway<T> {
      *
      * @return the connection (may be null)
      */
-    ConnectionWrapper<T> getConnection();
+    T getConnection();
 }

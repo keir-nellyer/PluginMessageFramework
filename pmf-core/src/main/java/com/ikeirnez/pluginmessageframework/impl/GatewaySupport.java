@@ -2,21 +2,18 @@ package com.ikeirnez.pluginmessageframework.impl;
 
 import com.ikeirnez.pluginmessageframework.PrimaryArgumentProvider;
 import com.ikeirnez.pluginmessageframework.Utilities;
-import com.ikeirnez.pluginmessageframework.connection.ConnectionWrapper;
 import com.ikeirnez.pluginmessageframework.gateway.Gateway;
 import com.ikeirnez.pluginmessageframework.gateway.payload.PayloadHandler;
 import com.ikeirnez.pluginmessageframework.gateway.payload.StandardPayloadHandler;
 import com.ikeirnez.pluginmessageframework.packet.Packet;
 import com.ikeirnez.pluginmessageframework.packet.PacketHandler;
 import com.ikeirnez.pluginmessageframework.packet.PrimaryValuePacket;
-import com.ikeirnez.pluginmessageframework.packet.StandardPacket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +26,6 @@ import java.util.Map;
 public abstract class GatewaySupport<T> implements Gateway<T> {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
-    protected Class<?> type;
     private final String channel;
     private PayloadHandler payloadHandler = null;
 
@@ -41,11 +37,6 @@ public abstract class GatewaySupport<T> implements Gateway<T> {
         }
 
         this.channel = channel;
-        this.type = getGenericTypeClass(getClass(), 0);
-    }
-
-    protected static Class<?> getGenericTypeClass(Class<?> clazz, int index) {
-        return (Class<?>) ((ParameterizedType) clazz.getGenericSuperclass()).getActualTypeArguments()[index];
     }
 
     @Override
@@ -84,11 +75,13 @@ public abstract class GatewaySupport<T> implements Gateway<T> {
     }
 
     @Override
-    public void sendPacket(ConnectionWrapper<T> connectionWrapper, Packet packet) throws IOException {
-        connectionWrapper.sendCustomPayload(getChannel(), writePacket(packet));
+    public void sendPacket(T connection, Packet packet) throws IOException {
+        sendCustomPayload(connection, getChannel(), writePacket(packet));
     }
 
-    protected Object handleListenerParameter(Class<?> clazz, Packet packet, ConnectionWrapper<T> connectionWrapper) {
+    public abstract void sendCustomPayload(T connection, String channel, byte[] bytes) throws IOException;
+
+    protected Object handleListenerParameter(Class<?> clazz, Packet packet, T connection) {
         // todo do this better? gets overridden
         if (packet instanceof PrimaryArgumentProvider) {
             Object object = ((PrimaryArgumentProvider) packet).getValue();
@@ -98,24 +91,20 @@ public abstract class GatewaySupport<T> implements Gateway<T> {
             }
         }
 
-        if (StandardPacket.class.isAssignableFrom(clazz)) {
+        if (Packet.class.isAssignableFrom(clazz)) {
             return packet;
         }
 
-        if (ConnectionWrapper.class.isAssignableFrom(clazz)) {
-            return connectionWrapper;
-        }
-
-        if (type.isAssignableFrom(clazz)) {
-            return type.cast(connectionWrapper.getValue());
+        Class<?> connectionClass = connection.getClass();
+        if (clazz.isAssignableFrom(connectionClass)) {
+            return connectionClass.cast(connection);
         }
 
         return null;
     }
 
-    public void incomingPayload(ConnectionWrapper<T> connectionWrapper, byte[] data) throws IOException {
-        Packet packet = getPayloadHandler().readIncomingPacket(data);
-        receivePacket(connectionWrapper, packet);
+    public void incomingPayload(T connection, byte[] data) throws IOException {
+        receivePacket(connection, getPayloadHandler().readIncomingPacket(data));
     }
 
     @Override
@@ -124,11 +113,11 @@ public abstract class GatewaySupport<T> implements Gateway<T> {
         for (Method method : listener.getClass().getMethods()) {
             if (method.isAnnotationPresent(PacketHandler.class)) { // todo check parameters too
                 Class<?>[] parameterTypes = method.getParameterTypes();
-                Class<? extends StandardPacket> packetClazz = PrimaryValuePacket.class;
+                Class<? extends Packet> packetClazz = PrimaryValuePacket.class;
 
                 for (Class<?> parameterType : parameterTypes) { // find packet class
-                    if (StandardPacket.class.isAssignableFrom(parameterType)) {
-                        packetClazz = (Class<? extends StandardPacket>) parameterType;
+                    if (Packet.class.isAssignableFrom(parameterType)) {
+                        packetClazz = (Class<? extends Packet>) parameterType;
                         break;
                     }
                 }
@@ -152,7 +141,7 @@ public abstract class GatewaySupport<T> implements Gateway<T> {
     }
 
     @Override
-    public void receivePacket(ConnectionWrapper<T> connectionWrapper, Packet packet) {
+    public void receivePacket(T connection, Packet packet) {
         Class<? extends Packet> packetClass = packet.getClass();
 
         if (listeners.containsKey(packetClass)) {
@@ -164,12 +153,11 @@ public abstract class GatewaySupport<T> implements Gateway<T> {
 
                         for (int i = 0; i < parameters.length; i++) {
                             Class<?> parameterType = parameterTypes[i];
-                            Object parameter = handleListenerParameter(parameterType, packet, connectionWrapper);
+                            Object parameter = handleListenerParameter(parameterType, packet, connection);
 
                             if (parameter != null) {
                                 parameters[i] = parameter;
                             } else {
-                                System.out.println("Param " + parameterType + " is null");
                                 continue methodLoop;
                             }
                         }

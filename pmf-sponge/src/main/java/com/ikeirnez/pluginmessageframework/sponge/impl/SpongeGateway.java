@@ -1,8 +1,6 @@
 package com.ikeirnez.pluginmessageframework.sponge.impl;
 
-import com.ikeirnez.pluginmessageframework.connection.ConnectionWrapper;
 import com.ikeirnez.pluginmessageframework.impl.ServerGatewaySupport;
-import com.ikeirnez.pluginmessageframework.packet.Packet;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.entity.player.Player;
 import org.spongepowered.api.event.Subscribe;
@@ -33,14 +31,14 @@ public class SpongeGateway extends ServerGatewaySupport<Player> implements Chann
     }
 
     @Override
-    public void sendPacket(Player player, Packet packet) throws IOException {
-        sendPacket(new SpongeConnectionWrapper(player, plugin), packet);
+    public void sendCustomPayload(Player connection, String channel, byte[] bytes) throws IOException {
+        connection.getConnection().sendCustomPayload(plugin, channel, bytes);
     }
 
     @Override
-    public ConnectionWrapper<Player> getConnection() {
+    public Player getConnection() {
         Collection<Player> players = game.getServer().getOnlinePlayers();
-        return players.size() > 0 ? new SpongeConnectionWrapper(players.iterator().next(), plugin) : null;
+        return players.size() > 0 ? players.iterator().next() : null;
     }
 
     @Override
@@ -48,7 +46,7 @@ public class SpongeGateway extends ServerGatewaySupport<Player> implements Chann
     public void handlePayload(PlayerConnection client, String channel, ChannelBuf data) {
         if (channel.equals(getChannel())) {
             try {
-                incomingPayload(new SpongeConnectionWrapper(client.getPlayer(), plugin), data.array());
+                incomingPayload(client.getPlayer(), data.array());
             } catch (IOException e) {
                 logger.error("Error handling incoming payload.", e);
             }
@@ -60,7 +58,7 @@ public class SpongeGateway extends ServerGatewaySupport<Player> implements Chann
         if (queuedPackets()) {
             try {
                 // todo does this need delayed like in DefaultBukkitGateway?
-                connectionAvailable(new SpongeConnectionWrapper(event.getPlayer(), plugin));
+                sendQueuedPackets(event.getPlayer());
             } catch (IOException e1) {
                 logger.error("Error whilst sending queued packets.", e1);
             }

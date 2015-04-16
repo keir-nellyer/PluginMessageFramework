@@ -1,6 +1,5 @@
-package com.ikeirnez.pluginmessageframework.bungeecord.impl;
+package com.ikeirnez.pluginmessageframework.bungeecord;
 
-import com.ikeirnez.pluginmessageframework.connection.ConnectionWrapper;
 import com.ikeirnez.pluginmessageframework.connection.ProxySide;
 import com.ikeirnez.pluginmessageframework.impl.ProxyGatewaySupport;
 import com.ikeirnez.pluginmessageframework.packet.Packet;
@@ -8,6 +7,7 @@ import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.Connection;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.connection.Server;
 import net.md_5.bungee.api.event.PluginMessageEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.api.plugin.Plugin;
@@ -32,18 +32,13 @@ public class BungeeGateway extends ProxyGatewaySupport<ProxiedPlayer, ServerInfo
     }
 
     @Override
-    public void sendPacket(ProxiedPlayer proxiedPlayer, Packet packet) throws IOException {
-        sendPacket(new BungeePlayerConnectionWrapper(proxiedPlayer, getProxySide()), packet);
+    public void sendCustomPayload(ProxiedPlayer connection, String channel, byte[] bytes) throws IOException {
+        connection.sendData(channel, bytes);
     }
 
     @Override
-    public boolean sendPacketServer(ServerInfo server, Packet packet) throws IOException {
-        return sendPacketServer(new BungeeServerConnectionWrapper(server), packet);
-    }
-
-    @Override
-    public boolean sendPacketServer(ServerInfo server, Packet packet, boolean queue) throws IOException {
-        return sendPacketServer(new BungeeServerConnectionWrapper(server), packet, queue);
+    public boolean sendCustomPayloadServer(ServerInfo serverConnection, String channel, byte[] bytes, boolean queue) throws IOException {
+        return serverConnection.sendData(channel, bytes, queue);
     }
 
     @EventHandler
@@ -63,7 +58,7 @@ public class BungeeGateway extends ProxyGatewaySupport<ProxiedPlayer, ServerInfo
 
             if (proxiedPlayer != null) {
                 try {
-                    incomingPayload(new BungeePlayerConnectionWrapper(proxiedPlayer, getProxySide()), event.getData());
+                    incomingPayload(proxiedPlayer, event.getData());
                 } catch (IOException e1) {
                     logger.error("Error handling incoming payload.", event);
                 }
@@ -72,14 +67,13 @@ public class BungeeGateway extends ProxyGatewaySupport<ProxiedPlayer, ServerInfo
     }
 
     @Override
-    protected Object handleListenerParameter(Class<?> clazz, Packet packet, ConnectionWrapper<ProxiedPlayer> connectionWrapper) {
+    protected Object handleListenerParameter(Class<?> clazz, Packet packet, ProxiedPlayer proxiedPlayer) {
         if (ServerInfo.class.isAssignableFrom(clazz)) { // hack :(
-            return connectionWrapper.getConnection().getServer().getInfo();
-        } else if (ConnectionWrapper.class.isAssignableFrom(clazz)
-                && ServerInfo.class.isAssignableFrom(getGenericTypeClass(clazz, 0))) { // another hack :(
-            return new BungeeServerConnectionWrapper(connectionWrapper.getConnection().getServer().getInfo());
+            return proxiedPlayer.getServer().getInfo();
+        } else if (Server.class.isAssignableFrom(clazz)) {
+            return proxiedPlayer.getServer();
         } else {
-            return super.handleListenerParameter(clazz, packet, connectionWrapper);
+            return super.handleListenerParameter(clazz, packet, proxiedPlayer);
         }
     }
 

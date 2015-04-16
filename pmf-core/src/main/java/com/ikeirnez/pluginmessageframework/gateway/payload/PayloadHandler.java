@@ -1,7 +1,6 @@
 package com.ikeirnez.pluginmessageframework.gateway.payload;
 
 import com.ikeirnez.pluginmessageframework.packet.Packet;
-import com.ikeirnez.pluginmessageframework.packet.StandardPacket;
 
 import java.io.IOException;
 
@@ -27,7 +26,7 @@ public interface PayloadHandler<T extends Packet> {
     boolean isPacketClassApplicable(Class<? extends Packet> packetClass);
 
     /**
-     * Reads an incoming byte array and converts it to {@link StandardPacket} form.
+     * Reads an incoming byte array and converts it to {@link Packet} form.
      *
      * @param bytes the bytes received
      * @return the packet form of this data
@@ -36,7 +35,7 @@ public interface PayloadHandler<T extends Packet> {
     T readIncomingPacket(byte[] bytes) throws IOException;
 
     /**
-     * Writes a {@link StandardPacket} to a byte array ready for sending.
+     * Writes a {@link Packet} to a byte array ready for sending.
      *
      * @param packet the packet to convert to a byte array
      * @return the byte array

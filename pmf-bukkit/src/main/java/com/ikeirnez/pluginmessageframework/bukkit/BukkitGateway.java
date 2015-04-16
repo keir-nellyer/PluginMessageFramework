@@ -1,8 +1,6 @@
-package com.ikeirnez.pluginmessageframework.bukkit.impl;
+package com.ikeirnez.pluginmessageframework.bukkit;
 
-import com.ikeirnez.pluginmessageframework.connection.ConnectionWrapper;
 import com.ikeirnez.pluginmessageframework.impl.ServerGatewaySupport;
-import com.ikeirnez.pluginmessageframework.packet.Packet;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -33,21 +31,21 @@ public class BukkitGateway extends ServerGatewaySupport<Player> implements Liste
     }
 
     @Override
-    public void sendPacket(Player player, Packet packet) throws IOException {
-        sendPacket(new BukkitConnectionWrapper(player, plugin), packet);
+    public void sendCustomPayload(Player connection, String channel, byte[] bytes) throws IOException {
+        connection.sendPluginMessage(plugin, channel, bytes);
     }
 
     @Override
-    public ConnectionWrapper<Player> getConnection() {
+    public Player getConnection() {
         Collection<? extends Player> players = Bukkit.getOnlinePlayers();
-        return players.size() > 0 ? new BukkitConnectionWrapper(players.iterator().next(), plugin) : null;
+        return players.size() > 0 ? players.iterator().next() : null;
     }
 
     @Override
     public void onPluginMessageReceived(String channel, Player player, byte[] message) {
         if (channel.equals(getChannel())) {
             try {
-                incomingPayload(new BukkitConnectionWrapper(player, plugin), message);
+                incomingPayload(player, message);
             } catch (IOException e) {
                 logger.error("Error handling incoming payload.", e);
             }
@@ -61,7 +59,7 @@ public class BukkitGateway extends ServerGatewaySupport<Player> implements Liste
             public void run() {
                 if (queuedPackets()) {
                     try {
-                        connectionAvailable(new BukkitConnectionWrapper(event.getPlayer(), plugin));
+                        sendQueuedPackets(event.getPlayer());
                     } catch (IOException e1) {
                         logger.error("Error whilst sending queued packets.", e1);
                     }
