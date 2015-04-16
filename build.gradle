@@ -19,7 +19,7 @@ subprojects {
         configFile = new File(rootDir, "checkstyle.xml")
         configProperties = [
                 'basedir': project.projectDir,
-                'suppressions': project.file('checkstyle-suppressions.xml'),
+                'suppressions': new File(rootDir, "checkstyle-suppressions.xml"),
                 'severity': 'warning'
         ]
     }

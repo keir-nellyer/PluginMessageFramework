@@ -10,14 +10,13 @@ import java.io.IOException;
 /**
  * Created by Keir on 02/04/2015.
  */
-public abstract class ProxyGatewaySupport<U, T> extends GatewaySupport<T> implements ProxyGateway<U, T> {
+public abstract class ProxyGatewaySupport<T, U> extends GatewaySupport<T> implements ProxyGateway<T, U> {
 
     private final ProxySide proxySide;
 
     public ProxyGatewaySupport(String channel, ProxySide proxySide) {
         super(channel);
         this.proxySide = proxySide;
-        this.type = getGenericTypeClass(getClass(), 1); // update this as we've added an extra type which breaks type check in super class
     }
 
     @Override

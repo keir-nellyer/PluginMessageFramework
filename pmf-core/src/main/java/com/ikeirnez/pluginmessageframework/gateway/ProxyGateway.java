@@ -10,10 +10,10 @@ import java.io.IOException;
 /**
  * Represents a 2-way connection on a Proxy-like server (e.g. BungeeCord).
  *
- * @param <U> class representing the server side (e.g. BungeeCord ServerInfo)
  * @param <T> class representing the client side (e.g. BungeeCord ProxiedPlayer)
+ * @param <U> class representing the server side (e.g. BungeeCord ServerInfo)
  */
-public interface ProxyGateway<U, T> extends Gateway<T> {
+public interface ProxyGateway<T, U> extends Gateway<T> {
 
     /**
      * Gets the side this proxy gateway is running on.
@@ -24,9 +24,15 @@ public interface ProxyGateway<U, T> extends Gateway<T> {
 
     /**
      * Sends a {@link StandardPacket} to a server with queueing enabled.
-     * @see #sendPacketServer(QueueableConnectionWrapper, Packet, boolean)
+     *
+     * @param serverConnection the server connection
+     * @param packet the packet to send to the server
+     * @return true if the packet was sent immediately, false if the packet was unable to be sent immediately (and was queued if queueing is enabled)
+     * @throws IOException thrown if there was an issue sending the packet (will likely be in the serialization stage)
      */
     boolean sendPacketServer(QueueableConnectionWrapper<U> serverConnection, Packet packet) throws IOException;
+
+    boolean sendPacketServer(U serverConnection, Packet packet) throws IOException;
 
     /**
      * Sends a {@link StandardPacket} to a specified server.
@@ -38,4 +44,6 @@ public interface ProxyGateway<U, T> extends Gateway<T> {
      * @throws IOException thrown if there was an issue sending the packet (will likely be in the serialization stage)
      */
     boolean sendPacketServer(QueueableConnectionWrapper<U> serverConnection, Packet packet, boolean queue) throws IOException;
+
+    boolean sendPacketServer(U serverConnection, Packet packet, boolean queue) throws IOException;
 }

@@ -1,4 +1,4 @@
-package com.ikeirnez.pluginmessageframework.bungeecord;
+package com.ikeirnez.pluginmessageframework.bungeecord.impl;
 
 import com.ikeirnez.pluginmessageframework.connection.QueueableConnectionWrapper;
 import com.ikeirnez.pluginmessageframework.impl.BaseConnectionWrapper;

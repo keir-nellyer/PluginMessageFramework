@@ -1,4 +1,4 @@
-package com.ikeirnez.pluginmessageframework.sponge;
+package com.ikeirnez.pluginmessageframework.sponge.impl;
 
 import com.ikeirnez.pluginmessageframework.impl.BaseConnectionWrapper;
 import org.spongepowered.api.entity.player.Player;

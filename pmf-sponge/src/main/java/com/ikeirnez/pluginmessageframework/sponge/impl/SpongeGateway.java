@@ -1,8 +1,8 @@
-package com.ikeirnez.pluginmessageframework.sponge;
+package com.ikeirnez.pluginmessageframework.sponge.impl;
 
 import com.ikeirnez.pluginmessageframework.connection.ConnectionWrapper;
 import com.ikeirnez.pluginmessageframework.impl.ServerGatewaySupport;
-import com.ikeirnez.pluginmessageframework.packet.StandardPacket;
+import com.ikeirnez.pluginmessageframework.packet.Packet;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.entity.player.Player;
 import org.spongepowered.api.event.Subscribe;
@@ -18,12 +18,12 @@ import java.util.Collection;
 /**
  * Created by Keir on 27/03/2015.
  */
-public class DefaultSpongeGateway extends ServerGatewaySupport<Player> implements SpongeGateway, ChannelListener {
+public class SpongeGateway extends ServerGatewaySupport<Player> implements ChannelListener {
 
     private final Object plugin;
     private final Game game;
 
-    public DefaultSpongeGateway(String channel, final Object plugin, Game game) {
+    public SpongeGateway(String channel, final Object plugin, Game game) {
         super(channel);
         this.plugin = plugin;
         this.game = game;
@@ -33,8 +33,8 @@ public class DefaultSpongeGateway extends ServerGatewaySupport<Player> implement
     }
 
     @Override
-    public void sendPacket(Player player, StandardPacket standardPacket) throws IOException {
-        sendPacket(new SpongeConnectionWrapper(player, plugin), standardPacket);
+    public void sendPacket(Player player, Packet packet) throws IOException {
+        sendPacket(new SpongeConnectionWrapper(player, plugin), packet);
     }
 
     @Override

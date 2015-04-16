@@ -1,4 +1,4 @@
-package com.ikeirnez.pluginmessageframework.bukkit;
+package com.ikeirnez.pluginmessageframework.bukkit.impl;
 
 import com.ikeirnez.pluginmessageframework.impl.BaseConnectionWrapper;
 import org.bukkit.entity.Player;

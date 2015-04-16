@@ -19,7 +19,7 @@ It aims to provide a seamless plugin message api across multiple implementations
 ### Creating Packets
 
 ```java
-public class MyPacket extends Packet {
+public class MyPacket extends StandardPacket {
 
     private static final long serialVersionUID = 4714156896979723677L;
     
@@ -36,8 +36,9 @@ public class MyPacket extends Packet {
 }
 ```
 
-Please note that all fields **must** be of a type which implements java.io.Serializable otherwise you may need to customize the serialization and deserialization by implementing your own readObject(ObjectInputStream) and writeObject(ObjectOutputStream) methods.
+Please note that all fields **must** be of a type which implements **java.io.Serializable** otherwise you may need to customize the serialization and deserialization by implementing your own **readObject(ObjectInputStream)** and **writeObject(ObjectOutputStream)** methods.
 
 ## Coming Soon
 
 * Dependency injection with [GUICE](https://github.com/google/guice)
+* Do away with ConnectionWrappers?

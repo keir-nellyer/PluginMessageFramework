@@ -1,4 +1,4 @@
-package com.ikeirnez.pluginmessageframework.bungeecord;
+package com.ikeirnez.pluginmessageframework.bungeecord.impl;
 
 import com.ikeirnez.pluginmessageframework.connection.DoubleSidedConnectionWrapper;
 import com.ikeirnez.pluginmessageframework.connection.ProxySide;

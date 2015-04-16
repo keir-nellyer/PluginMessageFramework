@@ -1,8 +1,8 @@
-package com.ikeirnez.pluginmessageframework.bukkit;
+package com.ikeirnez.pluginmessageframework.bukkit.impl;
 
 import com.ikeirnez.pluginmessageframework.connection.ConnectionWrapper;
 import com.ikeirnez.pluginmessageframework.impl.ServerGatewaySupport;
-import com.ikeirnez.pluginmessageframework.packet.StandardPacket;
+import com.ikeirnez.pluginmessageframework.packet.Packet;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,13 +16,13 @@ import java.io.IOException;
 import java.util.Collection;
 
 /**
- * Created by Keir on 27/03/2015.
+ * The default Bukkit implementation of a {@link com.ikeirnez.pluginmessageframework.gateway.ServerGateway}.
  */
-public class DefaultBukkitGateway extends ServerGatewaySupport<Player> implements BukkitGateway, Listener, PluginMessageListener {
+public class BukkitGateway extends ServerGatewaySupport<Player> implements Listener, PluginMessageListener {
 
     protected final Plugin plugin;
 
-    public DefaultBukkitGateway(String channel, final Plugin plugin) {
+    public BukkitGateway(String channel, final Plugin plugin) {
         super(channel);
         this.plugin = plugin;
 
@@ -33,8 +33,8 @@ public class DefaultBukkitGateway extends ServerGatewaySupport<Player> implement
     }
 
     @Override
-    public void sendPacket(Player player, StandardPacket standardPacket) throws IOException {
-        sendPacket(new BukkitConnectionWrapper(player, plugin), standardPacket);
+    public void sendPacket(Player player, Packet packet) throws IOException {
+        sendPacket(new BukkitConnectionWrapper(player, plugin), packet);
     }
 
     @Override

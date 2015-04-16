@@ -1,5 +1,9 @@
 package com.ikeirnez.pluginmessageframework;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+
 import com.ikeirnez.pluginmessageframework.connection.ConnectionWrapper;
 import com.ikeirnez.pluginmessageframework.impl.GatewaySupport;
 import com.ikeirnez.pluginmessageframework.packet.PacketHandler;
@@ -8,10 +12,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
 
 /**
  * Created by Keir on 09/04/2015.
@@ -29,8 +29,9 @@ public class ListenerTest {
         }
     }
 
-    private GatewaySupport<Object> gatewaySupport = new GatewaySupport<Object>("SomeChannel") {};
+    private GatewaySupport<Object> gatewaySupport = new DummyGateway();
     @SuppressWarnings("unchecked") private ConnectionWrapper<Object> connectionWrapper = mock(ConnectionWrapper.class);
+
     private boolean listenerOneWithWrapper = false;
     private boolean listenerTwoWithoutWrapper = false;
 
