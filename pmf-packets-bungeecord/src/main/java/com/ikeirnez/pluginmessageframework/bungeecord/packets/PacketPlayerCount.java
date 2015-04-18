@@ -30,6 +30,11 @@ public class PacketPlayerCount extends RawPacket {
      */
     public PacketPlayerCount(String server) {
         super(TAG);
+
+        if (server == null) {
+            throw new IllegalArgumentException("Server cannot be null.");
+        }
+
         this.server = server;
     }
 

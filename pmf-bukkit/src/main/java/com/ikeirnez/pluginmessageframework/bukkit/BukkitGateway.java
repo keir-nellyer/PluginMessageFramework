@@ -22,6 +22,11 @@ public class BukkitGateway extends ServerGatewaySupport<Player> implements Liste
 
     public BukkitGateway(String channel, final Plugin plugin) {
         super(channel);
+
+        if (plugin == null) {
+            throw new IllegalArgumentException("Plugin cannot be null.");
+        }
+
         this.plugin = plugin;
 
         Messenger messenger = plugin.getServer().getMessenger();

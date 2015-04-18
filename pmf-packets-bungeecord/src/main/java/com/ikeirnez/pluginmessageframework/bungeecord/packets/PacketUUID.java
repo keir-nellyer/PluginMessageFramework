@@ -39,6 +39,12 @@ public class PacketUUID extends RawPacket {
      */
     public PacketUUID(String player) {
         super(player == null ? TAG : TAG_OTHER);
+
+        if (player == null) {
+            throw new IllegalArgumentException("Player cannot be null.");
+        }
+
+        this.player = player;
     }
 
     @IncomingHandler(TAG_OTHER)

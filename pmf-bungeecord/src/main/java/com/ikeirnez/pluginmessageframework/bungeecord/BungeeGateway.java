@@ -24,6 +24,11 @@ public class BungeeGateway extends ProxyGatewaySupport<ProxiedPlayer, ServerInfo
 
     public BungeeGateway(String channel, ProxySide proxySide, Plugin plugin) {
         super(channel, proxySide);
+
+        if (plugin == null) {
+            throw new IllegalArgumentException("Plugin cannot be null.");
+        }
+
         this.plugin = plugin;
 
         ProxyServer proxy = plugin.getProxy();

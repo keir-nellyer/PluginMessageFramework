@@ -15,25 +15,38 @@ public class PacketForwardToPlayer extends RawPacket {
 
     private String player;
     private String channel;
-    private byte[] bytes;
+    private byte[] data;
 
     /**
      * Creates a new instance.
      *
      * @param player the player to send the plugin message to
      * @param channel the channel to send the message through
-     * @param bytes the message to send
+     * @param data the message to send
      */
-    public PacketForwardToPlayer(String player, String channel, byte[] bytes) {
-        this(channel, bytes);
+    public PacketForwardToPlayer(String player, String channel, byte[] data) {
+        this(channel, data);
+
+        if (channel == null) {
+            throw new IllegalArgumentException("Channel cannot be null.");
+        }
+
+        if (player == null) {
+            throw new IllegalArgumentException("Player cannot be null.");
+        }
+
+        if (data == null) {
+            throw new IllegalArgumentException("Data cannot be null.");
+        }
+
         this.player = player;
     }
 
     @IncomingHandler(TAG)
-    private PacketForwardToPlayer(String channel, byte[] bytes) {
+    private PacketForwardToPlayer(String channel, byte[] data) {
         super(TAG);
         this.channel = channel;
-        this.bytes = bytes;
+        this.data = data;
     }
 
     /**
@@ -50,8 +63,8 @@ public class PacketForwardToPlayer extends RawPacket {
      *
      * @return the message
      */
-    public byte[] getBytes() {
-        return bytes;
+    public byte[] getData() {
+        return data;
     }
 
     @Override
@@ -59,6 +72,6 @@ public class PacketForwardToPlayer extends RawPacket {
         super.writeData(dataOutputStream);
         dataOutputStream.writeUTF(player);
         dataOutputStream.writeUTF(channel);
-        writeByteArray(dataOutputStream, bytes);
+        writeByteArray(dataOutputStream, data);
     }
 }

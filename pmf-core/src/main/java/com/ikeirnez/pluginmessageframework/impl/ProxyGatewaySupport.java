@@ -15,6 +15,11 @@ public abstract class ProxyGatewaySupport<T, U> extends GatewaySupport<T> implem
 
     public ProxyGatewaySupport(String channel, ProxySide proxySide) {
         super(channel);
+
+        if (proxySide == null) {
+            throw new IllegalArgumentException("ProxySide cannot be null.");
+        }
+
         this.proxySide = proxySide;
     }
 

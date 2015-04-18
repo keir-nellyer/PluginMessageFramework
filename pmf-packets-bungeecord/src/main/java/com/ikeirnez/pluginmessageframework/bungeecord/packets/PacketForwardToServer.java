@@ -16,7 +16,7 @@ public class PacketForwardToServer extends RawPacket {
     public static final String TAG = "Forward";
 
     @IncomingHandler(TAG)
-    private static PacketForwardToServer createInstance(String channel, byte[] bytes) {
+    private static PacketForwardToServer createInstance(String channel, byte[] bytes) { // work-around multiple constructors with same args
         PacketForwardToServer packetForwardToServer = new PacketForwardToServer();
         packetForwardToServer.channel = channel;
         packetForwardToServer.bytes = bytes;
@@ -31,10 +31,10 @@ public class PacketForwardToServer extends RawPacket {
      * Creates a new instance sending the plugin message to <b>ALL</b> servers.
      *
      * @param channel the channel to send the message through
-     * @param bytes the message to send
+     * @param data the message to send
      */
-    public PacketForwardToServer(String channel, byte[] bytes) { // work-around multiple constructors with same args
-        this("ALL", channel, bytes);
+    public PacketForwardToServer(String channel, byte[] data) {
+        this("ALL", channel, data);
     }
 
     /**
@@ -42,13 +42,26 @@ public class PacketForwardToServer extends RawPacket {
      *
      * @param server the server(s) to send the plugin message to
      * @param channel the channel to send the message through
-     * @param bytes the message to send
+     * @param data the message to send
      */
-    public PacketForwardToServer(String server, String channel, byte[] bytes) {
+    public PacketForwardToServer(String server, String channel, byte[] data) {
         this();
+
+        if (server == null) {
+            throw new IllegalArgumentException("Server cannot be null.");
+        }
+
+        if (channel == null) {
+            throw new IllegalArgumentException("Channel cannot be null.");
+        }
+
+        if (data == null) {
+            throw new IllegalArgumentException("Data cannot be null.");
+        }
+
         this.server = server;
         this.channel = channel;
-        this.bytes = bytes;
+        this.bytes = data;
     }
 
     private PacketForwardToServer() {

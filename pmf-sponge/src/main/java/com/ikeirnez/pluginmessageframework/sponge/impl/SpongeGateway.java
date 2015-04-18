@@ -23,6 +23,15 @@ public class SpongeGateway extends ServerGatewaySupport<Player> implements Chann
 
     public SpongeGateway(String channel, final Object plugin, Game game) {
         super(channel);
+
+        if (plugin == null) {
+            throw new IllegalArgumentException("Plugin cannot be null.");
+        }
+
+        if (game == null) {
+            throw new IllegalArgumentException("Game cannot be null.");
+        }
+
         this.plugin = plugin;
         this.game = game;
 

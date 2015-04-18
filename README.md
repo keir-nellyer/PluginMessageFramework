@@ -41,4 +41,3 @@ Please note that all fields **must** be of a type which implements **java.io.Ser
 ## Coming Soon
 
 * Dependency injection with [GUICE](https://github.com/google/guice)
-* Do away with ConnectionWrappers?
