@@ -1,5 +1,6 @@
 dependencies {
     compile project(':pmf-core')
     testCompile group: 'junit', name: 'junit', version: '4.11'
-    testCompile project(':pmf-core').sourceSets.test.output // access DummyGateway
+    //noinspection GroovyAssignabilityCheck
+    testCompile project(':pmf-core').sourceSets.test.output // access DummyGateway, causes errors in IDE but line is correct
 }

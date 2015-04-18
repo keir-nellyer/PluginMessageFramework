@@ -9,9 +9,11 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Created by Keir on 03/04/2015.
+ * Support class for {@link ServerGateway} implementations.
+ *
+ * @param <C> the client connection type
  */
-public abstract class ServerGatewaySupport<T> extends GatewaySupport<T> implements ServerGateway<T> {
+public abstract class ServerGatewaySupport<C> extends GatewaySupport<C> implements ServerGateway<C> {
 
     private final List<Packet> standardPacketQueue = new ArrayList<>();
 
@@ -23,7 +25,7 @@ public abstract class ServerGatewaySupport<T> extends GatewaySupport<T> implemen
         return standardPacketQueue.size() > 0;
     }
 
-    protected void sendQueuedPackets(T connection) throws IOException {
+    protected void sendQueuedPackets(C connection) throws IOException {
         Iterator<Packet> iterator = standardPacketQueue.iterator();
         while (iterator.hasNext()) {
             Packet standardPacket = iterator.next();
@@ -39,7 +41,7 @@ public abstract class ServerGatewaySupport<T> extends GatewaySupport<T> implemen
 
     @Override
     public boolean sendPacket(Packet packet, boolean queue) throws IOException {
-        T connection = getConnection();
+        C connection = getConnection();
         if (connection == null) {
             if (queue) {
                 standardPacketQueue.add(packet);

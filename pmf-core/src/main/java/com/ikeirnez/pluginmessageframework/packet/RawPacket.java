@@ -8,7 +8,7 @@ import java.io.IOException;
  */
 public abstract class RawPacket extends Packet {
 
-    private String subChannel;
+    private final String subChannel;
 
     /**
      * Instantiates a new instance.

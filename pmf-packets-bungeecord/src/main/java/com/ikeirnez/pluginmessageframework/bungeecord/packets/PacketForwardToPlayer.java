@@ -14,8 +14,8 @@ public class PacketForwardToPlayer extends RawPacket {
     public static final String TAG = "ForwardToPlayer";
 
     private String player;
-    private String channel;
-    private byte[] data;
+    private final String channel;
+    private final byte[] data;
 
     /**
      * Creates a new instance.

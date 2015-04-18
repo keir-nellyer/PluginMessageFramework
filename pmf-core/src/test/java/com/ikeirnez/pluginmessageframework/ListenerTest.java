@@ -12,7 +12,7 @@ import org.junit.Test;
 import java.io.IOException;
 
 /**
- * Created by Keir on 09/04/2015.
+ * Tests various listener functions.
  */
 public class ListenerTest {
 
@@ -27,8 +27,8 @@ public class ListenerTest {
         }
     }
 
-    private GatewaySupport<String> gatewaySupport = new DummyGateway();
-    private String fakeSender = "ThisIsAFakeSender"; // we'll just use a string as being the sender (stupid I know)
+    private final GatewaySupport<String> gatewaySupport = new DummyGateway();
+    private final String fakeSender = "ThisIsAFakeSender"; // we'll just use a string as being the sender (stupid I know)
 
     private boolean listenerOneWithWrapper = false;
     private boolean listenerTwoWithoutWrapper = false;

@@ -5,6 +5,7 @@ package com.ikeirnez.pluginmessageframework.packet;
  */
 public abstract class Packet {
 
+    @SuppressWarnings({"CanBeFinal", "FieldCanBeLocal"})
     private boolean received = false;
 
     /**

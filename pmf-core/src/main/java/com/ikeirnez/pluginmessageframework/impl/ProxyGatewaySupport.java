@@ -7,9 +7,12 @@ import com.ikeirnez.pluginmessageframework.packet.Packet;
 import java.io.IOException;
 
 /**
- * Created by Keir on 02/04/2015.
+ * Support class for {@link ProxyGateway} implementations.
+ *
+ * @param <C> the client connection type
+ * @param <S> the server connection type
  */
-public abstract class ProxyGatewaySupport<T, U> extends GatewaySupport<T> implements ProxyGateway<T, U> {
+public abstract class ProxyGatewaySupport<C, S> extends GatewaySupport<C> implements ProxyGateway<C, S> {
 
     private final ProxySide proxySide;
 
@@ -29,16 +32,16 @@ public abstract class ProxyGatewaySupport<T, U> extends GatewaySupport<T> implem
     }
 
     @Override
-    public boolean sendPacketServer(U serverConnection, Packet packet) throws IOException {
+    public boolean sendPacketServer(S serverConnection, Packet packet) throws IOException {
         return sendPacketServer(serverConnection, packet, true);
     }
 
     @Override
-    public boolean sendPacketServer(U serverConnection, Packet packet, boolean queue) throws IOException {
+    public boolean sendPacketServer(S serverConnection, Packet packet, boolean queue) throws IOException {
         return sendCustomPayloadServer(serverConnection, getChannel(), writePacket(packet), queue);
     }
 
     // return, true if packet sent instantly, false if queued
-    public abstract boolean sendCustomPayloadServer(U serverConnection, String channel, byte[] bytes, boolean queue);
+    public abstract boolean sendCustomPayloadServer(S serverConnection, String channel, byte[] bytes, boolean queue);
 
 }

@@ -21,12 +21,12 @@ import java.net.InetSocketAddress;
  */
 public class BungeeCordPacketTest {
 
-    private GatewaySupport<String> gatewaySupport = new DummyGateway();
-    private String sender = "SomeSenderLel";
+    private final GatewaySupport<String> gatewaySupport = new DummyGateway();
+    private final String sender = "SomeSenderLel";
 
     // testing variables
-    private String host = "127.0.0.1";
-    private int port = 25565;
+    private final String host = "127.0.0.1";
+    private final int port = 25565;
 
     private boolean packetReceived = false;
 
@@ -65,7 +65,7 @@ public class BungeeCordPacketTest {
     @PacketHandler
     public void onPacketIP(String sender, PacketIP packetIP) {
         assertThat("Sender does not match.", sender, is(this.sender));
-        InetSocketAddress inetSocketAddress = packetIP.getInetSocketAddress();
+        InetSocketAddress inetSocketAddress = packetIP.getSocketAddress();
         assertThat("Hostname does not match.", inetSocketAddress.getHostString(), is(host));
         assertThat("Port does not match.", inetSocketAddress.getPort(), is(port));
         packetReceived = true;

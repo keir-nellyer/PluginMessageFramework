@@ -7,8 +7,10 @@ import java.io.IOException;
 
 /**
  * Represents a connection on a server implement to a proxy/player.
+ *
+ * @param <C> the client connection type
  */
-public interface ServerGateway<T> extends Gateway<T> {
+public interface ServerGateway<C> extends Gateway<C> {
     /**
      * Sends the packet on a gateway provided by the {@link GatewaySupport} specified in the constructor.
      *
@@ -33,5 +35,5 @@ public interface ServerGateway<T> extends Gateway<T> {
      *
      * @return the connection (may be null)
      */
-    T getConnection();
+    C getConnection();
 }

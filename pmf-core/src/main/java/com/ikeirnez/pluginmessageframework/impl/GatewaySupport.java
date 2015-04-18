@@ -20,10 +20,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Class which should be extended by implementations.
+ * Support class for {@link Gateway} implementations.
  * Provides connections and forwards received packets to the framework.
+ *
+ * @param <C> the client connection type
  */
-public abstract class GatewaySupport<T> implements Gateway<T> {
+public abstract class GatewaySupport<C> implements Gateway<C> {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
     private final String channel;
@@ -75,13 +77,13 @@ public abstract class GatewaySupport<T> implements Gateway<T> {
     }
 
     @Override
-    public void sendPacket(T connection, Packet packet) throws IOException {
+    public void sendPacket(C connection, Packet packet) throws IOException {
         sendCustomPayload(connection, getChannel(), writePacket(packet));
     }
 
-    public abstract void sendCustomPayload(T connection, String channel, byte[] bytes);
+    public abstract void sendCustomPayload(C connection, String channel, byte[] bytes);
 
-    protected Object handleListenerParameter(Class<?> clazz, Packet packet, T connection) {
+    protected Object handleListenerParameter(Class<?> clazz, Packet packet, C connection) {
         // todo do this better? gets overridden
         if (packet instanceof PrimaryArgumentProvider) {
             Object object = ((PrimaryArgumentProvider) packet).getValue();
@@ -103,7 +105,7 @@ public abstract class GatewaySupport<T> implements Gateway<T> {
         return null;
     }
 
-    public void incomingPayload(T connection, byte[] data) throws IOException {
+    public void incomingPayload(C connection, byte[] data) throws IOException {
         receivePacket(connection, getPayloadHandler().readIncomingPacket(data));
     }
 
@@ -141,7 +143,7 @@ public abstract class GatewaySupport<T> implements Gateway<T> {
     }
 
     @Override
-    public void receivePacket(T connection, Packet packet) {
+    public void receivePacket(C connection, Packet packet) {
         Class<? extends Packet> packetClass = packet.getClass();
 
         if (listeners.containsKey(packetClass)) {

@@ -33,7 +33,7 @@ public class PacketIP extends RawPacket {
      *
      * @return the address
      */
-    public InetSocketAddress getInetSocketAddress() {
+    public InetSocketAddress getSocketAddress() {
         throwExceptionIfAttemptingReadBeforeReceived();
         return inetSocketAddress;
     }

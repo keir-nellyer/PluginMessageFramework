@@ -8,8 +8,10 @@ import java.io.IOException;
 
 /**
  * Represents a 2-way connection between 2 systems.
+ *
+ * @param <C> the client connection type
  */
-public interface Gateway<T> {
+public interface Gateway<C> {
 
     /**
      * The channel the packets should be sent through.
@@ -26,7 +28,7 @@ public interface Gateway<T> {
      * @param packet the packet to be sent
      * @throws IOException thrown if there is an error sending the packet (usually in the serializing stage)
      */
-    void sendPacket(T connection, Packet packet) throws IOException;
+    void sendPacket(C connection, Packet packet) throws IOException;
 
     /**
      * <p>Registers a listener to receive incoming packets.</p>
@@ -56,7 +58,7 @@ public interface Gateway<T> {
      * @param connection the connection the packet was received from
      * @param packet the packet received
      */
-    void receivePacket(T connection, Packet packet);
+    void receivePacket(C connection, Packet packet);
 
     /**
      * Gets the payload handler in use by this gateway.

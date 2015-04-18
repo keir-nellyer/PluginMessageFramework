@@ -20,16 +20,12 @@ import java.io.IOException;
  */
 public class BungeeGateway extends ProxyGatewaySupport<ProxiedPlayer, ServerInfo> implements Listener {
 
-    private final Plugin plugin;
-
     public BungeeGateway(String channel, ProxySide proxySide, Plugin plugin) {
         super(channel, proxySide);
 
         if (plugin == null) {
             throw new IllegalArgumentException("Plugin cannot be null.");
         }
-
-        this.plugin = plugin;
 
         ProxyServer proxy = plugin.getProxy();
         proxy.registerChannel(getChannel());

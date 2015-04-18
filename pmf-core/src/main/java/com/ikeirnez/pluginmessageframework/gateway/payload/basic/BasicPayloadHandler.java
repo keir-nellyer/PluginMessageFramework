@@ -32,7 +32,7 @@ public class BasicPayloadHandler implements PayloadHandler<RawPacket> {
 
     private static final Logger logger = LoggerFactory.getLogger(BasicPayloadHandler.class);
 
-    private Map<String, Executable> subChannelLookup = new HashMap<>();
+    private final Map<String, Executable> subChannelLookup = new HashMap<>();
 
     @Override
     public boolean isPacketApplicable(Packet packet) {

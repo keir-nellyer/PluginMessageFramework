@@ -5,9 +5,11 @@ import com.ikeirnez.pluginmessageframework.packet.Packet;
 import java.io.IOException;
 
 /**
- * Handles incoming and outgoing packets, responsible for serializing and deserializing.
+ * Handles incoming and outgoing packets, responsible for serializing and de-serializing.
+ *
+ * @param <P> the Packet type to be handled by this class (e.g. {@link com.ikeirnez.pluginmessageframework.packet.StandardPacket} and {@link com.ikeirnez.pluginmessageframework.packet.RawPacket}.
  */
-public interface PayloadHandler<T extends Packet> {
+public interface PayloadHandler<P extends Packet> {
 
     /**
      * Checks if a {@link Packet} is able to be handled by this gateway.
@@ -32,7 +34,7 @@ public interface PayloadHandler<T extends Packet> {
      * @return the packet form of this data
      * @throws IOException thrown if there is an exception whilst reading the data
      */
-    T readIncomingPacket(byte[] bytes) throws IOException;
+    P readIncomingPacket(byte[] bytes) throws IOException;
 
     /**
      * Writes a {@link Packet} to a byte array ready for sending.
@@ -41,6 +43,6 @@ public interface PayloadHandler<T extends Packet> {
      * @return the byte array
      * @throws IOException thrown if there is an exception whilst writing the byte array
      */
-    byte[] writeOutgoingPacket(T packet) throws IOException;
+    byte[] writeOutgoingPacket(P packet) throws IOException;
 
 }

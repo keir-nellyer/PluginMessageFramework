@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.Collection;
 
 /**
- * Created by Keir on 27/03/2015.
+ * The default Sponge implementation of a {@link com.ikeirnez.pluginmessageframework.gateway.ServerGateway}.
  */
 public class SpongeGateway extends ServerGatewaySupport<Player> implements ChannelListener {
 
