@@ -33,7 +33,7 @@ public class BungeeGateway extends ProxyGatewaySupport<ProxiedPlayer, ServerInfo
     }
 
     @Override
-    public void sendCustomPayload(ProxiedPlayer connection, String channel, byte[] bytes) {
+    public void sendPayload(ProxiedPlayer connection, String channel, byte[] bytes) {
         connection.sendData(channel, bytes);
     }
 

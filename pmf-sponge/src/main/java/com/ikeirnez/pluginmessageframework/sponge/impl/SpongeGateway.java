@@ -40,7 +40,7 @@ public class SpongeGateway extends ServerGatewaySupport<Player> implements Chann
     }
 
     @Override
-    public void sendCustomPayload(Player connection, String channel, byte[] bytes) {
+    public void sendPayload(Player connection, String channel, byte[] bytes) {
         connection.getConnection().sendCustomPayload(plugin, channel, bytes);
     }
 
@@ -65,12 +65,8 @@ public class SpongeGateway extends ServerGatewaySupport<Player> implements Chann
     @Subscribe
     public void onPlayerJoin(PlayerJoinEvent event) {
         if (queuedPackets()) {
-            try {
-                // todo does this need delayed like in DefaultBukkitGateway?
-                sendQueuedPackets(event.getPlayer());
-            } catch (IOException e1) {
-                logger.error("Error whilst sending queued packets.", e1);
-            }
+            // todo does this need delayed like in DefaultBukkitGateway?
+            sendQueuedPackets(event.getPlayer());
         }
     }
 

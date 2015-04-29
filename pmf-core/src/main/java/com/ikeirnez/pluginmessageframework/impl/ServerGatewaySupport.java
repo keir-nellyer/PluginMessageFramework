@@ -3,7 +3,6 @@ package com.ikeirnez.pluginmessageframework.impl;
 import com.ikeirnez.pluginmessageframework.gateway.ServerGateway;
 import com.ikeirnez.pluginmessageframework.packet.Packet;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -17,6 +16,10 @@ public abstract class ServerGatewaySupport<C> extends GatewaySupport<C> implemen
 
     private final List<Packet> standardPacketQueue = new ArrayList<>();
 
+    public ServerGatewaySupport() {
+        super(null);
+    }
+
     public ServerGatewaySupport(String channel) {
         super(channel);
     }
@@ -25,22 +28,28 @@ public abstract class ServerGatewaySupport<C> extends GatewaySupport<C> implemen
         return standardPacketQueue.size() > 0;
     }
 
-    protected void sendQueuedPackets(C connection) throws IOException {
+    protected void sendQueuedPackets(C connection) {
         Iterator<Packet> iterator = standardPacketQueue.iterator();
         while (iterator.hasNext()) {
             Packet standardPacket = iterator.next();
-            sendPacket(connection, standardPacket);
+
+            try {
+                sendPacket(connection, standardPacket);
+            } catch (Throwable e) {
+                logger.error("Error sending queued packet.", e);
+            }
+
             iterator.remove();
         }
     }
 
     @Override
-    public boolean sendPacket(Packet packet) throws IOException {
+    public boolean sendPacket(Packet packet) {
         return sendPacket(packet, true);
     }
 
     @Override
-    public boolean sendPacket(Packet packet, boolean queue) throws IOException {
+    public boolean sendPacket(Packet packet, boolean queue) {
         C connection = getConnection();
         if (connection == null) {
             if (queue) {

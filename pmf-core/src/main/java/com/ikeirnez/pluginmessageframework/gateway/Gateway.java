@@ -4,8 +4,6 @@ import com.ikeirnez.pluginmessageframework.gateway.payload.PayloadHandler;
 import com.ikeirnez.pluginmessageframework.packet.Packet;
 import com.ikeirnez.pluginmessageframework.packet.PacketHandler;
 
-import java.io.IOException;
-
 /**
  * Represents a 2-way connection between 2 systems.
  *
@@ -17,7 +15,7 @@ public interface Gateway<C> {
      * The channel the packets should be sent through.
      * Should be unique and identical for both sides.
      *
-     * @return the channel that packets should be sent through
+     * @return the channel that packets should be sent through (may be null in cases whereby the gateway doesn't require a channel)
      */
     String getChannel();
 
@@ -26,9 +24,8 @@ public interface Gateway<C> {
      *
      * @param connection the connection to send the packet via
      * @param packet the packet to be sent
-     * @throws IOException thrown if there is an error sending the packet (usually in the serializing stage)
      */
-    void sendPacket(C connection, Packet packet) throws IOException;
+    void sendPacket(C connection, Packet packet);
 
     /**
      * <p>Registers a listener to receive incoming packets.</p>

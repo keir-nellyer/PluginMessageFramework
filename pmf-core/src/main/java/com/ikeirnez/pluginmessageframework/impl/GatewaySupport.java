@@ -28,13 +28,13 @@ import java.util.Map;
 public abstract class GatewaySupport<C> implements Gateway<C> {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
-    private final String channel;
+    private String channel;
     private PayloadHandler payloadHandler = null;
 
     private final Map<Class<? extends Packet>, List<Object>> listeners = new HashMap<>();
 
     public GatewaySupport(String channel) {
-        if (channel == null || channel.isEmpty()) {
+        if (channel != null && channel.isEmpty()) {
             throw new IllegalArgumentException("Channel cannot be null or an empty string.");
         }
 
@@ -65,23 +65,27 @@ public abstract class GatewaySupport<C> implements Gateway<C> {
      *
      * @param packet the packet to write bytes for
      * @return the byte[] representation of the packet
-     * @throws IOException thrown if there is an exception whilst writing the packet
      */
     @SuppressWarnings("unchecked")
-    public byte[] writePacket(Packet packet) throws IOException {
+    public byte[] writePacket(Packet packet) {
         if (!getPayloadHandler().isPacketApplicable(packet)) {
             throw new IllegalArgumentException("Assigned PayloadHandler cannot handle this type of Packet.");
         }
 
-        return getPayloadHandler().writeOutgoingPacket(packet);
+        try {
+            return getPayloadHandler().writeOutgoingPacket(packet);
+        } catch (IOException e) {
+            Utilities.sneakyThrow(e);
+            return null; // this line is never executed
+        }
     }
 
     @Override
-    public void sendPacket(C connection, Packet packet) throws IOException {
-        sendCustomPayload(connection, getChannel(), writePacket(packet));
+    public void sendPacket(C connection, Packet packet) {
+        sendPayload(connection, getChannel(), writePacket(packet));
     }
 
-    public abstract void sendCustomPayload(C connection, String channel, byte[] bytes);
+    public abstract void sendPayload(C connection, String channel, byte[] bytes);
 
     protected Object handleListenerParameter(Class<?> clazz, Packet packet, C connection) {
         // todo do this better? gets overridden

@@ -5,3 +5,5 @@ include 'pmf-bukkit'
 include 'pmf-sponge'
 include 'pmf-bungeecord'
 include 'pmf-packets-bungeecord'
+include 'pmf-netty'
+

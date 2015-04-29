@@ -13,5 +13,5 @@ public class DummyGateway extends GatewaySupport<String> {
 
 
     @Override
-    public void sendCustomPayload(String connection, String channel, byte[] bytes) {}
+    public void sendPayload(String connection, String channel, byte[] bytes) {}
 }

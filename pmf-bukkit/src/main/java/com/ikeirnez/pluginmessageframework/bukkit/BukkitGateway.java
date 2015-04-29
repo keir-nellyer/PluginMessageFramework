@@ -36,7 +36,7 @@ public class BukkitGateway extends ServerGatewaySupport<Player> implements Liste
     }
 
     @Override
-    public void sendCustomPayload(Player connection, String channel, byte[] bytes) {
+    public void sendPayload(Player connection, String channel, byte[] bytes) {
         connection.sendPluginMessage(plugin, channel, bytes);
     }
 
@@ -63,11 +63,7 @@ public class BukkitGateway extends ServerGatewaySupport<Player> implements Liste
             @Override
             public void run() {
                 if (queuedPackets()) {
-                    try {
-                        sendQueuedPackets(event.getPlayer());
-                    } catch (IOException e1) {
-                        logger.error("Error whilst sending queued packets.", e1);
-                    }
+                    sendQueuedPackets(event.getPlayer());
                 }
             }
         }, 10L);
