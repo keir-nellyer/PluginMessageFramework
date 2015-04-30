@@ -9,14 +9,14 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 /**
  * Created by Keir on 23/04/2015.
  */
-public class NettyServerGatewayProvider extends NettyGatewayProvider {
+public class NettyServerGateway extends NettyGateway {
 
     protected final ServerBootstrap serverBootstrap = new ServerBootstrap();
     protected final EventLoopGroup childGroup = new NioEventLoopGroup();
 
     private final int port;
 
-    protected NettyServerGatewayProvider(int port) {
+    protected NettyServerGateway(int port) {
         super();
         this.port = port;
 

@@ -8,11 +8,11 @@ import io.netty.channel.nio.NioEventLoopGroup;
 /**
  * Created by Keir on 22/04/2015.
  */
-public abstract class NettyGatewayProvider extends ServerGatewaySupport<Channel> {
+public abstract class NettyGateway extends ServerGatewaySupport<Channel> {
 
     protected final EventLoopGroup parentGroup = new NioEventLoopGroup();
 
-    public NettyGatewayProvider() {
+    public NettyGateway() {
         super();
     }
 
