@@ -21,7 +21,7 @@ public class SpongeGateway extends ServerGatewaySupport<Player> implements Chann
     private final Object plugin;
     private final Game game;
 
-    public SpongeGateway(String channel, final Object plugin, Game game) {
+    protected SpongeGateway(String channel, final Object plugin, Game game) {
         super(channel);
 
         if (plugin == null) {

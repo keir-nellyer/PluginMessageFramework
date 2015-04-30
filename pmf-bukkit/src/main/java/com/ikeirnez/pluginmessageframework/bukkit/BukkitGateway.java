@@ -20,7 +20,7 @@ public class BukkitGateway extends ServerGatewaySupport<Player> implements Liste
 
     protected final Plugin plugin;
 
-    public BukkitGateway(String channel, final Plugin plugin) {
+    protected BukkitGateway(String channel, final Plugin plugin) {
         super(channel);
 
         if (plugin == null) {

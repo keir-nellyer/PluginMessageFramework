@@ -20,7 +20,7 @@ import java.io.IOException;
  */
 public class BungeeGateway extends ProxyGatewaySupport<ProxiedPlayer, ServerInfo> implements Listener {
 
-    public BungeeGateway(String channel, ProxySide proxySide, Plugin plugin) {
+    protected BungeeGateway(String channel, ProxySide proxySide, Plugin plugin) {
         super(channel, proxySide);
 
         if (plugin == null) {

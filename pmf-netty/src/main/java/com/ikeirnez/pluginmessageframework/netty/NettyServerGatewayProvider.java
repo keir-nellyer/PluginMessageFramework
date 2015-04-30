@@ -16,7 +16,7 @@ public class NettyServerGatewayProvider extends NettyGatewayProvider {
 
     private final int port;
 
-    public NettyServerGatewayProvider(int port) {
+    protected NettyServerGatewayProvider(int port) {
         super();
         this.port = port;
 
