@@ -1,4 +1,4 @@
-package com.ikeirnez.pluginmessageframework.connection;
+package com.ikeirnez.pluginmessageframework.gateway;
 
 import com.ikeirnez.pluginmessageframework.gateway.ProxyGateway;
 

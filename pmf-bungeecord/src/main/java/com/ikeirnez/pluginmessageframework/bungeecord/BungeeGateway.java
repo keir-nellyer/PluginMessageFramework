@@ -1,6 +1,6 @@
 package com.ikeirnez.pluginmessageframework.bungeecord;
 
-import com.ikeirnez.pluginmessageframework.connection.ProxySide;
+import com.ikeirnez.pluginmessageframework.gateway.ProxySide;
 import com.ikeirnez.pluginmessageframework.impl.ProxyGatewaySupport;
 import com.ikeirnez.pluginmessageframework.packet.Packet;
 import net.md_5.bungee.api.ProxyServer;
