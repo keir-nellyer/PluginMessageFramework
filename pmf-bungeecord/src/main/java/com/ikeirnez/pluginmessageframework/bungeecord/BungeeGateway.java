@@ -34,7 +34,16 @@ public class BungeeGateway extends ProxyGatewaySupport<ProxiedPlayer, ServerInfo
 
     @Override
     public void sendPayload(ProxiedPlayer connection, String channel, byte[] bytes) {
-        connection.sendData(channel, bytes);
+        switch (getProxySide()) {
+            default:
+                throw new UnsupportedOperationException("Don't know how to handle sending payload from the ProxySide: " + getProxySide() + ".");
+            case CLIENT:
+                connection.sendData(channel, bytes);
+                break;
+            case SERVER:
+                connection.getServer().sendData(channel, bytes);
+                break;
+        }
     }
 
     @Override
