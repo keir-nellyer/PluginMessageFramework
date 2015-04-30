@@ -1,7 +1,6 @@
 package com.ikeirnez.pluginmessageframework.sponge;
 
 import com.ikeirnez.pluginmessageframework.gateway.ServerGateway;
-import com.ikeirnez.pluginmessageframework.sponge.impl.SpongeGateway;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.entity.player.Player;
 

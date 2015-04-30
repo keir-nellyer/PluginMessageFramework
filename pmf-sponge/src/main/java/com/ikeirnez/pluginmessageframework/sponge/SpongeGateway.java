@@ -1,4 +1,4 @@
-package com.ikeirnez.pluginmessageframework.sponge.impl;
+package com.ikeirnez.pluginmessageframework.sponge;
 
 import com.ikeirnez.pluginmessageframework.impl.ServerGatewaySupport;
 import org.spongepowered.api.Game;
