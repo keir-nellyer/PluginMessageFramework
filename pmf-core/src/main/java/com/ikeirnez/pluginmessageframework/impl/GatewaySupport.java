@@ -106,6 +106,10 @@ public abstract class GatewaySupport<C> implements Gateway<C> {
             return connectionClass.cast(connection);
         }
 
+        if (clazz.isAssignableFrom(getClass())) {
+            return this;
+        }
+
         return null;
     }
 

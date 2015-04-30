@@ -68,8 +68,9 @@ public class ListenerTest {
     }
 
     @PacketHandler
-    public void onSimplePacket(DummySimplePacket dummySimplePacket) {
+    public void onSimplePacket(DummyGateway dummyGateway, DummySimplePacket dummySimplePacket) {
         simplePacketListenerFired = true;
+        assertThat("Gateway doesn't match.", dummyGateway, is(this.gatewaySupport));
         assertThat("Packet doesn't contain same data.", dummySimplePacket.getString(), is(this.dummyPacketData));
     }
 
