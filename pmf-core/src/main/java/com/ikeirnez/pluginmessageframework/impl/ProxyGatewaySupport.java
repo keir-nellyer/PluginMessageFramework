@@ -1,7 +1,7 @@
 package com.ikeirnez.pluginmessageframework.impl;
 
-import com.ikeirnez.pluginmessageframework.gateway.ProxySide;
 import com.ikeirnez.pluginmessageframework.gateway.ProxyGateway;
+import com.ikeirnez.pluginmessageframework.gateway.ProxySide;
 import com.ikeirnez.pluginmessageframework.packet.Packet;
 
 /**

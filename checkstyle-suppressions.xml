@@ -4,7 +4,7 @@
 <suppressions>
     <suppress checks="JavadocMethod" files="src[\\/]test[\\/]java"/>
     <suppress checks="JavadocMethod" files="src[\\/]main[\\/]java[\\/](.*)impl"/>
-    <suppress checks="JavadocMethod" files="BukkitGateway|BungeeGateway|SpongeGateway" />
+    <suppress checks="JavadocMethod" files="BukkitGateway|BungeeGateway|SpongeGateway|NettyGateway|NettyServerGateway|NettyClientGateway" />
     <!-- <suppress checks="Indentation" files="package-info\.java"/> -->
     <suppress checks="AbbreviationAsWordInName" files="UUID"/>
     <suppress checks="AbbreviationAsWordInName" files="IP"/>
