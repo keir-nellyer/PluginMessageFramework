@@ -97,7 +97,7 @@ public abstract class GatewaySupport<C> implements Gateway<C> {
             }
         }
 
-        if (Packet.class.isAssignableFrom(clazz)) {
+        if (clazz.isAssignableFrom(packet.getClass())) {
             return packet;
         }
 
