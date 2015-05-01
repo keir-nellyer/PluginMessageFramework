@@ -8,9 +8,11 @@ Using our custom packet **MyPacket** created in the main [README](/README.md#cre
 In the below example, we are going to pretend that we send a message using a command and can also receive replies, displaying them to the player.
 
 ```java
-public ServerGateway<Player> gateway = BukkitGatewayProvider.getGateway("MyChannelName", this);
+public ServerGateway<Player> gateway;
 
+@Override
 public void onEnable() {
+    gateway = BukkitGatewayProvider.getGateway("MyChannelName", this);
     gateway.registerListener(this);
 }
 
