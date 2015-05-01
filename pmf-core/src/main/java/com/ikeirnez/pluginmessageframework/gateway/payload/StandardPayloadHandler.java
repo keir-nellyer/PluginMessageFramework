@@ -51,7 +51,7 @@ public class StandardPayloadHandler implements PayloadHandler<StandardPacket> {
         } catch (IOException e) {
             logger.error("Exception whilst reading custom payload.", e);
         } catch (ClassNotFoundException e) {
-            logger.debug("Unable to find packet class whilst de-serializing.", e);
+            logger.debug("Unable to find packet class whilst de-serializing.\nMake sure the Packet class has the same package in all instances.", e);
         }
 
         return null;

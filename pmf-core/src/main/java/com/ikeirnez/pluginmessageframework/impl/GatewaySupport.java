@@ -114,7 +114,10 @@ public abstract class GatewaySupport<C> implements Gateway<C> {
     }
 
     public void incomingPayload(C connection, byte[] data) throws IOException {
-        receivePacket(connection, getPayloadHandler().readIncomingPacket(data));
+        Packet packet = getPayloadHandler().readIncomingPacket(data);
+        if (packet != null) {
+            receivePacket(connection, packet);
+        }
     }
 
     @Override
