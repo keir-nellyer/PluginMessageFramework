@@ -1,6 +1,6 @@
 package com.ikeirnez.pluginmessageframework.gateway;
 
-import com.ikeirnez.pluginmessageframework.impl.GatewaySupport;
+import com.ikeirnez.pluginmessageframework.internal.GatewaySupport;
 import com.ikeirnez.pluginmessageframework.packet.Packet;
 
 /**

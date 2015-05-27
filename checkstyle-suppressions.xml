@@ -3,8 +3,8 @@
 
 <suppressions>
     <suppress checks="JavadocMethod" files="src[\\/]test[\\/]java"/>
-    <suppress checks="JavadocMethod" files="src[\\/]main[\\/]java[\\/](.*)impl"/>
-    <suppress checks="JavadocMethod" files="BukkitGateway|BungeeGateway|SpongeGateway|NettyGateway|NettyServerGateway|NettyClientGateway" />
+    <suppress checks="JavadocMethod" files="src[\\/]main[\\/]java[\\/](.*)internal"/>
+    <suppress checks="JavadocMethod" files="Impl(.*)" />
     <!-- <suppress checks="Indentation" files="package-info\.java"/> -->
     <suppress checks="AbbreviationAsWordInName" files="UUID"/>
     <suppress checks="AbbreviationAsWordInName" files="IP"/>

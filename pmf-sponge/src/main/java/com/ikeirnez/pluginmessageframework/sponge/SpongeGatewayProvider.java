@@ -18,7 +18,7 @@ public class SpongeGatewayProvider {
      * @return the gateway
      */
     public static ServerGateway<Player> getGateway(String channel, Object plugin, Game game) {
-        return new SpongeGateway(channel, plugin, game);
+        return new ImplSpongeGateway(channel, plugin, game);
     }
 
     private SpongeGatewayProvider() {}

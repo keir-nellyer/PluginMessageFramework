@@ -20,7 +20,7 @@ public class BungeeGatewayProvider {
      * @return the gateway
      */
     public static ProxyGateway<ProxiedPlayer, ServerInfo> getGateway(String channel, ProxySide proxySide, Plugin plugin) {
-        return new BungeeGateway(channel, proxySide, plugin);
+        return new ImplBungeeGateway(channel, proxySide, plugin);
     }
 
     private BungeeGatewayProvider() {}

@@ -1,6 +1,6 @@
 package com.ikeirnez.pluginmessageframework.bukkit;
 
-import com.ikeirnez.pluginmessageframework.impl.ServerGatewaySupport;
+import com.ikeirnez.pluginmessageframework.internal.ServerGatewaySupport;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,11 +16,11 @@ import java.util.Collection;
 /**
  * The default Bukkit implementation of a {@link com.ikeirnez.pluginmessageframework.gateway.ServerGateway}.
  */
-public class BukkitGateway extends ServerGatewaySupport<Player> implements Listener, PluginMessageListener {
+public class ImplBukkitGateway extends ServerGatewaySupport<Player> implements Listener, PluginMessageListener {
 
     protected final Plugin plugin;
 
-    protected BukkitGateway(String channel, final Plugin plugin) {
+    protected ImplBukkitGateway(String channel, final Plugin plugin) {
         super(channel);
 
         if (plugin == null) {

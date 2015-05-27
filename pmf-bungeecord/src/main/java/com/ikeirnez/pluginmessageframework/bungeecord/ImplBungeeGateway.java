@@ -1,7 +1,7 @@
 package com.ikeirnez.pluginmessageframework.bungeecord;
 
 import com.ikeirnez.pluginmessageframework.gateway.ProxySide;
-import com.ikeirnez.pluginmessageframework.impl.ProxyGatewaySupport;
+import com.ikeirnez.pluginmessageframework.internal.ProxyGatewaySupport;
 import com.ikeirnez.pluginmessageframework.packet.Packet;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.config.ServerInfo;
@@ -18,9 +18,9 @@ import java.io.IOException;
 /**
  * The default BungeeCord implementation of a {@link com.ikeirnez.pluginmessageframework.gateway.ProxyGateway}.
  */
-public class BungeeGateway extends ProxyGatewaySupport<ProxiedPlayer, ServerInfo> implements Listener {
+public class ImplBungeeGateway extends ProxyGatewaySupport<ProxiedPlayer, ServerInfo> implements Listener {
 
-    protected BungeeGateway(String channel, ProxySide proxySide, Plugin plugin) {
+    protected ImplBungeeGateway(String channel, ProxySide proxySide, Plugin plugin) {
         super(channel, proxySide);
 
         if (plugin == null) {

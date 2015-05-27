@@ -1,6 +1,6 @@
 package com.ikeirnez.pluginmessageframework.netty;
 
-import com.ikeirnez.pluginmessageframework.impl.ServerGatewaySupport;
+import com.ikeirnez.pluginmessageframework.internal.ServerGatewaySupport;
 import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;

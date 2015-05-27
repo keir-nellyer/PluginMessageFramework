@@ -1,4 +1,4 @@
-package com.ikeirnez.pluginmessageframework.impl;
+package com.ikeirnez.pluginmessageframework.internal;
 
 import com.ikeirnez.pluginmessageframework.PrimaryArgumentProvider;
 import com.ikeirnez.pluginmessageframework.Utilities;

@@ -1,6 +1,6 @@
 package com.ikeirnez.pluginmessageframework.sponge;
 
-import com.ikeirnez.pluginmessageframework.impl.ServerGatewaySupport;
+import com.ikeirnez.pluginmessageframework.internal.ServerGatewaySupport;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.entity.player.Player;
 import org.spongepowered.api.event.Subscribe;
@@ -16,12 +16,12 @@ import java.util.Collection;
 /**
  * The default Sponge implementation of a {@link com.ikeirnez.pluginmessageframework.gateway.ServerGateway}.
  */
-public class SpongeGateway extends ServerGatewaySupport<Player> implements ChannelListener {
+public class ImplSpongeGateway extends ServerGatewaySupport<Player> implements ChannelListener {
 
     private final Object plugin;
     private final Game game;
 
-    protected SpongeGateway(String channel, final Object plugin, Game game) {
+    protected ImplSpongeGateway(String channel, final Object plugin, Game game) {
         super(channel);
 
         if (plugin == null) {

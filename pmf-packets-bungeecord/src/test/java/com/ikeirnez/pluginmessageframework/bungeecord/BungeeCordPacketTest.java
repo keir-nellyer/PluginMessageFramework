@@ -6,7 +6,7 @@ import static org.junit.Assert.fail;
 
 import com.ikeirnez.pluginmessageframework.DummyGateway;
 import com.ikeirnez.pluginmessageframework.bungeecord.packets.PacketIP;
-import com.ikeirnez.pluginmessageframework.impl.GatewaySupport;
+import com.ikeirnez.pluginmessageframework.internal.GatewaySupport;
 import com.ikeirnez.pluginmessageframework.packet.PacketHandler;
 import org.junit.Before;
 import org.junit.Test;

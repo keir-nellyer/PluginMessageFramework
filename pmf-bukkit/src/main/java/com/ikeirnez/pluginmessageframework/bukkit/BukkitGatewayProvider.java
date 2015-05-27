@@ -17,7 +17,7 @@ public class BukkitGatewayProvider {
      * @return the gateway
      */
     public static ServerGateway<Player> getGateway(String channel, Plugin plugin) {
-        return new BukkitGateway(channel, plugin);
+        return new ImplBukkitGateway(channel, plugin);
     }
 
     private BukkitGatewayProvider() {}

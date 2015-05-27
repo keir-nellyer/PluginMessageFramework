@@ -1,6 +1,6 @@
 package com.ikeirnez.pluginmessageframework;
 
-import com.ikeirnez.pluginmessageframework.impl.GatewaySupport;
+import com.ikeirnez.pluginmessageframework.internal.GatewaySupport;
 
 /**
  * Dummy gateway for use in testing.

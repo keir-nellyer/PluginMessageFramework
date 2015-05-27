@@ -3,7 +3,7 @@ package com.ikeirnez.pluginmessageframework;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-import com.ikeirnez.pluginmessageframework.impl.GatewaySupport;
+import com.ikeirnez.pluginmessageframework.internal.GatewaySupport;
 import com.ikeirnez.pluginmessageframework.packet.PacketHandler;
 import com.ikeirnez.pluginmessageframework.packet.PrimaryValuePacket;
 import org.junit.Before;
