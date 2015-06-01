@@ -10,7 +10,7 @@ import com.ikeirnez.pluginmessageframework.packet.Packet;
  * @param <C> the client connection type
  * @param <S> the server connection type
  */
-public abstract class ProxyGatewaySupport<C, S> extends GatewaySupport<C> implements ProxyGateway<C, S> {
+public abstract class ProxyGatewaySupport<C, S, Q> extends GatewaySupport<C> implements ProxyGateway<C, S, Q> {
 
     private ProxySide proxySide;
 
@@ -38,16 +38,17 @@ public abstract class ProxyGatewaySupport<C, S> extends GatewaySupport<C> implem
     }
 
     @Override
-    public boolean sendPacketServer(S serverConnection, Packet packet) {
-        return sendPacketServer(serverConnection, packet, true);
+    public void sendPacketServer(S serverConnection, Packet packet) {
+        sendCustomPayloadServer(serverConnection, getChannel(), writePacket(packet));
     }
 
     @Override
-    public boolean sendPacketServer(S serverConnection, Packet packet, boolean queue) {
-        return sendCustomPayloadServer(serverConnection, getChannel(), writePacket(packet), queue);
+    public boolean sendPacketServer(Q queueableConnection, Packet packet, boolean queue) {
+        return sendCustomPayloadServer(queueableConnection, getChannel(), writePacket(packet), queue);
     }
 
-    // return, true if packet sent instantly, false if queued
-    public abstract boolean sendCustomPayloadServer(S serverConnection, String channel, byte[] bytes, boolean queue);
+    public abstract void sendCustomPayloadServer(S serverConnection, String channel, byte[] bytes);
+
+    public abstract boolean sendCustomPayloadServer(Q queueableConnection, String channel, byte[] bytes, boolean queue);
 
 }

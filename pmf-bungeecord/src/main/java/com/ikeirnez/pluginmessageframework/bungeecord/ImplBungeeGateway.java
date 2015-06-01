@@ -18,7 +18,7 @@ import java.io.IOException;
 /**
  * The default BungeeCord implementation of a {@link com.ikeirnez.pluginmessageframework.gateway.ProxyGateway}.
  */
-public class ImplBungeeGateway extends ProxyGatewaySupport<ProxiedPlayer, ServerInfo> implements Listener {
+public class ImplBungeeGateway extends ProxyGatewaySupport<ProxiedPlayer, Server, ServerInfo> implements Listener {
 
     protected ImplBungeeGateway(String channel, ProxySide proxySide, Plugin plugin) {
         super(channel, proxySide);
@@ -47,8 +47,13 @@ public class ImplBungeeGateway extends ProxyGatewaySupport<ProxiedPlayer, Server
     }
 
     @Override
-    public boolean sendCustomPayloadServer(ServerInfo serverConnection, String channel, byte[] bytes, boolean queue) {
-        return serverConnection.sendData(channel, bytes, queue);
+    public void sendCustomPayloadServer(Server serverConnection, String channel, byte[] bytes) {
+        serverConnection.sendData(channel, bytes);
+    }
+
+    @Override
+    public boolean sendCustomPayloadServer(ServerInfo serverInfo, String channel, byte[] bytes, boolean queue) {
+        return serverInfo.sendData(channel, bytes, queue);
     }
 
     @EventHandler

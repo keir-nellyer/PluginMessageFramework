@@ -4,6 +4,7 @@ import com.ikeirnez.pluginmessageframework.gateway.ProxyGateway;
 import com.ikeirnez.pluginmessageframework.gateway.ProxySide;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.connection.Server;
 import net.md_5.bungee.api.plugin.Plugin;
 
 /**
@@ -19,7 +20,7 @@ public class BungeeGatewayProvider {
      * @param plugin the plugin making use of the framework (used to register plugin channels)
      * @return the gateway
      */
-    public static ProxyGateway<ProxiedPlayer, ServerInfo> getGateway(String channel, ProxySide proxySide, Plugin plugin) {
+    public static ProxyGateway<ProxiedPlayer, Server, ServerInfo> getGateway(String channel, ProxySide proxySide, Plugin plugin) {
         return new ImplBungeeGateway(channel, proxySide, plugin);
     }
 
