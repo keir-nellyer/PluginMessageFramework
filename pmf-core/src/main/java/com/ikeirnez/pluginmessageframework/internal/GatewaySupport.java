@@ -34,7 +34,7 @@ public abstract class GatewaySupport<C> implements Gateway<C> {
     private final Map<Class<? extends Packet>, List<Object>> listeners = new HashMap<>();
 
     public GatewaySupport(String channel) {
-        if (channel != null && channel.isEmpty()) {
+        if (channel == null || channel.isEmpty()) {
             throw new IllegalArgumentException("Channel cannot be null or an empty string.");
         }
 
