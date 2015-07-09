@@ -3,7 +3,7 @@ package com.ikeirnez.pluginmessageframework.gateway;
 import com.ikeirnez.pluginmessageframework.packet.Packet;
 
 /**
- * Represents a 2-way connection on a Proxy-like server (e.g. BungeeCord).
+ * Represents a 2-way connection on a Proxy-like implementation (e.g. BungeeCord).
  *
  * @param <C> the client connection type (e.g. BungeeCord ProxiedPlayer)
  * @param <S> the server connection type (e.g. BungeeCord Server)

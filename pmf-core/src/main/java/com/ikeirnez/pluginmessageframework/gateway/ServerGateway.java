@@ -4,7 +4,7 @@ import com.ikeirnez.pluginmessageframework.internal.GatewaySupport;
 import com.ikeirnez.pluginmessageframework.packet.Packet;
 
 /**
- * Represents a connection on a server implement to a proxy/player.
+ * Represents a connection on a server implementation to a proxy/player.
  *
  * @param <C> the client connection type
  */
