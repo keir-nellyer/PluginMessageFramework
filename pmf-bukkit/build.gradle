@@ -11,5 +11,5 @@ repositories {
 
 dependencies {
     compile project(':pmf-core')
-    compile group: 'org.spigotmc', name: 'spigot-api', version: '1.8.3-R0.1-SNAPSHOT'
+    compile group: 'org.bukkit', name: 'bukkit', version: '1.8.7-R0.1-SNAPSHOT'
 }
