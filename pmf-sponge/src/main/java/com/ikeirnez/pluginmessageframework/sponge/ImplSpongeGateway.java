@@ -5,9 +5,9 @@ import org.spongepowered.api.Game;
 import org.spongepowered.api.entity.player.Player;
 import org.spongepowered.api.event.Subscribe;
 import org.spongepowered.api.event.entity.player.PlayerJoinEvent;
-import org.spongepowered.api.net.ChannelBuf;
-import org.spongepowered.api.net.ChannelListener;
-import org.spongepowered.api.net.PlayerConnection;
+import org.spongepowered.api.network.ChannelBuf;
+import org.spongepowered.api.network.ChannelListener;
+import org.spongepowered.api.network.PlayerConnection;
 import org.spongepowered.api.util.annotation.NonnullByDefault;
 
 import java.io.IOException;
@@ -66,7 +66,7 @@ public class ImplSpongeGateway extends ServerGatewaySupport<Player> implements C
     public void onPlayerJoin(PlayerJoinEvent event) {
         if (queuedPackets()) {
             // todo does this need delayed like in DefaultBukkitGateway?
-            sendQueuedPackets(event.getPlayer());
+            sendQueuedPackets(event.getEntity());
         }
     }
 
