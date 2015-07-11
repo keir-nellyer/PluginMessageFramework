@@ -1,6 +1,6 @@
 package com.ikeirnez.pluginmessageframework.gateway;
 
-import com.ikeirnez.pluginmessageframework.packet.Packet;
+import com.ikeirnez.pluginmessageframework.packet.BasePacket;
 
 /**
  * Represents an instance which has a single connection.
@@ -12,6 +12,6 @@ public interface ClientGateway<C> extends Gateway<C> {
      *
      * @param packet the packet
      */
-    void sendPacket(Packet packet);
+    void sendPacket(BasePacket packet);
 
 }

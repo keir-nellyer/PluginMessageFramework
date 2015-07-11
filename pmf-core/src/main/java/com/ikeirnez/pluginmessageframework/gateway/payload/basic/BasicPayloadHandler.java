@@ -2,7 +2,7 @@ package com.ikeirnez.pluginmessageframework.gateway.payload.basic;
 
 import com.ikeirnez.pluginmessageframework.Utilities;
 import com.ikeirnez.pluginmessageframework.gateway.payload.PayloadHandler;
-import com.ikeirnez.pluginmessageframework.packet.Packet;
+import com.ikeirnez.pluginmessageframework.packet.BasePacket;
 import com.ikeirnez.pluginmessageframework.packet.RawPacket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,12 +35,12 @@ public class BasicPayloadHandler implements PayloadHandler<RawPacket> {
     private final Map<String, Executable> subChannelLookup = new HashMap<>();
 
     @Override
-    public boolean isPacketApplicable(Packet packet) {
+    public boolean isPacketApplicable(BasePacket packet) {
         return isPacketClassApplicable(packet.getClass());
     }
 
     @Override
-    public boolean isPacketClassApplicable(Class<? extends Packet> packetClass) {
+    public boolean isPacketClassApplicable(Class<? extends BasePacket> packetClass) {
         return RawPacket.class.isAssignableFrom(packetClass);
     }
 

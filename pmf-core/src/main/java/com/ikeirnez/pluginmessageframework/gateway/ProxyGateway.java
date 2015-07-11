@@ -1,6 +1,6 @@
 package com.ikeirnez.pluginmessageframework.gateway;
 
-import com.ikeirnez.pluginmessageframework.packet.Packet;
+import com.ikeirnez.pluginmessageframework.packet.BasePacket;
 
 /**
  * Represents a 2-way connection on a Proxy-like implementation (e.g. BungeeCord).
@@ -19,21 +19,21 @@ public interface ProxyGateway<C, S, Q> extends Gateway<C> {
     ProxySide getProxySide();
 
     /**
-     * Sends a {@link Packet} to a server.
+     * Sends a {@link BasePacket} to a server.
      *
      * @param serverConnection the server connection
      * @param packet the packet to send to the server
      */
-    void sendPacketServer(S serverConnection, Packet packet);
+    void sendPacketServer(S serverConnection, BasePacket packet);
 
     /**
-     * Sends a {@link Packet} to a specified server.
+     * Sends a {@link BasePacket} to a specified server.
      *
      * @param queueableConnection the queueable server connection
      * @param packet the packet to send to the server
      * @param queue if enabled, if there is no connection to the server, the packet will be queued until a connection is available
      * @return true if the packet was sent immediately, false if the packet was unable to be sent immediately (and was queued if queueing is enabled)
      */
-    boolean sendPacketServer(Q queueableConnection, Packet packet, boolean queue);
+    boolean sendPacketServer(Q queueableConnection, BasePacket packet, boolean queue);
 
 }

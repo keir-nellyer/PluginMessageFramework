@@ -6,7 +6,7 @@ import java.io.IOException;
 /**
  * Represents a packet whilst handles it's own serialization and deserialization.
  */
-public abstract class RawPacket extends Packet {
+public abstract class RawPacket extends BasePacket {
 
     private final String subChannel;
 

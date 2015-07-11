@@ -1,7 +1,7 @@
 package com.ikeirnez.pluginmessageframework.internal;
 
 import com.ikeirnez.pluginmessageframework.gateway.ServerGateway;
-import com.ikeirnez.pluginmessageframework.packet.Packet;
+import com.ikeirnez.pluginmessageframework.packet.BasePacket;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -14,7 +14,7 @@ import java.util.List;
  */
 public abstract class ServerGatewaySupport<C> extends GatewaySupport<C> implements ServerGateway<C> {
 
-    private final List<Packet> standardPacketQueue = new ArrayList<>();
+    private final List<BasePacket> standardPacketQueue = new ArrayList<>();
 
     public ServerGatewaySupport() {
         super(null);
@@ -29,9 +29,9 @@ public abstract class ServerGatewaySupport<C> extends GatewaySupport<C> implemen
     }
 
     protected void sendQueuedPackets(C connection) {
-        Iterator<Packet> iterator = standardPacketQueue.iterator();
+        Iterator<BasePacket> iterator = standardPacketQueue.iterator();
         while (iterator.hasNext()) {
-            Packet standardPacket = iterator.next();
+            BasePacket standardPacket = iterator.next();
 
             try {
                 sendPacket(connection, standardPacket);
@@ -44,12 +44,12 @@ public abstract class ServerGatewaySupport<C> extends GatewaySupport<C> implemen
     }
 
     @Override
-    public boolean sendPacket(Packet packet) {
+    public boolean sendPacket(BasePacket packet) {
         return sendPacket(packet, true);
     }
 
     @Override
-    public boolean sendPacket(Packet packet, boolean queue) {
+    public boolean sendPacket(BasePacket packet, boolean queue) {
         C connection = getConnection();
         if (connection == null) {
             if (queue) {

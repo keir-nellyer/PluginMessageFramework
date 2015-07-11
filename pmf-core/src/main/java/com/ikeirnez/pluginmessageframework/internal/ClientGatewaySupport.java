@@ -1,7 +1,7 @@
 package com.ikeirnez.pluginmessageframework.internal;
 
 import com.ikeirnez.pluginmessageframework.gateway.ClientGateway;
-import com.ikeirnez.pluginmessageframework.packet.Packet;
+import com.ikeirnez.pluginmessageframework.packet.BasePacket;
 
 /**
  * Support class for {@link ClientGateway} implementations.
@@ -16,7 +16,7 @@ public abstract class ClientGatewaySupport<C> extends GatewaySupport<C> implemen
     }
 
     @Override
-    public void sendPacket(Packet packet) {
+    public void sendPacket(BasePacket packet) {
         sendPacket(this.connection, packet);
     }
 

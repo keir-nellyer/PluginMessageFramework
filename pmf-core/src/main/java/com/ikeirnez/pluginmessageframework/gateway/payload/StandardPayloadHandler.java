@@ -1,7 +1,7 @@
 package com.ikeirnez.pluginmessageframework.gateway.payload;
 
 import com.ikeirnez.pluginmessageframework.Utilities;
-import com.ikeirnez.pluginmessageframework.packet.Packet;
+import com.ikeirnez.pluginmessageframework.packet.BasePacket;
 import com.ikeirnez.pluginmessageframework.packet.StandardPacket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,12 +23,12 @@ public class StandardPayloadHandler implements PayloadHandler<StandardPacket> {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
-    public boolean isPacketApplicable(Packet packet) {
+    public boolean isPacketApplicable(BasePacket packet) {
         return isPacketClassApplicable(packet.getClass());
     }
 
     @Override
-    public boolean isPacketClassApplicable(Class<? extends Packet> packetClass) {
+    public boolean isPacketClassApplicable(Class<? extends BasePacket> packetClass) {
         return StandardPacket.class.isAssignableFrom(packetClass);
     }
 

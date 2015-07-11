@@ -3,7 +3,7 @@ package com.ikeirnez.pluginmessageframework.packet;
 /**
  * Base class for all packets.
  */
-public abstract class Packet {
+public abstract class BasePacket {
 
     @SuppressWarnings({"CanBeFinal", "FieldCanBeLocal"})
     private boolean received = false;

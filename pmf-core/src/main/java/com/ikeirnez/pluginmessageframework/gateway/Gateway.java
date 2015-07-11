@@ -1,7 +1,7 @@
 package com.ikeirnez.pluginmessageframework.gateway;
 
 import com.ikeirnez.pluginmessageframework.gateway.payload.PayloadHandler;
-import com.ikeirnez.pluginmessageframework.packet.Packet;
+import com.ikeirnez.pluginmessageframework.packet.BasePacket;
 import com.ikeirnez.pluginmessageframework.packet.PacketHandler;
 
 /**
@@ -25,7 +25,7 @@ public interface Gateway<C> {
      * @param connection the connection to send the packet via
      * @param packet the packet to be sent
      */
-    void sendPacket(C connection, Packet packet);
+    void sendPacket(C connection, BasePacket packet);
 
     /**
      * <p>Registers a listener to receive incoming packets.</p>
@@ -34,7 +34,7 @@ public interface Gateway<C> {
      * <ul>
      *     <li>annotated with a {@link PacketHandler}</li>
      *     <li><b>OPTIONAL</b> parameter - &lt;T&gt;</li>
-     *     <li>parameter - object extending {@link Packet}</li>
+     *     <li>parameter - object extending {@link BasePacket}</li>
      * </ul>
      *
      * @param listener the listener to be registered
@@ -49,13 +49,13 @@ public interface Gateway<C> {
     void unregisterListener(Object listener);
 
     /**
-     * Dispatches a {@link Packet} to listeners.
+     * Dispatches a {@link BasePacket} to listeners.
      * Mainly for internal use.
      *
      * @param connection the connection the packet was received from
      * @param packet the packet received
      */
-    void receivePacket(C connection, Packet packet);
+    void receivePacket(C connection, BasePacket packet);
 
     /**
      * Gets the payload handler in use by this gateway.

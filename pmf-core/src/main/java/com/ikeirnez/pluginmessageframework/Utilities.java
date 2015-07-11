@@ -1,6 +1,6 @@
 package com.ikeirnez.pluginmessageframework;
 
-import com.ikeirnez.pluginmessageframework.packet.Packet;
+import com.ikeirnez.pluginmessageframework.packet.BasePacket;
 
 import java.lang.reflect.Field;
 
@@ -16,9 +16,9 @@ public class Utilities {
      *
      * @param packet the packet to set as being received
      */
-    public static void setReceived(Packet packet) {
+    public static void setReceived(BasePacket packet) {
         try {
-            Field field = Packet.class.getDeclaredField("received");
+            Field field = BasePacket.class.getDeclaredField("received");
             field.setAccessible(true);
             field.setBoolean(packet, true);
         } catch (NoSuchFieldException | IllegalAccessException e) {

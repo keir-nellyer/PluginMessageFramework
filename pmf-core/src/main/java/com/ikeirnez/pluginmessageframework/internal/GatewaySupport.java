@@ -5,7 +5,7 @@ import com.ikeirnez.pluginmessageframework.Utilities;
 import com.ikeirnez.pluginmessageframework.gateway.Gateway;
 import com.ikeirnez.pluginmessageframework.gateway.payload.PayloadHandler;
 import com.ikeirnez.pluginmessageframework.gateway.payload.StandardPayloadHandler;
-import com.ikeirnez.pluginmessageframework.packet.Packet;
+import com.ikeirnez.pluginmessageframework.packet.BasePacket;
 import com.ikeirnez.pluginmessageframework.packet.PacketHandler;
 import com.ikeirnez.pluginmessageframework.packet.PrimaryValuePacket;
 import org.slf4j.Logger;
@@ -31,7 +31,7 @@ public abstract class GatewaySupport<C> implements Gateway<C> {
     private String channel;
     private PayloadHandler payloadHandler = null;
 
-    private final Map<Class<? extends Packet>, List<Object>> listeners = new HashMap<>();
+    private final Map<Class<? extends BasePacket>, List<Object>> listeners = new HashMap<>();
 
     public GatewaySupport(String channel) {
         if (channel == null || channel.isEmpty()) {
@@ -67,7 +67,7 @@ public abstract class GatewaySupport<C> implements Gateway<C> {
      * @return the byte[] representation of the packet
      */
     @SuppressWarnings("unchecked")
-    public byte[] writePacket(Packet packet) {
+    public byte[] writePacket(BasePacket packet) {
         if (!getPayloadHandler().isPacketApplicable(packet)) {
             throw new IllegalArgumentException("Assigned PayloadHandler cannot handle this type of Packet.");
         }
@@ -81,13 +81,13 @@ public abstract class GatewaySupport<C> implements Gateway<C> {
     }
 
     @Override
-    public void sendPacket(C connection, Packet packet) {
+    public void sendPacket(C connection, BasePacket packet) {
         sendPayload(connection, getChannel(), writePacket(packet));
     }
 
     public abstract void sendPayload(C connection, String channel, byte[] bytes);
 
-    protected Object handleListenerParameter(Class<?> clazz, Packet packet, C connection) {
+    protected Object handleListenerParameter(Class<?> clazz, BasePacket packet, C connection) {
         // todo do this better? gets overridden
         if (packet instanceof PrimaryArgumentProvider) {
             Object object = ((PrimaryArgumentProvider) packet).getValue();
@@ -114,7 +114,7 @@ public abstract class GatewaySupport<C> implements Gateway<C> {
     }
 
     public void incomingPayload(C connection, byte[] data) throws IOException {
-        Packet packet = getPayloadHandler().readIncomingPacket(data);
+        BasePacket packet = getPayloadHandler().readIncomingPacket(data);
         if (packet != null) {
             receivePacket(connection, packet);
         }
@@ -126,11 +126,11 @@ public abstract class GatewaySupport<C> implements Gateway<C> {
         for (Method method : listener.getClass().getMethods()) {
             if (method.isAnnotationPresent(PacketHandler.class)) { // todo check parameters too
                 Class<?>[] parameterTypes = method.getParameterTypes();
-                Class<? extends Packet> packetClazz = PrimaryValuePacket.class;
+                Class<? extends BasePacket> packetClazz = PrimaryValuePacket.class;
 
                 for (Class<?> parameterType : parameterTypes) { // find packet class
-                    if (Packet.class.isAssignableFrom(parameterType)) {
-                        packetClazz = (Class<? extends Packet>) parameterType;
+                    if (BasePacket.class.isAssignableFrom(parameterType)) {
+                        packetClazz = (Class<? extends BasePacket>) parameterType;
                         break;
                     }
                 }
@@ -154,8 +154,8 @@ public abstract class GatewaySupport<C> implements Gateway<C> {
     }
 
     @Override
-    public void receivePacket(C connection, Packet packet) {
-        Class<? extends Packet> packetClass = packet.getClass();
+    public void receivePacket(C connection, BasePacket packet) {
+        Class<? extends BasePacket> packetClass = packet.getClass();
 
         if (listeners.containsKey(packetClass)) {
             for (Object listener : listeners.get(packetClass)) {

@@ -2,7 +2,7 @@ package com.ikeirnez.pluginmessageframework.bungeecord;
 
 import com.ikeirnez.pluginmessageframework.gateway.ProxySide;
 import com.ikeirnez.pluginmessageframework.internal.ProxyGatewaySupport;
-import com.ikeirnez.pluginmessageframework.packet.Packet;
+import com.ikeirnez.pluginmessageframework.packet.BasePacket;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.Connection;
@@ -82,7 +82,7 @@ public class ImplBungeeGateway extends ProxyGatewaySupport<ProxiedPlayer, Server
     }
 
     @Override
-    protected Object handleListenerParameter(Class<?> clazz, Packet packet, ProxiedPlayer proxiedPlayer) {
+    protected Object handleListenerParameter(Class<?> clazz, BasePacket packet, ProxiedPlayer proxiedPlayer) {
         if (ServerInfo.class.isAssignableFrom(clazz)) { // hack :(
             return proxiedPlayer.getServer().getInfo();
         } else if (Server.class.isAssignableFrom(clazz)) {

@@ -2,7 +2,7 @@ package com.ikeirnez.pluginmessageframework.internal;
 
 import com.ikeirnez.pluginmessageframework.gateway.ProxyGateway;
 import com.ikeirnez.pluginmessageframework.gateway.ProxySide;
-import com.ikeirnez.pluginmessageframework.packet.Packet;
+import com.ikeirnez.pluginmessageframework.packet.BasePacket;
 
 /**
  * Support class for {@link ProxyGateway} implementations.
@@ -38,12 +38,12 @@ public abstract class ProxyGatewaySupport<C, S, Q> extends GatewaySupport<C> imp
     }
 
     @Override
-    public void sendPacketServer(S serverConnection, Packet packet) {
+    public void sendPacketServer(S serverConnection, BasePacket packet) {
         sendCustomPayloadServer(serverConnection, getChannel(), writePacket(packet));
     }
 
     @Override
-    public boolean sendPacketServer(Q queueableConnection, Packet packet, boolean queue) {
+    public boolean sendPacketServer(Q queueableConnection, BasePacket packet, boolean queue) {
         return sendCustomPayloadServer(queueableConnection, getChannel(), writePacket(packet), queue);
     }
 
