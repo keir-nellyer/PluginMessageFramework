@@ -1,5 +1,9 @@
 defaultTasks 'clean', 'build', 'test', 'publishToMavenLocal'
 
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.6'
+}
+
 subprojects {
     apply plugin: 'java'
     apply plugin: 'idea'
