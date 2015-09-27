@@ -2,7 +2,7 @@ package com.ikeirnez.pluginmessageframework.sponge;
 
 import com.ikeirnez.pluginmessageframework.gateway.ServerGateway;
 import org.spongepowered.api.Game;
-import org.spongepowered.api.entity.player.Player;
+import org.spongepowered.api.entity.living.player.Player;
 
 /**
  * Provides a {@link ServerGateway} capable of running on the Sponge implementation.

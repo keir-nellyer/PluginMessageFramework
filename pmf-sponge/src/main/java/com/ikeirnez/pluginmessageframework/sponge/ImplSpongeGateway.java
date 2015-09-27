@@ -1,10 +1,10 @@
 package com.ikeirnez.pluginmessageframework.sponge;
 
+import com.google.common.eventbus.Subscribe;
 import com.ikeirnez.pluginmessageframework.internal.ServerGatewaySupport;
 import org.spongepowered.api.Game;
-import org.spongepowered.api.entity.player.Player;
-import org.spongepowered.api.event.Subscribe;
-import org.spongepowered.api.event.entity.player.PlayerJoinEvent;
+import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.event.network.ClientConnectionEvent;
 import org.spongepowered.api.network.ChannelBuf;
 import org.spongepowered.api.network.ChannelListener;
 import org.spongepowered.api.network.PlayerConnection;
@@ -36,7 +36,7 @@ public class ImplSpongeGateway extends ServerGatewaySupport<Player> implements C
         this.game = game;
 
         game.getServer().registerChannel(plugin, this, getChannel());
-        game.getEventManager().register(plugin, this);
+        game.getEventManager().registerListeners(plugin, this);
     }
 
     @Override
@@ -63,10 +63,10 @@ public class ImplSpongeGateway extends ServerGatewaySupport<Player> implements C
     }
 
     @Subscribe
-    public void onPlayerJoin(PlayerJoinEvent event) {
+    public void onPlayerJoin(ClientConnectionEvent.Join event) {
         if (queuedPackets()) {
             // todo does this need delayed like in DefaultBukkitGateway?
-            sendQueuedPackets(event.getEntity());
+            sendQueuedPackets(event.getTargetEntity());
         }
     }
 
