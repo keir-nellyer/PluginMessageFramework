@@ -4,6 +4,7 @@ import com.google.common.eventbus.Subscribe;
 import com.ikeirnez.pluginmessageframework.internal.ServerGatewaySupport;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.network.ClientConnectionEvent;
 import org.spongepowered.api.network.ChannelBuf;
 import org.spongepowered.api.network.ChannelListener;
@@ -62,7 +63,7 @@ public class ImplSpongeGateway extends ServerGatewaySupport<Player> implements C
         }
     }
 
-    @Subscribe
+    @Listener
     public void onPlayerJoin(ClientConnectionEvent.Join event) {
         if (queuedPackets()) {
             // todo does this need delayed like in DefaultBukkitGateway?
