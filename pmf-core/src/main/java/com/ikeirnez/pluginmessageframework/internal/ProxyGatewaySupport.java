@@ -39,16 +39,16 @@ public abstract class ProxyGatewaySupport<C, S, Q> extends GatewaySupport<C> imp
 
     @Override
     public void sendPacketServer(S serverConnection, BasePacket packet) {
-        sendCustomPayloadServer(serverConnection, getChannel(), writePacket(packet));
+        sendCustomPayloadServer(serverConnection, writePacket(packet));
     }
 
     @Override
     public boolean sendPacketServer(Q queueableConnection, BasePacket packet, boolean queue) {
-        return sendCustomPayloadServer(queueableConnection, getChannel(), writePacket(packet), queue);
+        return sendCustomPayloadServer(queueableConnection, writePacket(packet), queue);
     }
 
-    public abstract void sendCustomPayloadServer(S serverConnection, String channel, byte[] bytes);
+    public abstract void sendCustomPayloadServer(S serverConnection, byte[] bytes);
 
-    public abstract boolean sendCustomPayloadServer(Q queueableConnection, String channel, byte[] bytes, boolean queue);
+    public abstract boolean sendCustomPayloadServer(Q queueableConnection, byte[] bytes, boolean queue);
 
 }

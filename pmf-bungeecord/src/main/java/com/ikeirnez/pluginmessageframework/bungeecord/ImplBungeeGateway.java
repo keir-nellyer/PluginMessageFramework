@@ -33,27 +33,27 @@ public class ImplBungeeGateway extends ProxyGatewaySupport<ProxiedPlayer, Server
     }
 
     @Override
-    public void sendPayload(ProxiedPlayer connection, String channel, byte[] bytes) {
+    public void sendPayload(ProxiedPlayer connection, byte[] bytes) {
         switch (getProxySide()) {
             default:
                 throw new UnsupportedOperationException("Don't know how to handle sending payload from the ProxySide: " + getProxySide() + ".");
             case CLIENT:
-                connection.sendData(channel, bytes);
+                connection.sendData(getChannel(), bytes);
                 break;
             case SERVER:
-                connection.getServer().sendData(channel, bytes);
+                connection.getServer().sendData(getChannel(), bytes);
                 break;
         }
     }
 
     @Override
-    public void sendCustomPayloadServer(Server serverConnection, String channel, byte[] bytes) {
-        serverConnection.sendData(channel, bytes);
+    public void sendCustomPayloadServer(Server serverConnection, byte[] bytes) {
+        serverConnection.sendData(getChannel(), bytes);
     }
 
     @Override
-    public boolean sendCustomPayloadServer(ServerInfo serverInfo, String channel, byte[] bytes, boolean queue) {
-        return serverInfo.sendData(channel, bytes, queue);
+    public boolean sendCustomPayloadServer(ServerInfo serverInfo, byte[] bytes, boolean queue) {
+        return serverInfo.sendData(getChannel(), bytes, queue);
     }
 
     @EventHandler

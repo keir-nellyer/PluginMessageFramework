@@ -82,10 +82,10 @@ public abstract class GatewaySupport<C> implements Gateway<C> {
 
     @Override
     public void sendPacket(C connection, BasePacket packet) {
-        sendPayload(connection, getChannel(), writePacket(packet));
+        sendPayload(connection, writePacket(packet));
     }
 
-    public abstract void sendPayload(C connection, String channel, byte[] bytes);
+    public abstract void sendPayload(C connection, byte[] bytes);
 
     protected Object handleListenerParameter(Class<?> clazz, BasePacket packet, C connection) {
         // todo do this better? gets overridden

@@ -36,8 +36,8 @@ public class ImplBukkitGateway extends ServerGatewaySupport<Player> implements L
     }
 
     @Override
-    public void sendPayload(Player connection, String channel, byte[] bytes) {
-        connection.sendPluginMessage(plugin, channel, bytes);
+    public void sendPayload(Player connection, byte[] bytes) {
+        connection.sendPluginMessage(plugin, getChannel(), bytes);
     }
 
     @Override
