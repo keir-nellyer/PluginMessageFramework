@@ -17,7 +17,7 @@ public abstract class NettyGateway extends ServerGatewaySupport<Channel> {
     }
 
     @Override
-    public void sendPayload(Channel connection, String channel, byte[] bytes) {
+    public void sendPayload(Channel connection, byte[] bytes) {
         connection.writeAndFlush(bytes);
     }
 
