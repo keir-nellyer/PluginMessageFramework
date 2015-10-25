@@ -1,14 +1,12 @@
 package com.ikeirnez.pluginmessageframework.sponge;
 
-import com.google.common.eventbus.Subscribe;
 import com.ikeirnez.pluginmessageframework.internal.ServerGatewaySupport;
 import org.spongepowered.api.Game;
+import org.spongepowered.api.Platform;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.network.ClientConnectionEvent;
-import org.spongepowered.api.network.ChannelBuf;
-import org.spongepowered.api.network.ChannelListener;
-import org.spongepowered.api.network.PlayerConnection;
+import org.spongepowered.api.network.*;
 import org.spongepowered.api.util.annotation.NonnullByDefault;
 
 import java.io.IOException;
@@ -17,10 +15,12 @@ import java.util.Collection;
 /**
  * The default Sponge implementation of a {@link com.ikeirnez.pluginmessageframework.gateway.ServerGateway}.
  */
-public class ImplSpongeGateway extends ServerGatewaySupport<Player> implements ChannelListener {
+public class ImplSpongeGateway extends ServerGatewaySupport<Player> implements MessageHandler<SpongeByteArrayMessage> {
 
     private final Object plugin;
     private final Game game;
+
+    private final ChannelBinding.IndexedMessageChannel dataChannel;
 
     protected ImplSpongeGateway(String channel, final Object plugin, Game game) {
         super(channel);
@@ -36,13 +36,14 @@ public class ImplSpongeGateway extends ServerGatewaySupport<Player> implements C
         this.plugin = plugin;
         this.game = game;
 
-        game.getServer().registerChannel(plugin, this, getChannel());
+        this.dataChannel = game.getChannelRegistrar().createChannel(plugin, getChannel());
+        this.dataChannel.registerMessage(SpongeByteArrayMessage.class, 1452, this);
         game.getEventManager().registerListeners(plugin, this);
     }
 
     @Override
-    public void sendPayload(Player connection, String channel, byte[] bytes) {
-        connection.getConnection().sendCustomPayload(plugin, channel, bytes);
+    public void sendPayload(Player connection, byte[] bytes) {
+        this.dataChannel.sendTo(connection, new SpongeByteArrayMessage(bytes));
     }
 
     @Override
@@ -53,11 +54,14 @@ public class ImplSpongeGateway extends ServerGatewaySupport<Player> implements C
 
     @Override
     @NonnullByDefault
-    public void handlePayload(PlayerConnection client, String channel, ChannelBuf data) {
-        if (channel.equals(getChannel())) {
+    public void handleMessage(SpongeByteArrayMessage message, RemoteConnection connection, Platform.Type side) {
+        if (connection instanceof PlayerConnection) {
+            Player player = ((PlayerConnection) connection).getPlayer();
+            byte[] bytes = message.getBytes();
+
             try {
-                incomingPayload(client.getPlayer(), data.array());
-            } catch (IOException e) {
+                incomingPayload(player, bytes);
+            } catch(IOException e) {
                 logger.error("Error handling incoming payload.", e);
             }
         }
@@ -70,5 +74,4 @@ public class ImplSpongeGateway extends ServerGatewaySupport<Player> implements C
             sendQueuedPackets(event.getTargetEntity());
         }
     }
-
 }
