@@ -35,8 +35,12 @@ task deobfJar(type: Jar) {
     classifier = ''
 }
 
+//We only need the deobfuscated jar
 jar.enabled = false
 reobfJar.enabled = false
+sourceJar { //Fix for Jenkins / Artifactory not finding the jar
+    classifier = ''
+}
 sourceJar.enabled = false
 
 tasks.build.dependsOn('deobfJar')
