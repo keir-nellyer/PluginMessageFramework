@@ -6,4 +6,5 @@ include 'pmf-sponge'
 include 'pmf-bungeecord'
 include 'pmf-packets-bungeecord'
 include 'pmf-netty'
+include 'pmf-forge'
 

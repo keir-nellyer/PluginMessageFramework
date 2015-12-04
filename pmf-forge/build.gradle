@@ -1,0 +1,46 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+        maven {
+            name 'forge-repo'
+            url 'http://files.minecraftforge.net/maven'
+        }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.0-SNAPSHOT'
+    }
+}
+
+dependencies {
+    compile project(':pmf-core')
+}
+
+apply plugin: 'net.minecraftforge.gradle.forge'
+
+minecraft {
+    version = "1.8-11.14.4.1563"
+    runDir = "run"
+
+    // the mappings can be changed at any time, and must be in the following format.
+    // snapshot_YYYYMMDD   snapshot are built nightly.
+    // stable_#            stables are built at the discretion of the MCP team.
+    // Use non-default mappings at your own risk. they may not always work.
+    // simply re-run your setup task after changing the mappings to update your workspace.
+    mappings = 'stable_18'
+}
+
+task deobfJar(type: Jar) {
+    from sourceSets.main.output
+    classifier = ''
+}
+
+jar.enabled = false
+reobfJar.enabled = false
+sourceJar.enabled = false
+
+tasks.build.dependsOn('deobfJar')
+
+artifacts {
+    archives deobfJar
+}
