@@ -7,5 +7,5 @@ repositories {
 
 dependencies {
     compile project(':pmf-core')
-    compile group: 'org.spongepowered', name: 'spongeapi', version: '2.1-SNAPSHOT'
+    compile group: 'org.spongepowered', name: 'spongeapi', version: '3.1.0-SNAPSHOT'
 }

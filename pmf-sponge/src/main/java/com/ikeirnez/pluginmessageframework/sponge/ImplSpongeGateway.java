@@ -3,6 +3,7 @@ package com.ikeirnez.pluginmessageframework.sponge;
 import com.ikeirnez.pluginmessageframework.internal.ServerGatewaySupport;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.Platform;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.network.ClientConnectionEvent;
@@ -22,19 +23,15 @@ public class ImplSpongeGateway extends ServerGatewaySupport<Player> implements M
 
     private final ChannelBinding.IndexedMessageChannel dataChannel;
 
-    protected ImplSpongeGateway(String channel, final Object plugin, Game game) {
+    protected ImplSpongeGateway(String channel, final Object plugin) {
         super(channel);
 
         if (plugin == null) {
             throw new IllegalArgumentException("Plugin cannot be null.");
         }
 
-        if (game == null) {
-            throw new IllegalArgumentException("Game cannot be null.");
-        }
-
         this.plugin = plugin;
-        this.game = game;
+        this.game = Sponge.getGame();
 
         this.dataChannel = game.getChannelRegistrar().createChannel(plugin, getChannel());
         this.dataChannel.registerMessage(SpongeByteArrayMessage.class, 1452, this);
