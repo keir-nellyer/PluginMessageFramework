@@ -1,5 +1,6 @@
 package com.ikeirnez.pluginmessageframework.bungeecord;
 
+import com.google.common.base.Preconditions;
 import com.ikeirnez.pluginmessageframework.gateway.ProxySide;
 import com.ikeirnez.pluginmessageframework.internal.ProxyGatewaySupport;
 import com.ikeirnez.pluginmessageframework.packet.BasePacket;
@@ -41,7 +42,9 @@ public class ImplBungeeGateway extends ProxyGatewaySupport<ProxiedPlayer, Server
                 connection.sendData(getChannel(), bytes);
                 break;
             case SERVER:
-                connection.getServer().sendData(getChannel(), bytes);
+                Server server = connection.getServer();
+                Preconditions.checkNotNull(server, "Player is not connected to a server.");
+                server.sendData(getChannel(), bytes);
                 break;
         }
     }
