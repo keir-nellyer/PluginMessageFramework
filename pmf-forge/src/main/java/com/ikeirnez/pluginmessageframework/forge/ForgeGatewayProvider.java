@@ -3,6 +3,7 @@ package com.ikeirnez.pluginmessageframework.forge;
 import com.ikeirnez.pluginmessageframework.gateway.ClientGateway;
 import com.ikeirnez.pluginmessageframework.gateway.ServerGateway;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraftforge.fml.common.network.FMLEventChannel;
 
 /**
  * Provides a {@link ClientGateway} capable of running on the Forge implementation.
@@ -15,7 +16,7 @@ public class ForgeGatewayProvider {
      * @param channel the channel to operate on
      * @return the gateway
      */
-    public static ClientGateway getClientGateway(String channel) {
+    public static ClientGateway<FMLEventChannel> getClientGateway(String channel) {
         return new ImplForgeClientGateway(channel);
     }
 
